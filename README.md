@@ -1,0 +1,2 @@
+# Android-SitchozrApp-AndroidStudio
+sqd
