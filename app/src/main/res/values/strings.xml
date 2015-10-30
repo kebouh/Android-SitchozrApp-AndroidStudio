@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <string name="app_name">Sitchozr</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Uninstall</string>
+
+    <color name="background">#303030</color>
+    <color name="start">#303030</color>
+    <color name="end">#303030</color>
+    <color name="list_divider">#0f0f0f0f</color>
+    <color name="startPressed">#9A2517</color>
+    <color name="endPressed">#9A2517</color>
+    <color name="backCount">#626262</color>
+
+    <string name="title_activity_navigation">Navigation</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item>picture</item>
+        <item>Home</item>
+        <item>Video Roll</item>
+        <item>Profile</item>
+        <item>Matches</item>
+        <item>Love us</item>
+        <item>Settings</item>
+        <item>Log out</item>
+    </string-array>
+
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <array name="nav_drawer_icons">
+        <item>@drawable/logohome</item>
+        <item>@drawable/logochat</item>
+        <item>@drawable/logoprofile</item>
+        <item>@drawable/logochat</item>
+        <item>@drawable/logolike</item>
+        <item>@drawable/logosettings</item>
+        <item>@drawable/logologout</item>
+    </array>
+
+    <!-- Content Description -->
+    <string name="desc_list_item_icon"></string>
+    <string name="title_activity_home_fragment">Discovery</string>
+    <string name="title_activity_profile_fragment">Profile</string>
+    <string name="title_activity_picture_gallery">Gallery</string>
+    <string name="title_activity_setting_fragment">Settings</string>
+    <string name="title_activity_user_profile">Match</string>
+    <string name="app_id">840049986029537</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="permission_not_granted">Unable to perform selected action because permissions were not granted.</string>
+    <string name="ok">OK</string>
+    <string name="hello_user">Hello %1$s!</string>
+    <string name="success">Success</string>
+    <string name="successfully_posted_post">Successfully posted \'%1$s\'.\nPost ID: %2$s</string>
+    <string name="error">Error</string>
+    <string name="status_update">Updating status for %1$s at %2$s</string>
+    <string name="photo_post">Photo Post</string>
+    <string name="you_picked">You picked:</string>
+    <string name="no_friends_selected">&lt;No friends selected&gt;</string>
+    <string name="no_place_selected">&lt;No place selected&gt;</string>
+    <string name="pick_seattle_place">Pick a Seattle Place</string>
+    <string name="exception">Exception: %1$s</string>
+    <string name="title_activity_match_fragment">Match</string>
+    <string name="title_activity_discovery_fragment">Discovery</string>
+    <string name="title_activity_discovery_profile">Discovery Profile</string>
+    <string name="matchCategory">Matchs</string>
+    <string name="messageCategory">Messages</string>
+    <string name="videoCallCategory">Video Calls</string>
+    <string name="winkCategory">Winks</string>
+    <string name="hint_new_match">Select CheckBox to enable new match notifications</string>
+    <string name="hint_new_message">Select CheckBox to enable new message notifications</string>
+    <string name="hint_video_call">Select CheckBox to enable new video calls notifications</string>
+    <string name="hint_new_wink">Select CheckBox to enable new wink notifications</string>
+    <string name="match_title">New Match</string>
+    <string name="message_title">New Messages</string>
+    <string name="video_call_title">New incoming Video Calls</string>
+    <string name="wink_title">New Wink</string>
+    <string name="title_activity_gallery_drag_and_drop">GalleryDragAndDrop</string>
+    <string name="title_activity_albums">AlbumsActivity</string>
+    <string name="albums">Albums</string>
+    <string name="title_activity_chat">Chat</string>
+    <string name="chat_button">Chat</string>
+    <string name="video_button">Video call</string>
+    <string name="audio_button">Audio call</string>
+    <string name="delete_button">Delete</string>
+    
+    
+</resources>

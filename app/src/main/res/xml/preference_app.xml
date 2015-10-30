@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" 
+    >
+
+    
+    <PreferenceCategory android:title="@string/matchCategory" 
+        >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="newMatch"
+            android:summary="@string/hint_new_match"
+            android:title="@string/match_title" />
+    </PreferenceCategory>
+    <PreferenceCategory>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/messageCategory" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="newMessage"
+            android:summary="@string/hint_new_message"
+            android:title="@string/message_title" />
+    </PreferenceCategory>
+    <PreferenceCategory>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/videoCallCategory" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="videoCall"
+            android:summary="@string/hint_video_call"
+            android:title="@string/video_call_title" />
+    </PreferenceCategory>
+    <PreferenceCategory>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/winkCategory" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="newWink"
+            android:summary="@string/hint_new_wink"
+            android:title="@string/wink_title" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.sitchozrapp.Authentication" >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="400dp"
+        android:src="@drawable/transparent_logo" />
+
+    <LinearLayout
+        android:layout_width="400dp"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="350dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <com.facebook.login.widget.LoginButton
+    android:id="@+id/login_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="30dp"
+    android:layout_marginBottom="30dp"/>
+
+    <TextView
+        android:id="@+id/error_text_auth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
+    </LinearLayout>
+</RelativeLayout>

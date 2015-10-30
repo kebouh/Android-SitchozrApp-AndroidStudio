@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="240dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+ 
+        
+    
+  <ImageView
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/desc_list_item_icon"
+        />
+  
+  <TextView
+        android:id="@+id/nameImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/header"
+        android:layout_alignTop="@+id/header"
+        android:layout_alignRight="@+id/header"
+        android:layout_alignBottom="@+id/header"
+        android:gravity="bottom"
+        android:layout_toLeftOf="@+id/locationImage"
+        android:layout_margin="1dp"
+        android:textAppearance="?android:attr/textAppearanceListItem"
+        android:textColor="?android:textColorPrimaryInverse" />
+  
+    <TextView
+        android:id="@id/locationImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        
+        android:layout_alignLeft="@+id/header"
+        android:layout_alignTop="@+id/header"
+        android:layout_alignRight="@+id/header"
+        android:layout_alignBottom="@+id/header"
+        android:layout_margin="1dp"
+        android:gravity="bottom|right"
+        android:layout_below="@id/nameImage"
+        android:textColor="?android:textColorSecondaryInverse"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+         />
+  
+</RelativeLayout>
