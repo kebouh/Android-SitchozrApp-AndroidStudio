@@ -7,91 +7,62 @@
     tools:context="${relativePackage}.${activityClass}" >
 
     <include layout="@layout/header_profile_user" />
-
     <include layout="@layout/informations_profile_user" />
 
-    <TableLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_weight="1.6" >
+                <LinearLayout
+                    android:id="@+id/buttons_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
 
-        <TableRow
-            android:id="@+id/tableRow1"
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#2ecc71"
+                        android:onClick="launchChat"
+                        android:text="Chat" />
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#27ae60"
+                        android:onClick="launchVideo"
+                        android:text="Video Call" />
+
+                </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttons_bottom"
+            android:layout_below="@id/buttons_top"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:stretchColumns="1"
-            
-            android:padding="5dip" >
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:orientation="horizontal">
 
             <Button
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_margin="2dip"
                 android:layout_height="match_parent"
-                android:background="@drawable/button_shape"
-                android:shadowColor="#A8A8A8"
-                android:shadowDx="0"
-                android:shadowDy="0"
-                android:shadowRadius="5"
-                android:text="@string/chat_button"
-                android:onClick="launchChat"
-                android:textColor="#FFFFFF"
-                android:textSize="30sp" />
+                android:layout_weight="1"
+                android:background="#e74c3c"
+                android:text="report" />
 
             <Button
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_margin="2dip"
                 android:layout_height="match_parent"
-                android:background="@drawable/button_shape"
-                android:shadowColor="#A8A8A8"
-                android:shadowDx="0"
-                android:shadowDy="0"
-                android:shadowRadius="5"
- android:onClick="launchVideo"
-                android:text="@string/video_button"
-                android:textColor="#FFFFFF"
-                android:textSize="30sp" />
-        </TableRow>
-         <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:stretchColumns="1"
-            android:padding="5dip" >
+                android:layout_weight="1"
+                android:background="#c0392b"
+                android:text="delete" />
 
-            <Button
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_margin="2dip"
-                android:layout_height="match_parent"
-                android:background="@drawable/button_shape"
-                android:shadowColor="#A8A8A8"
-                android:shadowDx="0"
-                android:shadowDy="0"
-                android:shadowRadius="5"
-                android:onClick="launchAudio"
-                android:text="@string/audio_button"
-                android:textColor="#FFFFFF"
-                android:textSize="30sp" />
+        </LinearLayout>
 
-            <Button
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_margin="2dip"
-                android:layout_height="match_parent"
-                android:background="@drawable/button_shape"
-                android:shadowColor="#A8A8A8"
-                android:shadowDx="0"
-                android:shadowDy="0"
-                android:shadowRadius="5"
-                android:onClick="launchDelete"
-                android:text="@string/delete_button"
-                android:textColor="#FFFFFF"
-                android:textSize="30sp" />
-        </TableRow>
-    </TableLayout>
+    </LinearLayout>
 
 </LinearLayout>
