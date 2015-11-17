@@ -35,7 +35,6 @@ public class DBDatas {
 		dbHelper.close();
 	}
 
-	/*
 	public long createAlbum(long l, String albumName) {
 		ContentValues values = new ContentValues();
 
@@ -44,7 +43,6 @@ public class DBDatas {
 
 		return database.insert(DBHelper.TABLE_ALBUMS, null, values);
 	}
-	*/
 
 	public long createMatch(MatchProfile match) {
 		ContentValues values = new ContentValues();
@@ -89,7 +87,6 @@ public class DBDatas {
 	}
 	*/
 
-	/*
 	public long createPictureProfile(Images picture, long albumId, int idUser,
 			boolean profile, int index) {
 		ContentValues values = new ContentValues();
@@ -103,9 +100,7 @@ public class DBDatas {
 		values.put(DBHelper.ALBUM_ID, albumId);
 		return database.insert(DBHelper.TABLE_PICTURES, null, values);
 	}
-	*/
 
-	/*
 	public long createPictureProfile(SDKPicture picture, long albumId, int idUser) {
 		ContentValues values = new ContentValues();
 
@@ -118,7 +113,6 @@ public class DBDatas {
 		values.put(DBHelper.ALBUM_ID, albumId);
 		return database.insert(DBHelper.TABLE_PICTURES, null, values);
 	}
-	 */
 	
 	public long createPicture(SDKPicture picture, int userId) {
 		ContentValues values = new ContentValues();
@@ -140,7 +134,6 @@ public class DBDatas {
 		return null;
 	}
 
-	/*
 	public Images getProfilePicture() {
 		Cursor cursor = database.rawQuery("SELECT " + DBHelper.PICTURE_URL
 				+ ", " + DBHelper.PICTURE_FACEBOOK_ID + ", "
@@ -158,7 +151,6 @@ public class DBDatas {
 		}
 		return null;
 	}
-	*/
 
 	public void getMatchsAndPictures() {
 		Log.d("DBDatas", "ge tmatchs and pictures");

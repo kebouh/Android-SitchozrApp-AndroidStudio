@@ -10,7 +10,7 @@ public class ImageManager {
 	public static void ApiCreate(OnTaskCompleteListener callback, FacebookPhoto newImage, int index, boolean isProfile){
 		long	id = newImage.getId();
 		String 	url = newImage.getImages().get(0).getSource();
-		//PerformPictureLaunchAsync.create(callback, new SDKPicture(id, url, index, isProfile));
+		PerformPictureLaunchAsync.create(callback, new SDKPicture(id, url, index, isProfile));
 	}
 	
 	public static void ApiCreate(OnTaskCompleteListener callback, SDKPicture picture){

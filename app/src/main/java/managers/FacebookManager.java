@@ -8,7 +8,7 @@ import com.facebook.GraphRequest;
 public class FacebookManager {
 	
 	public static void getUserProfilePhoto(GraphRequest.Callback callback, AccessToken accessToken, String facebookId){
-		GraphRequest request = GraphRequest.newGraphPathRequest(accessToken, "/"+ facebookId + "/photo?fields={id, height, icon, images, picture}", callback);
+		GraphRequest request = GraphRequest.newGraphPathRequest(accessToken, "/"+ facebookId + "/picture", callback);
     	request.executeAsync();
 	}
 	
