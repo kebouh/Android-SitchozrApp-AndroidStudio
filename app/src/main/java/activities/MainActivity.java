@@ -65,7 +65,6 @@ public class MainActivity extends FragmentActivity {
 	private	boolean			isFirstTime = true;
 
 	private void initFacebook() {
-		System.out.println("INIT FACEBOOK");
 		FacebookSdk.sdkInitialize(this.getApplicationContext());
 		setContentView(R.layout.activity_main);
 		loginButton = (LoginButton) findViewById(R.id.login_button);
@@ -101,7 +100,6 @@ public class MainActivity extends FragmentActivity {
 	
 	@Override
 	protected void onResume() {
-		System.out.println("ON RESUME");
 		super.onResume();
 		location = new LocationWraper(getApplicationContext());
 		if (!location.isGpsActivated())
@@ -111,7 +109,6 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void authenticate() {
-		System.out.println("AUTHENTICATE");
 		user = new SDKUser(accessToken.getToken());
 		OnTaskCompleteListener onPostUserCreate = new OnTaskCompleteListener() {
 			@Override
@@ -119,7 +116,6 @@ public class MainActivity extends FragmentActivity {
 				OnTaskCompleteListener onPostAuthentication = new OnTaskCompleteListener() {
 					@Override
 					public void onCompleteListerner(Object[] result) {
-						System.out.println("NEW DEVICE");
 						GCMRegister gcm = new GCMRegister(getApplicationContext());
 						DeviceManager.ApiCreate(null, new SDKDevice(gcm.getRegistrationId(getApplicationContext()), "en"));
 						initProfile();
@@ -134,7 +130,6 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	private void connect() {
-		System.out.println("CONNECT");
 		initFacebook();
 		RequestManager.getInstance();
 		if (AccessToken.getCurrentAccessToken() == null) {
@@ -164,7 +159,6 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		System.out.println("onCreate");
 		super.onCreate(savedInstanceState);
 		Manager.setContext(null);
 		Manager.setAppContext(getApplicationContext());
@@ -172,7 +166,6 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		System.out.println("onActivityResult");
 		super.onActivityResult(requestCode, resultCode, data);
 		callbackManager.onActivityResult(requestCode, resultCode, data);
 	}
@@ -184,7 +177,6 @@ public class MainActivity extends FragmentActivity {
 				try {
 					Gson gson = new Gson();
 					FacebookResponse<FacebookPhoto> facebookResponse = new FacebookResponse<FacebookPhoto>();
-					System.out.println("GET ALL : "+ response.getJSONObject());
 					facebookResponse.setData(gson.fromJson(response.getJSONObject().get("data").toString(), FacebookPhoto[].class));
 					Manager.getProfile().addAlbumToList(new Album("All"));
 					int i= 0;
@@ -207,7 +199,6 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void initProfile() {
-		System.out.println("INIT PROFILE");
 		Manager.init(this);
 		Manager.setContext(this);
 		location = new LocationWraper(this, user.getLatitude(), user.getLongitude());
@@ -250,7 +241,7 @@ public class MainActivity extends FragmentActivity {
 					launchActivity();
 				}
 				else {
-					Toast.makeText(Manager.getAppContext(), "No photos store in the API (new user ?)", Toast.LENGTH_LONG).show();
+					//Toast.makeText(Manager.getAppContext(), "No photos store in the API (new user ?)", Toast.LENGTH_LONG).show();
 					getAllPictures();
 				}
 				getAlbums();
@@ -267,7 +258,6 @@ public class MainActivity extends FragmentActivity {
 				try {
 					Gson gson = new Gson();
 					FacebookResponse<FacebookPhoto> facebookResponse = new FacebookResponse<FacebookPhoto>();
-					System.out.println("GET ALL : "+ response.getJSONObject());
 					facebookResponse.setData(gson.fromJson(response.getJSONObject().get("data").toString(), FacebookPhoto[].class));
 					Manager.getProfile().addAlbumToList(new Album("All"));
 					int i= 0;
@@ -325,7 +315,6 @@ public class MainActivity extends FragmentActivity {
 					FacebookResponse<FacebookAlbum> facebookResponse = new FacebookResponse<FacebookAlbum>();
 					facebookResponse.setData(gson.fromJson(response.getJSONObject().get("data").toString(),FacebookAlbum[].class));
 					for (FacebookAlbum facebookAlbum : facebookResponse.getData()) {
-						System.out.println("ALBUM : " + facebookAlbum.getName());
 						Album album = new Album(facebookAlbum.getName());
 						if (album.getName().equals("Profile Pictures")) {
 							if (isFirstTime == true) {
