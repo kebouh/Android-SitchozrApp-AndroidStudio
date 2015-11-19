@@ -67,32 +67,4 @@ public class MemoryManager {
 		profileEditor.putBoolean("firstTime", val);
 		profileEditor.commit();
 	}
-	
-	/**
-	 * Static, get back the profile from the memory
-	 *
-	 */
-	public	static	void	getProfileFromMemory()
-	{
-		SharedPreferences profileSettings;
-	    profileSettings = context.getSharedPreferences("profile", 0);
-		Integer[]		ageRange = new Integer[2];
-		Integer[]		distanceRange = new Integer[2];
-		String			description;
-
-		firstTime = profileSettings.getBoolean("firstTime", true);
-		ageRange[0] = profileSettings.getInt("minAge", 18);
-		ageRange[1] = profileSettings.getInt("maxAge", 100);
-		
-		distanceRange[0] = profileSettings.getInt("minDistance", 0);
-		distanceRange[1] = profileSettings.getInt("maxDistance", 150);
-		
-		description = profileSettings.getString("description", "");
-		
-		profile.setGenderWanted(profileSettings.getInt("genderWanted", 0));
-		profile.setAgeRange(ageRange);
-		profile.setDistanceRange(distanceRange);
-		profile.setDescription(description);
-	}
-	
 }

@@ -51,6 +51,7 @@ public class NavigationActivity extends Activity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("NAVIGATION ACTIVITY");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
 		Manager.setContext(this);    
@@ -60,10 +61,10 @@ public class NavigationActivity extends Activity {
         // nav drawer icons from resources
         navMenuIcons = getResources()
                 .obtainTypedArray(R.array.nav_drawer_icons);
-    //    mRelativeLayout = (RelativeLayout) findViewById(R.id.relative_layout);
+        //mRelativeLayout = (RelativeLayout) findViewById(R.id.relative_layout);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
-       // mDrawerLayout.add((ImageView)findViewById(R.id.icon));
+        // mDrawerLayout.add((ImageView)findViewById(R.id.icon));
         navDrawerItems = new ArrayList<NavDrawerItem>();
         // adding nav drawer items to array
         // Home
@@ -84,7 +85,7 @@ public class NavigationActivity extends Activity {
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(6, -1)));
         TextView icon = new TextView(this);
         icon.setText("Tseeeest");
-         //mDrawerLayout.addView(icon);
+        //mDrawerLayout.addView(icon);
         // Recycle the typed array
         navMenuIcons.recycle();
         mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
@@ -116,7 +117,7 @@ public class NavigationActivity extends Activity {
  
         if (savedInstanceState == null) {
             // on first time display view for first nav item
-            displayView(0);
+            displayView(1);
         }
     }
  
@@ -188,7 +189,7 @@ public class NavigationActivity extends Activity {
      * */
     private void displayView(int position) {
         // update the main content by replacing fragments
-        Fragment fragment = null;
+        Fragment fragment = new DiscoveryFragment();
         switch (position) {
         
         case 1:
@@ -220,6 +221,7 @@ public class NavigationActivity extends Activity {
         }
  
         if (fragment != null) {
+            Log.e("NAVIGATION", "JE PASSE");
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, fragment).commit();
@@ -230,6 +232,7 @@ public class NavigationActivity extends Activity {
             setTitle(navMenuTitles[position]);
             //mDrawerLayout.closeDrawer(mRelativeLayout);
             mDrawerLayout.closeDrawer(mDrawerList);
+            Log.e("NAVIGATION", "JE PASSE2") ;
         } else {
             // error in creating fragment
             Log.e("MainActivity", "Error in creating fragment");

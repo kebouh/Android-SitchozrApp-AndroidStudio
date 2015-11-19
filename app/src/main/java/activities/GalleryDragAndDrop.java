@@ -117,39 +117,41 @@ public class GalleryDragAndDrop extends Activity {
 
 	public void saveItemsPosition() {
 		imgs.clear();
+		/*
 		for (int i = 0; i != gridView.getAdapter().getCount(); i++) {
 			imgs.add((Images) gridView.getAdapter().getItem(i));
-
-			boolean isProfile = false;
+			Images img = imgs.get(i);
+			SDKPicture picture;
 			if (i == 0)
-				isProfile = true;
-
-			/*Images img = imgs.get(i);
-			SDKPicture picture = new SDKPicture(img.getId(),
-					img.getFacebookId(), img.getUrl(), i, isProfile);
-			ImageManager.ApiUpdate(null, picture);*/
-
+				picture = new SDKPicture(img.getId(), img.getFacebookId(), img.getUrl(), 0, true);
+			else
+				picture = new SDKPicture(img.getId(), img.getFacebookId(), img.getUrl(), i, false);
+			ImageManager.ApiUpdate(null, picture);
 		}
-		if (imgs.size() != 0) {
-			Manager.getProfile().setProfileImage(imgs.get(0));
-			//db.changeIndexPictures(imgs);
-		} else
-			Manager.getProfile().setProfileImage(null);
+		*/
+
 
 	}
 
 	@Override
 	public void onBackPressed() {
-		boolean isProfile = true;
-		if (asChanged == true)
-		for (int i = 0; i != gridView.getAdapter().getCount(); i++) {
-
-		Images img = imgs.get(i);
-		SDKPicture picture = new SDKPicture(img.getId(),
-				img.getFacebookId(), img.getUrl(), i, isProfile);
-		ImageManager.ApiUpdate(null, picture);
-		isProfile = false;
+		for (int i = 0; i < gridView.getAdapter().getCount(); i++) {
+			imgs.add((Images) gridView.getAdapter().getItem(i));
+			Images img = imgs.get(i);
+			SDKPicture picture;
+			if (i == 0)
+				picture = new SDKPicture(img.getId(), img.getFacebookId(), img.getUrl(), 0, true);
+			else
+				picture = new SDKPicture(img.getId(), img.getFacebookId(), img.getUrl(), i, false);
+			System.out.println("PICTURE INDEX : " + i);
+			ImageManager.ApiUpdate(null, picture);
 		}
+		if (imgs.size() != 0) {
+			Manager.getProfile().setProfileImage(imgs.get(0));
+			db.changeIndexPictures(imgs);
+		} else
+			Manager.getProfile().setProfileImage(null);
+
 		if (gridView.isEditMode()) {
 			gridView.stopEditMode();
 		} else {

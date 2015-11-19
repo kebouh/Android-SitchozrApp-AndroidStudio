@@ -73,7 +73,6 @@ public class DBDatas {
 		return database.insert(DBHelper.TABLE_USER_MATCH, null, values);
 	}
 
-	/*
 	public void changeIndexPictures(ArrayList<Images> imgs) {
 		for (int i = 0; i != imgs.size(); i++) {
 			ContentValues values = new ContentValues();
@@ -85,7 +84,6 @@ public class DBDatas {
 			int result = database.update("PICTURES",values,DBHelper.PICTURE_ID + " = "+ imgs.get(i).getId(),null);
 		}
 	}
-	*/
 
 	public long createPictureProfile(Images picture, long albumId, int idUser,
 			boolean profile, int index) {
@@ -255,7 +253,7 @@ public class DBDatas {
 	}
 
 	public void deletePicture(int i) {
-		int result = database.delete("PICTURES", DBHelper.PICTURE_ID
+		database.delete("PICTURES", DBHelper.PICTURE_ID
 				+ " = " + i + " AND album_id = 0", null);
 	}
 }

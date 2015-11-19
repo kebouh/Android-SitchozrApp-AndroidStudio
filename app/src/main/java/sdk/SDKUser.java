@@ -71,7 +71,8 @@ public class SDKUser {
 		this.facebookId = sdkUser.facebookId;
 		this.accessTokenFacebook = sdkUser.accessTokenFacebook;
 		this.pictures = sdkUser.pictures;
-		setAge(Integer.toString(AgeCalculator.calculate(this.birthday)));
+		System.out.println("USER_BIRTHDAY : " +  Integer.toString(AgeCalculator.calculate(this.birthday)));
+		this.age = Integer.toString(AgeCalculator.calculate(this.birthday));
 	}
 
 	public SDKToken	authenticate(){
@@ -356,7 +357,7 @@ public class SDKUser {
 	}
 
 	public String getAge() {
-		return age;
+		return Integer.toString(AgeCalculator.calculate(this.birthday));
 	}
 
 	public void setAge(String age) {
