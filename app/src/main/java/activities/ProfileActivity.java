@@ -54,9 +54,8 @@ public abstract class ProfileActivity extends Activity {
 					imageLoader.prefloadImage(match.getImgs().get(n).getUrl(),
 							1, height, width);
 				initSwitcher();
-				imageLoader.displayImage(match
-						.getImgs().get(0).getUrl(),
-						imageSwitcher, 1, height, width);			
+				if (match.getImgs().size() > 0)
+					imageLoader.displayImage(match.getImgs().get(0).getUrl(), imageSwitcher, 1, height, width);
 				getViewById();
 				setValuesToViews();
 			}
