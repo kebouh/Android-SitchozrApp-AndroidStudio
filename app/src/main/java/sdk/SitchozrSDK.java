@@ -49,18 +49,7 @@ public class SitchozrSDK {
 		.setErrorHandler(new ErrorHandler() {
                     @Override
                     public Throwable handleError(RetrofitError cause) {
-                        switch (cause.getResponse().getStatus()) {
-                        	case 400:
-                        		throw new RuntimeException("Bad Request");
-                        	case 401:
-                        		throw new RuntimeException("Bad Request");
-                        	case 404:
-                        		throw new RuntimeException("Bad Request");
-                            case 500:
-                                throw new RuntimeException("Bad Request");
-                            default:
-                                throw new RuntimeException("Bad Request");
-                        }
+						return new Exception();
                     }
                 })
 		.setEndpoint(API_URL)

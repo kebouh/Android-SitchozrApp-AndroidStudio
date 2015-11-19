@@ -63,7 +63,14 @@ public class SDKPicture {
 
 	public SDKPicture create(){
 		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.createPicture(this));
+		SDKPicture picture = null;
+		try {
+			picture = service.createPicture(this);
+		}
+		catch (Exception e){
+
+		}
+		return (picture);
 	}
 	
 	public Object delete(){
