@@ -61,7 +61,6 @@ public class MainActivity extends FragmentActivity {
 	AccessToken 			accessToken;
 	SDKUser 				user;
 	static int 				index = 0;
-	private boolean 		existingPictures = false;
 	private LocationWraper 	location = null;
 	private	boolean			isFirstTime = true;
 
@@ -94,9 +93,10 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	private void checkLocation(Context context){
-	//	location = new LocationWraper(context);
+		location = new LocationWraper(context);
 		if (location.isGpsActivated())
 			location.initConnection();
+
 	}
 	
 	@Override
@@ -226,7 +226,6 @@ public class MainActivity extends FragmentActivity {
 			public void onCompleteListerner(Object[] result) {
 				if (result[1] != null && !((List<SDKPicture>) result[1]).isEmpty()) {
 					isFirstTime = false;
-					existingPictures = true;
 					List<SDKPicture> pictures = (List<SDKPicture>) result[1];
 					for (SDKPicture sdkpicture : pictures) {
 						Images image = new Images(sdkpicture.getUrl(), sdkpicture.getId(), Long.parseLong(sdkpicture.getFacebookId()));
