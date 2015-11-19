@@ -41,6 +41,7 @@ import datas.Profile;
 import AsyncUserRequest.PerformUserLaunchAsync;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.Toast;
 import requestApiManager.RequestManager;
 import sdk.SDKDevice;
@@ -109,6 +110,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void authenticate() {
+		Log.e("MainActivity", "Authenticating...");
 		user = new SDKUser(accessToken.getToken());
 		OnTaskCompleteListener onPostUserCreate = new OnTaskCompleteListener() {
 			@Override
@@ -130,6 +132,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	private void connect() {
+		Log.e("MainActivity", "Connecting...");
 		initFacebook();
 		RequestManager.getInstance();
 		if (AccessToken.getCurrentAccessToken() == null) {
@@ -171,6 +174,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void getAllPictures() {
+		Log.e("MainActivity", "Get Pictures...");
 		GraphRequest.Callback callback = new GraphRequest.Callback() {
 			@Override
 			public void onCompleted(GraphResponse response) {
@@ -199,27 +203,23 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void initProfile() {
+		Log.e("MainActivity", "Init profile...");
 		Manager.init(this);
 		Manager.setContext(this);
 		location = new LocationWraper(this, user.getLatitude(), user.getLongitude());
 		Profile profile = new Profile(user, accessToken, location);
 		Manager.setProfile(profile);
-		System.out.println("/!\\ IF STUCK HERE, ACTIVATE GPS IN EMULATEUR /!\\");
+		//System.out.println("/!\\ IF STUCK HERE, ACTIVATE GPS IN EMULATEUR /!\\");
 		checkLocation(this);
 		Manager.setContext(null);
-		//retrieveProfileDatasFromMemory();
 		if (MemoryManager.isFirstTime()) {
 			addMatches();
 		}
-			//Manager.getDatabase().createAlbum(0, "Defined Pictures");
 		getPicturesProfileFromApi();
-		//} else {
-		//profile.setProfileImage(profile.getProfileImage());
-		launchActivity();
-		//}
 	}
 
 	public void getPicturesProfileFromApi() {
+		Log.e("MainActivity", "Get profile pictures from API...");
 		OnTaskCompleteListener onPostReadPicture = new OnTaskCompleteListener() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -235,9 +235,7 @@ public class MainActivity extends FragmentActivity {
 						Manager.getProfile().addImagesToArray(image);
 						Manager.getDatabase().createPictureProfile(sdkpicture, 0, Manager.getProfile().getId());
 					}
-					//TODO : REMETTRE LA PHOTO DE PROFIL
 					Manager.getProfile().setProfileImage(Manager.getDatabase().getProfilePicture());
-					//MemoryManager.setFirstTime(false);
 					launchActivity();
 				}
 				else {
@@ -252,6 +250,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void getProfilePictures(final FacebookAlbum album, final Album profileAlbum) {
+		Log.e("MainActivity", "Save profile picture from facebook to API...");
 		GraphRequest.Callback callback = new GraphRequest.Callback() {
 			@Override
 			public void onCompleted(GraphResponse response) {
@@ -318,6 +317,7 @@ public class MainActivity extends FragmentActivity {
 						Album album = new Album(facebookAlbum.getName());
 						if (album.getName().equals("Profile Pictures")) {
 							if (isFirstTime == true) {
+								Log.e("MainActivity", "SAve new pictures on api...");
 								getProfilePictures(facebookAlbum, album);
 							}
 						}
@@ -341,6 +341,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public static void addMatches() {
+		Log.e("MainActivity", "Add matches...");
 		OnTaskCompleteListener onPostGetMatches = new OnTaskCompleteListener() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -376,6 +377,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void initDiscovery() {
+		Log.e("MainActivity", "Add discovery...");
 		final Context context = this;
 		OnTaskCompleteListener onPostReadAll = new OnTaskCompleteListener() {
 			@SuppressLint("UseValueOf")
@@ -402,13 +404,9 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void launchActivity() {
+		Log.e("MainActivity", "Launch Activity...");
 		Intent intent = new Intent(this, NavigationActivity.class);
 		startActivity(intent);
 		finish();
-	}
-
-	public void retrieveProfileDatasFromMemory() {
-		MemoryManager.init(getApplicationContext());
-		MemoryManager.getProfileFromMemory();
 	}
 }

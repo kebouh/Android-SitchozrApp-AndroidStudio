@@ -41,7 +41,6 @@ public class SDKPicture {
 	public SDKPicture(FacebookPhoto photo, int index, boolean isProfile) {
 		this.facebookId = Long.toString(photo.getId());
 		this.profilePicture = isProfile;
-		System.out.println("PHOTOS SIZE : " + photo);
 		if (photo.getImages() != null){
 			for (PlatformImageSource source : photo.getImages()){
 				if (source.getWidth() < 650)
