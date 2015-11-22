@@ -5,6 +5,7 @@ import android.view.View;
 import datas.Manager;
 import Abstract.AbstractUsersData;
 import sources.sitchozt.R;
+import sources.sitchozt.VideoActivity;
 
 
 public class MatchProfileActivity extends ProfileActivity {	
@@ -28,9 +29,10 @@ public class MatchProfileActivity extends ProfileActivity {
 		
 		public void launchVideo(View v)
 		{
-			Intent chat = new Intent(this, ChatActivity.class);
-			chat.putExtra("ID", id);
-			startActivity(chat);
+			Intent video = new Intent(this, VideoActivity.class);
+			video.putExtra("ID_CONTACT", id);
+			video.putExtra("ID_USER", Manager.getProfile().getId());
+			startActivity(video);
 		}
 		
 		public void launchAudio(View v)

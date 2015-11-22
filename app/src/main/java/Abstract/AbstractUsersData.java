@@ -21,7 +21,7 @@ public abstract class AbstractUsersData {
 	private Integer[] ageRange = new Integer[2];
 	private Integer[] distanceRange = new Integer[2];
 	private String description;
-	private int genderWanted;
+	private int genderWanted = 0;
 	private SDKUser	sdkuser;
 	private AccessToken accessToken;
 
@@ -33,6 +33,7 @@ public abstract class AbstractUsersData {
 	
 	public AbstractUsersData(SDKUser sdkuser, AccessToken accessToken) {
 		this.sdkuser = sdkuser;
+		this.description = sdkuser.getDescription();
 		this.setAccessToken(accessToken);
 		this.id = sdkuser.getId();
 		this.firstName = sdkuser.getUsername();

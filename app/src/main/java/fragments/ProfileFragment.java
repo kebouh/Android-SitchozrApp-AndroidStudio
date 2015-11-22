@@ -83,7 +83,9 @@ public class ProfileFragment extends Fragment {
 		display.getSize(size);
 		profilePicture.setLayoutParams(new FrameLayout.LayoutParams(
 				size.x, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+		if (profile.getProfileImage() != null)
         imageLoader.displayImage(profile.getProfileImage().getUrl(), profilePicture, 0, 0, 0);
+
 		descriptionText.setText(profile.getSdkuser().getDescription());
 
 		name.setText(profile.getFirstName());

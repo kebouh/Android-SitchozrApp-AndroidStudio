@@ -315,6 +315,7 @@ public class MainActivity extends FragmentActivity {
 					for (FacebookAlbum facebookAlbum : facebookResponse.getData()) {
 						Album album = new Album(facebookAlbum.getName());
 						if (album.getName().equals("Profile Pictures")) {
+							System.out.println("Profile pictures");
 							if (isFirstTime == true) {
 								Log.e("MainActivity", "SAve new pictures on api...");
 								getProfilePictures(facebookAlbum, album);

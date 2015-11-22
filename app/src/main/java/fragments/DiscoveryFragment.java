@@ -1,5 +1,6 @@
 package fragments;
 
+import datas.MatchProfile;
 import interfaces.OnTaskCompleteListener;
 
 import java.text.DecimalFormat;
@@ -95,11 +96,18 @@ public class DiscoveryFragment extends Fragment {
 						public void onCompleteListerner(Object[] result) {
 							MainActivity.addMatches();
 						}
-					};				
+					};
+
+					MatchProfile match = new MatchProfile();
+					match.setId(item.id);
+					match.setFirstName(item.name);
+					match.setAge(item.age);
+					match.setLocation(Manager.getDiscoveryProfileById(item.id).getLocation());
 					LikeManager.ApiCreate(callback, like);
 					Manager.giveLike(item.id);
+					Manager.getDatabase().createMatch(match);
 					Manager.deleteDiscovery(item.id);
-					items.remove(item);	
+					items.remove(item);
 	                notifyDataSetChanged();
 				}
 			});

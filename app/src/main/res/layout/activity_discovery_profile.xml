@@ -5,16 +5,36 @@
     android:orientation="vertical"
     tools:context="${relativePackage}.${activityClass}" >
 
-    
-        <include layout="@layout/header_profile_user"/>
-        <include layout="@layout/informations_profile_user"/>
-        
- 
+
+    <include layout="@layout/header_profile_user"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#55000000"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp" >
+
+        <TextView
+            android:id="@+id/descriptionText"
+            android:scrollbars = "vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:hint="Description"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white" />
+
+    </FrameLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1.6" >
-</FrameLayout>
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_weight="0" >
+    </FrameLayout>
 </LinearLayout>
