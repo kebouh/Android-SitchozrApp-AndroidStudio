@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@color/asbestos"
-     >
+    >
 
     <ImageView
         android:id="@+id/icon"
@@ -27,7 +26,7 @@
         android:paddingRight="40dp"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
         style="AppBaseTheme"
-        android:textColor="?android:textColorPrimary" />
+        android:textColor="?android:textColorPrimaryInverse" />
 
     <TextView
         android:id="@+id/counter"
