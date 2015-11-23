@@ -3,12 +3,15 @@ import java.util.ArrayList;
 
 import com.facebook.login.LoginManager;
 
+import datas.Album;
 import datas.Manager;
 import fragments.DiscoveryFragment;
 import fragments.HomeFragment;
 import fragments.MatchFragment;
 import fragments.ProfileFragment;
 import fragments.SettingFragment;
+import managers.DeviceManager;
+import sdk.SDKDevice;
 import slidermenu.model.NavDrawerItem;
 import slidingmenu.adapter.NavDrawerListAdapter;
 import sources.sitchozt.R;
@@ -54,7 +57,8 @@ public class NavigationActivity extends Activity {
         System.out.println("NAVIGATION ACTIVITY");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-		Manager.setContext(this);    
+		Manager.setContext(this);
+        initializeProfile();
         mTitle = mDrawerTitle = getTitle();
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
         navMenuIcons = getResources()
@@ -101,7 +105,25 @@ public class NavigationActivity extends Activity {
             displayView(0);
         }
     }
- 
+
+
+    public void     initializeProfile() {
+        System.out.println("INITIALIZE PROFILE");
+        Manager.getDatabase().getAlbumsAndPictures();
+        Album defined = null;
+        if (Manager.getProfile().getListAlbums() != null)
+            defined = Manager.getProfile().getListAlbums().getAlbumByName("Defined Pictures");
+        else
+        System.out.println("list album null");
+        if (defined != null)
+            Manager.getProfile().setImgs(defined.getList());
+        else
+        System.out.println("defined list = NULL" );
+        if (Manager.getProfile().getImgs() != null && Manager.getProfile().getImgs().size() > 0)
+        Manager.getProfile().setProfileImage(Manager.getProfile().getImgs().get(0));
+        Manager.getDatabase().getMatchsAndPictures();
+    }
+
     /**
      * Slide menu item click listener
      * */
@@ -156,7 +178,7 @@ public class NavigationActivity extends Activity {
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
         menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         
-        if (mDrawerList.isItemChecked(3) == true)
+        if (mDrawerList.isItemChecked(2) == true)
             menu.findItem(R.id.facebookButton).setVisible(true);
            else
             menu.findItem(R.id.facebookButton).setVisible(false);
@@ -189,7 +211,9 @@ public class NavigationActivity extends Activity {
             fragment = new SettingFragment();
             break;
         case 5:
-        	LoginManager.getInstance().logOut();
+            DeviceManager.ApiDelete(null, new SDKDevice(MainActivity.gcm.getRegistrationId(getApplicationContext()), "en"));
+
+            LoginManager.getInstance().logOut();
             Intent intent = new Intent(this, MainActivity.class);
     		startActivity(intent);
             break;

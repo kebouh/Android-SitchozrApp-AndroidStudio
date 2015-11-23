@@ -53,12 +53,10 @@ public class ProfileFragment extends Fragment {
 		startGallery = new Intent(this.getActivity(), GalleryDragAndDrop.class);
 		rootView = inflater.inflate(R.layout.activity_profile_fragment, container, false);
 		profile = Manager.getProfile();
-		//if (profile.getListAlbums().getAlbumlist().isEmpty())
+		if (profile.getListAlbums().getAlbumlist().size() <= 1)
+			Manager.getDatabase().getAlbumsAndPictures();
 		System.out.println("IMAGES : " + profile);
-		//Manager.getDatabase().getAlbumsAndPictures();
-		Album defined = profile.getListAlbums().getAlbumByName("Defined Pictures");
-		if (defined != null && defined.getList().size() != 0)
-			profile.setImgs(defined.getList());
+
 		Manager.setContext(this.getActivity());
 		getViewById();
     	setValuesToViews();
@@ -230,7 +228,7 @@ public class ProfileFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	super.onActivityResult(requestCode, resultCode, data);
 	if (profile.getProfileImage() != null)
-    imageLoader.displayImage(profile.getProfileImage().getUrl(), profilePicture, 0, 0, 0);
+    	imageLoader.displayImage(profile.getProfileImage().getUrl(), profilePicture, 0, 0, 0);
 	else
 		profilePicture.setImageBitmap(null);
 	}

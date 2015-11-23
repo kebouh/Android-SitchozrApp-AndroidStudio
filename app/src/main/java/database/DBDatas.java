@@ -94,7 +94,7 @@ public class DBDatas {
 		values.put(DBHelper.PICTURE_PROFILE, profile);
 		values.put(DBHelper.PICTURE_INDEX, index);
 		values.put(DBHelper.PICTURE_URL, picture.getUrl());
-		values.put(DBHelper.PICTURE_FACEBOOK_ID, picture.getId());
+		values.put(DBHelper.PICTURE_FACEBOOK_ID, picture.getFacebookId());
 		values.put(DBHelper.ALBUM_ID, albumId);
 		return database.insert(DBHelper.TABLE_PICTURES, null, values);
 	}
@@ -205,7 +205,7 @@ public class DBDatas {
 		}
 	}
 
-	/*
+
 	public void getAlbumsAndPictures() {
 		// ArrayList<Album> list = new ArrayList<Album>();
 
@@ -237,16 +237,20 @@ public class DBDatas {
 				String[] urls = splitResultConcatened(cursor.getString(1));
 				String[] ids = splitResultConcatened(cursor.getString(2));
 				String[] Fids = splitResultConcatened(cursor.getString(3));
-				for (int i = 0; i != urls.length; i++)
-					album.addImagesToList(new Images(urls[i],
-							Integer.valueOf(ids[i]), Long.valueOf(Fids[i])));
-				Manager.getProfile().addAlbumToList(album);
+				if (urls != null) {
+					for (int i = 0; i != urls.length; i++)
+						album.addImagesToList(new Images(urls[i],
+								Integer.valueOf(ids[i]), Long.valueOf(Fids[i])));
+					Manager.getProfile().addAlbumToList(album);
+				}
+				else
+				Log.e("dbdata", "urls is null");
 			}
 
 			cursor.close();
 		}
 	}
-	*/
+
 
 	public void updateMatch() {
 

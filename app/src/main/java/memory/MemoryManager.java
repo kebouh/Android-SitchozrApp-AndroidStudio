@@ -28,6 +28,9 @@ public class MemoryManager {
 	{
 		context = c;
 		profile = Manager.getProfile();
+		SharedPreferences profileSettings;
+		profileSettings = context.getSharedPreferences("profile", 0);
+		firstTime = profileSettings.getBoolean("firstTime", true);
 	}
 	
 	/**
