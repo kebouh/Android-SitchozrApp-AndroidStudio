@@ -3,6 +3,7 @@ package database;
 import java.util.ArrayList;
 
 import database.DBHelper;
+import datas.FacebookPhoto;
 import sdk.SDKPicture;
 import sdk.SDKUser;
 import datas.Album;

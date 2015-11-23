@@ -53,8 +53,10 @@ public class ProfileFragment extends Fragment {
 		startGallery = new Intent(this.getActivity(), GalleryDragAndDrop.class);
 		rootView = inflater.inflate(R.layout.activity_profile_fragment, container, false);
 		profile = Manager.getProfile();
-		if (profile.getListAlbums().getAlbumlist().size() <= 1)
-			Manager.getDatabase().getAlbumsAndPictures();
+		if (profile.getListAlbums().getAlbumlist().size() <= 2) {
+				profile.getListAlbums().getAlbumlist().clear();
+				Manager.getDatabase().getAlbumsAndPictures();
+		}
 		System.out.println("IMAGES : " + profile);
 
 		Manager.setContext(this.getActivity());

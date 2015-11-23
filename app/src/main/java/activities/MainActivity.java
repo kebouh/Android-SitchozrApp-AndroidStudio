@@ -189,25 +189,18 @@ public class MainActivity extends FragmentActivity {
 					Gson gson = new Gson();
 					FacebookResponse<FacebookPhoto> facebookResponse = new FacebookResponse<FacebookPhoto>();
 					facebookResponse.setData(gson.fromJson(response.getJSONObject().get("data").toString(), FacebookPhoto[].class));
-					Manager.getProfile().addAlbumToList(new Album("All"));
-					int i= 0;
-					for (FacebookPhoto photo : facebookResponse.getData()) {
-						if (i < 8) {
-							SDKPicture picture = new SDKPicture(photo, 0);
-							picture.setDate(new Date());
-							ImageManager.ApiCreate(null, photo, i, i==0?true:false);
-							Manager.getProfile().setProfileImage(new Images(photo));
-						}
-						i++;
-					}
-					getPicturesProfileFromApi();
+                    Manager.getDatabase().createAlbum(1, "All");
+                    for (FacebookPhoto photo : facebookResponse.getData()) {
+                        SDKPicture picture = new SDKPicture(photo, index, false);
+                        Manager.getDatabase().createPictureProfile(picture, 1, Manager.getProfile().getId());
+                    }
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			}
 		};
-		FacebookManager.getUserProfilePhoto(callback, Manager.getProfile().getAccessToken(), Manager.getProfile().getSdkuser().getFacebookId());
-	}
+		FacebookManager.getUserPhotos(callback, Manager.getProfile().getAccessToken(), Manager.getProfile().getSdkuser().getFacebookId());
+    }
 
     public void initConfiguration() {
         MemoryManager.init(this);
@@ -234,8 +227,10 @@ public class MainActivity extends FragmentActivity {
         else
             System.out.println("First time is false");
 
-        if (MemoryManager.isFirstTime())
-		    getPicturesProfileFromApi();
+        if (MemoryManager.isFirstTime()) {
+            getAllPicturesFromFacebook();
+            getPicturesProfileFromApi();
+        }
         else
             launchActivity();
 	}
