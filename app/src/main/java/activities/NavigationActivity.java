@@ -3,12 +3,15 @@ import java.util.ArrayList;
 
 import com.facebook.login.LoginManager;
 
+import datas.Album;
 import datas.Manager;
 import fragments.DiscoveryFragment;
 import fragments.HomeFragment;
 import fragments.MatchFragment;
 import fragments.ProfileFragment;
 import fragments.SettingFragment;
+import managers.DeviceManager;
+import sdk.SDKDevice;
 import slidermenu.model.NavDrawerItem;
 import slidingmenu.adapter.NavDrawerListAdapter;
 import sources.sitchozt.R;
@@ -54,38 +57,21 @@ public class NavigationActivity extends Activity {
         System.out.println("NAVIGATION ACTIVITY");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-		Manager.setContext(this);    
+		Manager.setContext(this);
+        initializeProfile();
         mTitle = mDrawerTitle = getTitle();
-        // load slide menu items
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
-        // nav drawer icons from resources
         navMenuIcons = getResources()
                 .obtainTypedArray(R.array.nav_drawer_icons);
-        //mRelativeLayout = (RelativeLayout) findViewById(R.id.relative_layout);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
-        // mDrawerLayout.add((ImageView)findViewById(R.id.icon));
         navDrawerItems = new ArrayList<NavDrawerItem>();
-        // adding nav drawer items to array
-        // Home
-        //navDrawerItems.add(new HeaderDrawerAdapter("Brian", R.drawable.koala));
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(0, -1)));
-        // Find People
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(1, -1)));
-        // Photos
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(2, -1)));
-        // Matchs
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(3, -1)));
-        // Pages
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(4, -1)));
-        // What's hot, We  will add a counter here
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(5, -1)));
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(6, -1)));
-        TextView icon = new TextView(this);
-        icon.setText("Tseeeest");
-        //mDrawerLayout.addView(icon);
-        // Recycle the typed array
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, /*String.valueOf(Manager.getMatchProfiles().size())*/"1"));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
         navMenuIcons.recycle();
         mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
         // setting the nav drawer list adapter
@@ -116,10 +102,28 @@ public class NavigationActivity extends Activity {
  
         if (savedInstanceState == null) {
             // on first time display view for first nav item
-            displayView(1);
+            displayView(0);
         }
     }
- 
+
+
+    public void     initializeProfile() {
+        System.out.println("INITIALIZE PROFILE");
+        Manager.getDatabase().getAlbumsAndPictures();
+        Album defined = null;
+        if (Manager.getProfile().getListAlbums() != null)
+            defined = Manager.getProfile().getListAlbums().getAlbumByName("Defined Pictures");
+        else
+        System.out.println("list album null");
+        if (defined != null)
+            Manager.getProfile().setImgs(defined.getList());
+        else
+        System.out.println("defined list = NULL" );
+        if (Manager.getProfile().getImgs() != null && Manager.getProfile().getImgs().size() > 0)
+        Manager.getProfile().setProfileImage(Manager.getProfile().getImgs().get(0));
+        Manager.getDatabase().getMatchsAndPictures();
+    }
+
     /**
      * Slide menu item click listener
      * */
@@ -174,7 +178,7 @@ public class NavigationActivity extends Activity {
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
         menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         
-        if (mDrawerList.isItemChecked(3) == true)
+        if (mDrawerList.isItemChecked(2) == true)
             menu.findItem(R.id.facebookButton).setVisible(true);
            else
             menu.findItem(R.id.facebookButton).setVisible(false);
@@ -188,29 +192,28 @@ public class NavigationActivity extends Activity {
      * */
     private void displayView(int position) {
         // update the main content by replacing fragments
-        Fragment fragment = new DiscoveryFragment();
+        Fragment fragment = null; //= new DiscoveryFragment();
         switch (position) {
         
-        case 1:
+        case 0:
             fragment = new DiscoveryFragment();
             break;
-        case 2:
+        case 1:
             fragment = new HomeFragment();
             break;
-        case 3:
+        case 2:
             fragment = new ProfileFragment();
             break;
-        case 4:
+        case 3:
             fragment = new MatchFragment();
             break;
-        case 5:
-            fragment = new HomeFragment();
-            break;
-        case 6:
+        case 4:
             fragment = new SettingFragment();
             break;
-        case 7:
-        	LoginManager.getInstance().logOut();
+        case 5:
+            DeviceManager.ApiDelete(null, new SDKDevice(MainActivity.gcm.getRegistrationId(getApplicationContext()), "en"));
+
+            LoginManager.getInstance().logOut();
             Intent intent = new Intent(this, MainActivity.class);
     		startActivity(intent);
             break;
@@ -224,8 +227,6 @@ public class NavigationActivity extends Activity {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, fragment).commit();
- 
-            // update selected item and title, then close the drawer
             mDrawerList.setItemChecked(position, true);
             mDrawerList.setSelection(position);
             setTitle(navMenuTitles[position]);

@@ -27,6 +27,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 /**
  * The activity of the pictures gallery This activity allows the user to change
@@ -62,7 +63,6 @@ public class GalleryDragAndDrop extends Activity {
 				imgs = user.getImgs();
 		}
 		if (imgs != null) {
-
 			gridView = (DynamicGridView) findViewById(R.id.gridview);
 			gridView.setWobbleInEditMode(false);
 			gridView.setAdapter(new MyAdapter(this, imgs, 2));
@@ -78,9 +78,8 @@ public class GalleryDragAndDrop extends Activity {
 					Log.d(TAG, String.format(
 							"drag item position changed from %d to %d",
 							oldPosition, newPosition));
-					SDKPicture picture = new SDKPicture(imgs.get(oldPosition)
-							.getId());
-					picture.setIndex(newPosition);
+					//SDKPicture picture = new SDKPicture(imgs.get(oldPosition).getId());
+					//picture.setIndex(newPosition);
 				}
 			});
 
@@ -90,8 +89,8 @@ public class GalleryDragAndDrop extends Activity {
 				public void onActionDrop() {
 					// stop edit mode immediately after drop item
 					gridView.stopEditMode();
-					imgs.clear();
-					saveItemsPosition();
+					//imgs.clear();
+					//saveItemsPosition();
 					asChanged = true;
 				}
 			});
@@ -117,7 +116,7 @@ public class GalleryDragAndDrop extends Activity {
 
 	public void saveItemsPosition() {
 		imgs.clear();
-		/*
+
 		for (int i = 0; i != gridView.getAdapter().getCount(); i++) {
 			imgs.add((Images) gridView.getAdapter().getItem(i));
 			Images img = imgs.get(i);
@@ -128,13 +127,15 @@ public class GalleryDragAndDrop extends Activity {
 				picture = new SDKPicture(img.getId(), img.getFacebookId(), img.getUrl(), i, false);
 			ImageManager.ApiUpdate(null, picture);
 		}
-		*/
+
 
 
 	}
 
 	@Override
 	public void onBackPressed() {
+		if (imgs != null)
+			imgs.clear();
 		for (int i = 0; i < gridView.getAdapter().getCount(); i++) {
 			imgs.add((Images) gridView.getAdapter().getItem(i));
 			Images img = imgs.get(i);
@@ -198,7 +199,11 @@ public class GalleryDragAndDrop extends Activity {
 				delete.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						if (Manager.getProfile().getImgs().size() > 1)
 						deletePicture(v);
+						else
+							Toast.makeText(getApplicationContext(), "You can not delete this picture, you must at least have one picture", Toast.LENGTH_SHORT).show();
+
 					}
 				});
 			}

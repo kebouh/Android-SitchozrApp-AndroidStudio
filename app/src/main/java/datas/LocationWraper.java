@@ -68,14 +68,18 @@ public class LocationWraper {
 					}
 				});
 		int i = 0;
-		while (location == null && i != 10)
-		location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		while (location == null && i != 50) {
+			location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		i++;
+		}
 		//if (location == null) {
 		//	System.out.println("Location == NULL");
 		//	return;
 		//}
-		latitude = location.getLatitude();
-		longitude = location.getLongitude();
+		if (location != null) {
+			latitude = location.getLatitude();
+			longitude = location.getLongitude();
+		}
 		/*
 		Geocoder gcd = new Geocoder(Manager.getAppContext(), Locale.getDefault());
 		List<Address> addresses;

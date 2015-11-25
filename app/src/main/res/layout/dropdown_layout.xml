@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/match_controller_total"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:gravity="center_horizontal"
+android:orientation="vertical">
+<LinearLayout
+    android:id="@+id/match_controller"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+
+</LinearLayout>
+
+<ImageView
+    android:id="@+id/arrow"
+    android:layout_width="70dp"
+    android:layout_height="70dp"
+    android:rotation="180"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/arrow" />
+
+</LinearLayout>

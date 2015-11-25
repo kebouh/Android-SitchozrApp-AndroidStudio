@@ -30,6 +30,7 @@ public class MatchFragment extends Fragment {
 	private GridView gridView = null;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {	
+		//if (Manager.getMatchProfiles() == null)
 		Manager.getDatabase().getMatchsAndPictures();
 		context = this.getActivity();
 		Manager.setContext(context);

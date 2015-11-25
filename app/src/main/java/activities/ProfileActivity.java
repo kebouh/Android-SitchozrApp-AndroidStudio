@@ -59,6 +59,7 @@ public abstract class ProfileActivity extends Activity {
 				getViewById();
 				setValuesToViews();
 			}
+			initializeDropdown();
 		}
 	}
 
@@ -66,17 +67,20 @@ public abstract class ProfileActivity extends Activity {
 
 	protected abstract int getLayoutResourceId();
 
+	protected abstract void initializeDropdown();
+
+
 	private void setValuesToViews() {
 		descriptionText.setText(match.getDescription());
 		name.setText(match.getFirstName());
 		localization.setText(match.getLocation().getDistance() + " km");
-		age.setText(match.getAge());
-		if (match.getGenderWanted() == 0)
+		age.setText(match.getAge() + " ans");
+	/*	if (match.getGenderWanted() == 0)
 			((ImageView)findViewById(R.id.manwoman)).setImageResource(R.drawable.manwomanselected);
 		else if (match.getGenderWanted() == 1)
 			((ImageView)findViewById(R.id.man)).setImageResource(R.drawable.manselected);
 		else if (match.getGenderWanted() == 2)
-			((ImageView)findViewById(R.id.woman)).setImageResource(R.drawable.womanselected);
+			((ImageView)findViewById(R.id.woman)).setImageResource(R.drawable.womanselected);*/
 	}
 
 	private void getViewById() {
@@ -89,7 +93,7 @@ public abstract class ProfileActivity extends Activity {
 
 	public void initSwitcher() {
 		imageSwitcher = (ImageSwitcher) findViewById(R.id.imageSwitcher1);
-		
+
 		imageSwitcher.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -139,7 +143,6 @@ public abstract class ProfileActivity extends Activity {
 	public void countDown() {
 		countDown = new CountDownTimer(3000, 500) {
 			public void onTick(long millisUntilFinished) {
-
 			}
 
 			public void onFinish() {

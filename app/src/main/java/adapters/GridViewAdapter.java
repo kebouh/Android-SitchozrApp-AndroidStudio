@@ -113,7 +113,7 @@ public class GridViewAdapter extends BaseAdapter {
 						public void onCompleteListerner(Object[] result) {
 							SDKPicture respPicture = (SDKPicture)result[1];
 							if (respPicture != null) {
-								//Manager.getDatabase().createPictureProfile((SDKPicture)result[1], 0, profile.getId());
+								Manager.getDatabase().createPictureProfile((SDKPicture)result[1], 0, profile.getId());
 								profile.addImagesToArray(sdkPictureToImages(respPicture));
 							}
 						}

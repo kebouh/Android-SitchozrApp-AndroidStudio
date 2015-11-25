@@ -1,5 +1,6 @@
 package fragments;
 
+import datas.MatchProfile;
 import interfaces.OnTaskCompleteListener;
 
 import java.text.DecimalFormat;
@@ -40,9 +41,19 @@ public class DiscoveryFragment extends Fragment {
 		context = this.getActivity();
 		Manager.setContext(context);
 		rootView = inflater.inflate(R.layout.discovery_fragment, container, false);
-		ListView gridView = (ListView) rootView.findViewById(R.id.gridviewdiscovery);
-		gridView.setAdapter(new MyAdapter(this.getActivity()));
+
 		return rootView;
+	}
+
+
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		if (this.getUserVisibleHint()) {
+			ListView gridView = (ListView) rootView.findViewById(R.id.gridviewdiscovery);
+			gridView.setAdapter(new MyAdapter(this.getActivity()));
+		}
 	}
 
 	@Override
@@ -55,8 +66,6 @@ public class DiscoveryFragment extends Fragment {
 		private ImageLoader imageLoader = new ImageLoader(context);
 		private List<Item> items = new ArrayList<Item>();
 		private LayoutInflater inflater;
-		private int heightImageView;
-		private int widthImageView;
 
 		public MyAdapter(Context context) {
 			inflater = LayoutInflater.from(context);
@@ -95,11 +104,18 @@ public class DiscoveryFragment extends Fragment {
 						public void onCompleteListerner(Object[] result) {
 							MainActivity.addMatches();
 						}
-					};				
+					};
+
+					MatchProfile match = new MatchProfile();
+					match.setId(item.id);
+					match.setFirstName(item.name);
+					match.setAge(item.age);
+					match.setLocation(Manager.getDiscoveryProfileById(item.id).getLocation());
 					LikeManager.ApiCreate(callback, like);
 					Manager.giveLike(item.id);
+					Manager.getDatabase().createMatch(match);
 					Manager.deleteDiscovery(item.id);
-					items.remove(item);	
+					items.remove(item);
 	                notifyDataSetChanged();
 				}
 			});
@@ -146,8 +162,8 @@ public class DiscoveryFragment extends Fragment {
 			item.nameView.setText(item.name);
 			item.ageView.setText(item.age);
 			item.distanceView.setText(new DecimalFormat("##.#").format(Double.parseDouble(item.distance)) + " km");
-			imageLoader.displayImage(item.url, item.picture, 0, heightImageView,
-					widthImageView);
+			imageLoader.displayImage(item.url, item.picture, 0, 0,
+					0);
 			return v;
 		}
 
@@ -174,4 +190,5 @@ public class DiscoveryFragment extends Fragment {
 			}
 		}
 	}
+
 }

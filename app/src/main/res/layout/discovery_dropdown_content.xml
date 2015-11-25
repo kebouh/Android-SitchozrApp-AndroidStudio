@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/discovery_dropdown_content"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/deleteMatch"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:background="#2ecc71"
+            android:onClick="onDeleteMatch"
+            android:text="delete" />
+
+    <Button
+        android:id="@+id/addMatch"
+        android:layout_width="0dp"
+        android:layout_weight="0.5"
+        android:layout_height="match_parent"
+        android:background="#c0392b"
+        android:onClick="onAddMatch"
+        android:text="like" />
+
+</LinearLayout>

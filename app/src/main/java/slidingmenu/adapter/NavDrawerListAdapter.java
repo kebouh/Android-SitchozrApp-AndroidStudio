@@ -61,7 +61,7 @@ public class NavDrawerListAdapter extends BaseAdapter {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		if (position == 0) {
+		/*if (position == 0) {
 			if (convertView == null) {
 				LayoutInflater mInflater = (LayoutInflater) context
 						.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -79,7 +79,7 @@ public class NavDrawerListAdapter extends BaseAdapter {
 				display.getSize(size);
 				img.setLayoutParams(new RelativeLayout.LayoutParams(size.x, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 			}
-		} else {
+		} else {*/
 			if (convertView == null) {
 				LayoutInflater mInflater = (LayoutInflater) context
 						.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -103,7 +103,7 @@ public class NavDrawerListAdapter extends BaseAdapter {
 				// hide the counter view
 				txtCount.setVisibility(View.GONE);
 			}
-		}
+		//}
 		return convertView;
 	}
 

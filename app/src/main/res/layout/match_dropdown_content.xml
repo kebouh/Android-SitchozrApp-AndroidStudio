@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/match_dropdown_content"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical">
+<LinearLayout
+android:id="@+id/buttons_top"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:gravity="center_horizontal"
+android:orientation="horizontal">
+
+<Button
+    android:layout_width="0dp"
+    android:layout_weight="0.5"
+    android:layout_height="match_parent"
+    android:background="#2ecc71"
+    android:elevation="2dp"
+    android:onClick="launchChat"
+    android:text="Chat" />
+
+<Button
+    android:layout_width="0dp"
+    android:layout_weight="0.5"
+    android:layout_height="match_parent"
+    android:background="#27ae60"
+    android:onClick="launchVideo"
+    android:text="Video Call" />
+
+</LinearLayout>
+
+<LinearLayout
+android:id="@+id/buttons_bottom"
+android:layout_below="@id/buttons_top"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:gravity="center_horizontal"
+android:orientation="horizontal">
+
+<Button
+    android:layout_width="0dp"
+    android:layout_weight="0.5"
+    android:layout_height="match_parent"
+    android:background="#e74c3c"
+    android:text="report" />
+
+<Button
+    android:id="@+id/deleteButton"
+    android:layout_width="0dp"
+    android:layout_weight="0.5"
+    android:layout_height="match_parent"
+    android:background="#c0392b"
+    android:text="delete" />
+
+</LinearLayout>
+</LinearLayout>
