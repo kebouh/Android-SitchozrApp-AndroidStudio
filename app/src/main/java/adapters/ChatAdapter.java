@@ -34,14 +34,13 @@ public class ChatAdapter extends ArrayAdapter<ChatItem> {
             {
             	layoutParamsM.addRule(RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE);
             	layoutParamsD.addRule(RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE);
-
-            	holder.message.setBackgroundResource(R.drawable.bubbleorange);
+                holder.message.setBackgroundColor(0x953498db);
             }
             else
             {
             	layoutParamsD.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
             	layoutParamsM.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
-            	holder.message.setBackgroundResource(R.drawable.bubblegreen);
+                holder.message.setBackgroundColor(0x952ecc71);
             }
             convertView.setTag(holder);
         } else {

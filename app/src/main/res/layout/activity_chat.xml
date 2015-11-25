@@ -7,6 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#7f8c8d"
+    android:id="@+id/rootChatActivity"
     tools:context=".MainActivity" >
 
     <ListView
@@ -19,25 +21,5 @@
 		android:dividerHeight="0dp"
         android:scrollbarStyle="outsideInset" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1"
-        android:orientation="horizontal" >
-
-        <EditText
-            android:id="@+id/textToSend"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:hint="Write here" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:onClick="sendMessage"
-            android:text="Send"
-            android:textColor="#FFF" />
-    </LinearLayout>
 
 </LinearLayout>
