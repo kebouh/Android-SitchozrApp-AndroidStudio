@@ -1,5 +1,13 @@
 package notifications;
 
+import datas.Manager;
+import interfaces.OnTaskCompleteListener;
+import managers.ImageManager;
+import managers.MatchManager;
+import managers.UserManager;
+import sdk.SDKMatch;
+import sdk.SDKPicture;
+import sdk.SDKUser;
 import sources.sitchozt.R;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -17,6 +25,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+
+import java.util.List;
 
 public class GCMIntentService extends IntentService {
 	public static final int NOTIFICATION_ID = 1;
@@ -122,6 +132,39 @@ public class GCMIntentService extends IntentService {
     		notif.setType(SitchozrNotification.NotificationType.MESSAGE);
     	}
     	if (jsonType.equals("match")){
+            // TODO récupérer les matchs
+            OnTaskCompleteListener onPostGetMatches = new OnTaskCompleteListener() {
+                @SuppressWarnings("unchecked")
+                @Override
+                public void onCompleteListerner(Object[] result) {
+                    List<SDKMatch> matches = (List<SDKMatch>) result[1];
+                    OnTaskCompleteListener onPostReadById = new OnTaskCompleteListener() {
+                        @Override
+                        public void onCompleteListerner(Object[] result) {
+                            final SDKUser matchUser = new SDKUser((SDKUser)result[1]);
+                            Manager.getDatabase().createMatch(matchUser);
+                            OnTaskCompleteListener onPostReadPictureByUserId = new OnTaskCompleteListener() {
+                                @Override
+                                public void onCompleteListerner(Object[] result) {
+                                    List<SDKPicture> pictures = (List<SDKPicture>) result[1];
+                                    for (SDKPicture sdkpicture : pictures) {
+                                        Manager.getDatabase().createPicture(sdkpicture, matchUser.getId());
+                                    }
+                                    Manager.getDatabase().getMatchsAndPictures();
+                                    Manager.getDatabase().createMatch(matchUser);
+                                }
+                            };
+                            ImageManager.ApiReadByUserId(onPostReadPictureByUserId, matchUser);
+                        }
+                    };
+                    for (SDKMatch match : matches) {
+                        SDKUser user = new SDKUser();
+                        user.setId(match.getUserId());
+                        UserManager.ApiReadById(onPostReadById, user);
+                    }
+                }
+            };
+            MatchManager.ApiReadAll(onPostGetMatches);
     		notif.setType(SitchozrNotification.NotificationType.MATCH);
     	}
     	notif.setMessage(message);

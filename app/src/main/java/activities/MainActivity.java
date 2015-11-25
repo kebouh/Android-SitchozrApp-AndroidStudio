@@ -1,5 +1,6 @@
 package activities;
 
+import datas.MatchProfile;
 import interfaces.OnTaskCompleteListener;
 
 import java.util.ArrayList;
@@ -358,8 +359,8 @@ public class MainActivity extends FragmentActivity {
 								for (SDKPicture sdkpicture : pictures) {
 									Manager.getDatabase().createPicture(sdkpicture, matchUser.getId());
 								}
-								// Manager.getDatabase().getMatchsAndPictures();
-								// Manager.addMatchProfile(matchProfile);
+								Manager.getDatabase().getMatchsAndPictures();
+								Manager.getDatabase().createMatch(matchUser);
 							}
 						};
 						ImageManager.ApiReadByUserId(onPostReadPictureByUserId, matchUser);
