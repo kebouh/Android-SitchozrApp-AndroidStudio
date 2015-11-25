@@ -118,13 +118,17 @@ public class MainActivity extends FragmentActivity {
 		OnTaskCompleteListener onPostUserCreate = new OnTaskCompleteListener() {
 			@Override
 			public void onCompleteListerner(Object[] result) {
+				Log.e("MainActivity", "onPostCreate...");
 				OnTaskCompleteListener onPostAuthentication = new OnTaskCompleteListener() {
 					@Override
 					public void onCompleteListerner(Object[] result) {
 						gcm = new GCMRegister(getApplicationContext());
 						DeviceManager.ApiCreate(null, new SDKDevice(gcm.getRegistrationId(getApplicationContext()), "en"));
-                        if (!isInit) {
-                            isInit = true;
+						Log.e("MainActivity", "onPOstAuthenticate...");
+
+						if (!isInit) {
+							Log.e("MainActivity", "initCOnf and discovery...");
+							isInit = true;
                             initConfiguration();
                             initDiscovery();
                             //initProfile();
@@ -136,6 +140,7 @@ public class MainActivity extends FragmentActivity {
 			}
 		};
 		UserManager.ApiCreate(onPostUserCreate, user);
+		Log.e("MainActivity", "ApiCreate...");
 	}
 
 	private void connect() {
@@ -204,18 +209,29 @@ public class MainActivity extends FragmentActivity {
 
     public void initConfiguration() {
         MemoryManager.init(this);
+		Log.e("MainActivity", "end of Manager.init...");
         Manager.init(this);
+		Log.e("MainActivity", "setcontext...");
         Manager.setContext(this);
+		Log.e("MainActivity", "end of location...");
         location = new LocationWraper(this, user.getLatitude(), user.getLongitude());
+		Log.e("MainActivity", "end of profile...");
         Profile profile = new Profile(user, accessToken, location);
+		Log.e("MainActivity", "end of setprofikle...");
         Manager.setProfile(profile);
         //System.out.println("/!\\ IF STUCK HERE, ACTIVATE GPS IN EMULATEUR /!\\");
+		Log.e("MainActivity", "checklocation...");
         checkLocation(this);
+		Log.e("MainActivity", "addmatche...");
         Manager.setContext(null);
         if (MemoryManager.isFirstTime()) {
-            addMatches();
+			Log.e("MainActivity", "isfirsttime...");
+
+			addMatches();
         }
-    }
+		Log.e("MainActivity", "end of initconfiguration...");
+
+	}
 
 	public void initProfile() {
 		Log.e("MainActivity", "Init profile...");
@@ -258,6 +274,7 @@ public class MainActivity extends FragmentActivity {
                 }
                 if (!launchOne && existOnApi == true) {
                     launchOne = true;
+                    launchActivity();
                     launchActivity();
                 }
 			}
@@ -428,7 +445,6 @@ public class MainActivity extends FragmentActivity {
 						Images image = new Images(picture.getUrl(),picture.getId());
 						if (picture.isProfilePicture() == true)
 							profile.setProfileImage(image);
-						else
 							profile.addImagesToArray(image);
 					}
 					Manager.addDiscoveryProfile(profile);

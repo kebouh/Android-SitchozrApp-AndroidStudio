@@ -59,12 +59,16 @@ public abstract class ProfileActivity extends Activity {
 				getViewById();
 				setValuesToViews();
 			}
+			initializeDropdown();
 		}
 	}
 
 	protected abstract AbstractUsersData getUser(int id);
 
 	protected abstract int getLayoutResourceId();
+
+	protected abstract void initializeDropdown();
+
 
 	private void setValuesToViews() {
 		descriptionText.setText(match.getDescription());

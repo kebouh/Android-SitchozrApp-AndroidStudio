@@ -41,9 +41,19 @@ public class DiscoveryFragment extends Fragment {
 		context = this.getActivity();
 		Manager.setContext(context);
 		rootView = inflater.inflate(R.layout.discovery_fragment, container, false);
-		ListView gridView = (ListView) rootView.findViewById(R.id.gridviewdiscovery);
-		gridView.setAdapter(new MyAdapter(this.getActivity()));
+
 		return rootView;
+	}
+
+
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		if (this.getUserVisibleHint()) {
+			ListView gridView = (ListView) rootView.findViewById(R.id.gridviewdiscovery);
+			gridView.setAdapter(new MyAdapter(this.getActivity()));
+		}
 	}
 
 	@Override
@@ -56,8 +66,6 @@ public class DiscoveryFragment extends Fragment {
 		private ImageLoader imageLoader = new ImageLoader(context);
 		private List<Item> items = new ArrayList<Item>();
 		private LayoutInflater inflater;
-		private int heightImageView;
-		private int widthImageView;
 
 		public MyAdapter(Context context) {
 			inflater = LayoutInflater.from(context);
@@ -154,8 +162,8 @@ public class DiscoveryFragment extends Fragment {
 			item.nameView.setText(item.name);
 			item.ageView.setText(item.age);
 			item.distanceView.setText(new DecimalFormat("##.#").format(Double.parseDouble(item.distance)) + " km");
-			imageLoader.displayImage(item.url, item.picture, 0, heightImageView,
-					widthImageView);
+			imageLoader.displayImage(item.url, item.picture, 0, 0,
+					0);
 			return v;
 		}
 
@@ -182,4 +190,5 @@ public class DiscoveryFragment extends Fragment {
 			}
 		}
 	}
+
 }

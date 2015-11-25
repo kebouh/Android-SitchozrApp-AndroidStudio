@@ -1,5 +1,6 @@
 package fragments;
 
+import animation.DropDownAnimation;
 import sdk.SDKUser;
 import sources.sitchozt.R;
 import memory.ImageLoader;
@@ -14,11 +15,13 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -52,13 +55,13 @@ public class ProfileFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		startGallery = new Intent(this.getActivity(), GalleryDragAndDrop.class);
 		rootView = inflater.inflate(R.layout.activity_profile_fragment, container, false);
+		DropDownAnimation dda = new DropDownAnimation(rootView, R.id.profileRoot, R.layout.profile_content, 500);
+		dda.initializeDropDown(inflater);
 		profile = Manager.getProfile();
 		if (profile.getListAlbums().getAlbumlist().size() <= 2) {
 				profile.getListAlbums().getAlbumlist().clear();
 				Manager.getDatabase().getAlbumsAndPictures();
 		}
-		System.out.println("IMAGES : " + profile);
-
 		Manager.setContext(this.getActivity());
 		getViewById();
     	setValuesToViews();
@@ -98,6 +101,8 @@ public class ProfileFragment extends Fragment {
 			male.setImageResource(R.drawable.manselected);
 		else if (profile.getSdkuser().isDiscoveryWomen() == true)
 			female.setImageResource(R.drawable.womanselected);
+
+
 	}
 
 	private void addListeners() {
@@ -121,11 +126,9 @@ public class ProfileFragment extends Fragment {
 				.findViewById(R.id.descriptionEdit);
 		descriptionText = (TextView) rootView
 				.findViewById(R.id.descriptionText);
-		
 		male = (ImageView)rootView.findViewById(R.id.man);
 		female = (ImageView)rootView.findViewById(R.id.woman);
 		bothGender = (ImageView)rootView.findViewById(R.id.manwoman);
-		
 	}
 
 	private void addDescriptionListener() {
@@ -179,25 +182,48 @@ public class ProfileFragment extends Fragment {
 				Manager.saveProfile();
 			}
 		});
+
+
+		descriptionEdit.setImeOptions(EditorInfo.IME_ACTION_SEND);
+		descriptionEdit.setSingleLine();
+		descriptionEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				addPictureListener();
+				editMode = false;
+				descriptionText.setText(descriptionEdit.getText()
+						.toString());
+				profile.setDescription(descriptionText.getText().toString());
+				descriptionText.setVisibility(View.VISIBLE);
+				descriptionEdit.setVisibility(View.GONE);
+				SDKUser user = profile.getSdkuser();
+				user.setDescription(descriptionEdit.getText().toString());
+				Manager.saveProfile();				return true;
+			}
+		});
+
+
 		descriptionText.setOnLongClickListener(new OnLongClickListener() {
 
 			@Override
 			public boolean onLongClick(View v) {
 				editMode = true;
 				descriptionEdit.setText(descriptionText.getText().toString());
+				profilePicture.setOnClickListener(null);
 				descriptionText.setVisibility(View.GONE);
 				descriptionEdit.setVisibility(View.VISIBLE);
 				return false;
 
 			}
 		});
-
-		LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.profileFrag);
+/*
+		FrameLayout layout = (FrameLayout) rootView.findViewById(R.id.profileRoot);
 		layout.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				if (editMode == true) {
+					addPictureListener();
 					editMode = false;
 					descriptionText.setText(descriptionEdit.getText()
 							.toString());
@@ -209,7 +235,7 @@ public class ProfileFragment extends Fragment {
 					Manager.saveProfile();
 				}
 			}
-		});
+		});*/
 	}
 
 	/**
@@ -272,7 +298,7 @@ public class ProfileFragment extends Fragment {
 			public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
 				profile.getDistanceRange()[0] = minValue;
 				profile.getDistanceRange()[1] = maxValue;
-				minDistance.setText("0");
+				minDistance.setText(String.valueOf(minValue));
 				maxDistance.setText(String.valueOf(maxValue));
 				SDKUser user = profile.getSdkuser();
 				user.setDiscoveryDistance(maxValue);
