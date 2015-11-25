@@ -114,7 +114,7 @@ public abstract class ProfileActivity extends Activity {
 				return myView;
 			}
 		});
-		if (match.getImgs() != null && match.getImgs().size() > 0)
+		if (match.getImgs() != null && match.getImgs().size() > 1)
 			countDown();
 	}
 
