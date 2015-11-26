@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "sources.sitchozt"
-        minSdkVersion 20
-        targetSdkVersion 22
+        minSdkVersion 16
+        targetSdkVersion 23
     }
 
     buildTypes {
@@ -28,4 +28,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
     compile files('libs/retrofit-1.9.0.jar')
     compile 'com.google.android.gms:play-services:8.1.0'
+    compile 'com.github.nkzawa:socket.io-client:0.3.0'
+    compile project(':videoLib')
 }
