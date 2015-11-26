@@ -1,6 +1,8 @@
 package sdk;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class SDKDevice {
 	private int		id;
@@ -16,10 +18,15 @@ public class SDKDevice {
 		this.token = token;
 		this.language = language;
 	}
+
+	public SDKDevice(String token){
+		this.type = "android";
+		this.language = "en";
+		this.token = token;
+	}
 	
 	public SDKDevice	create(){
 		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		System.out.println(this.token);
 		SDKDevice device = null;
 		try{
 			device = service.createDevice(this);
@@ -30,13 +37,21 @@ public class SDKDevice {
 	}
 	
 	public Object			delete(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.deleteDevice(this.id));
+		//SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
+		//return (service.deleteDevice(this.id));
+		return null;
 	}
 	
-	public SDKDevice	read(){
+	public List<SDKDevice> read(){
 		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.readDevice());
+		List<SDKDevice> device = new ArrayList<>();
+		try {
+			device = service.readDevice();
+			System.out.println("SDK DEVICE : " + device.toString());
+		} catch (Exception e){
+			System.out.println("EXCEPTION : " + e.getMessage());
+		}
+		return (device);
 	}
 	
 	public SDKDevice	update(){

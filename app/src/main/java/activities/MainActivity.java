@@ -87,11 +87,11 @@ public class MainActivity extends FragmentActivity {
 							}
 						})
 				.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        dialog.cancel();
-                        finish();
-                    }
-                });
+					public void onClick(final DialogInterface dialog, final int id) {
+						dialog.cancel();
+						finish();
+					}
+				});
 		final AlertDialog alert = builder.create();
 		alert.show();
 	}
@@ -115,6 +115,7 @@ public class MainActivity extends FragmentActivity {
 
 	public void authenticate() {
 		Log.e("MainActivity", "Authenticating...");
+		accessToken = AccessToken.getCurrentAccessToken();
 		user = new SDKUser(accessToken.getToken());
 		OnTaskCompleteListener onPostUserCreate = new OnTaskCompleteListener() {
 			@Override
@@ -124,15 +125,12 @@ public class MainActivity extends FragmentActivity {
 					@Override
 					public void onCompleteListerner(Object[] result) {
 						gcm = new GCMRegister(getApplicationContext());
-						DeviceManager.ApiCreate(null, new SDKDevice(gcm.getRegistrationId(getApplicationContext()), "en"));
 						Log.e("MainActivity", "onPOstAuthenticate...");
-
 						if (!isInit) {
 							Log.e("MainActivity", "initCOnf and discovery...");
 							isInit = true;
                             initConfiguration();
                             initDiscovery();
-                            //initProfile();
                         }
 					}
 				};
@@ -153,7 +151,6 @@ public class MainActivity extends FragmentActivity {
 					new FacebookCallback<LoginResult>() {
 						@Override
 						public void onSuccess(LoginResult loginResult) {
-							accessToken = AccessToken.getCurrentAccessToken();
 							authenticate();
 						}
 
@@ -168,7 +165,6 @@ public class MainActivity extends FragmentActivity {
 						}
 					});
 		} else {
-			accessToken = AccessToken.getCurrentAccessToken();
 			authenticate();
 		}
 	}
