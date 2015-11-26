@@ -12,6 +12,8 @@ import com.voipsitchozr.options.SelfViewOptions;
 
 import java.io.IOException;
 
+import datas.Manager;
+
 public class VideoActivity extends Activity {
 
     VoipManager     manager;
@@ -27,6 +29,7 @@ public class VideoActivity extends Activity {
         if (extras != null) {
             contactId = extras.getInt("ID_CONTACT");
             userId = extras.getInt("ID_USER");
+            this.setTitle("Calling " + Manager.getMatchProfileById(contactId).getFirstName());
         }
         else
             this.finish();

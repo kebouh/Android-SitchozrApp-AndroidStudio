@@ -59,6 +59,7 @@ public class NavigationActivity extends Activity {
         setContentView(R.layout.activity_navigation);
 		Manager.setContext(this);
         initializeProfile();
+        this.setTitle("Navigation");
         mTitle = mDrawerTitle = getTitle();
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
         navMenuIcons = getResources()

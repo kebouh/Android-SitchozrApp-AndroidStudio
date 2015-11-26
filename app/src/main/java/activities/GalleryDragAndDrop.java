@@ -51,7 +51,7 @@ public class GalleryDragAndDrop extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_gallery_drag_and_drop);
 		Manager.setContext(this);
-
+		this.setTitle("Gallery");
 		imageLoader = Manager.getImageLoader();
 		db = Manager.getDatabase();
 		Bundle extras = getIntent().getExtras();

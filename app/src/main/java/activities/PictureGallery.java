@@ -27,7 +27,7 @@ public class PictureGallery extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_picture_gallery);
 		Manager.setContext(this);
-
+		this.setTitle("Pictures");
 		imageLoader = Manager.getImageLoader();
 		Bundle extras = getIntent().getExtras();
 		int id;

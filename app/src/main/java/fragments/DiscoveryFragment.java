@@ -41,7 +41,6 @@ public class DiscoveryFragment extends Fragment {
 		context = this.getActivity();
 		Manager.setContext(context);
 		rootView = inflater.inflate(R.layout.discovery_fragment, container, false);
-
 		return rootView;
 	}
 
