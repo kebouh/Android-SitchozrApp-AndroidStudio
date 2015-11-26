@@ -48,7 +48,7 @@ public class ChatController {
 						createItem(message.getMessage(), message.getDate(), false);
 				}
 				//sortArrayList();
-				sortArrayList();
+				//sortArrayList();
 				chatAdapter.addAll(getListItem());
 				chatAdapter.notifyDataSetChanged();
 
