@@ -19,6 +19,8 @@ import datas.AgeCalculator;
 import datas.Manager;
 import datas.MatchProfile;
 import adapters.ChatAdapter;
+
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -35,19 +37,21 @@ import android.widget.TextView;
 
 public class ChatActivity extends ListActivity {
 
-	private MatchProfile user = null;
+	private static MatchProfile user = null;
 	private static ChatAdapter chatAdapter = null;
 	private static ChatController chatController = null;
 	private EditText	editText = null;
 	public static boolean		isActive = false;
 	public static int			activeId = 0;
-
+public static Activity activity;
 	@Override
 	public void onResume() {
 	    super.onResume();
 	    isActive = true;
 		activeId = getIntent().getExtras().getInt("ID");
 	    this.registerReceiver(mMessageReceiver, new IntentFilter("chat"));
+		//chatController.getAllMessages(Manager.getMatchProfileById(activeId), chatAdapter);
+		activity = this;
 	}
 
 	//Must unregister onPause()
@@ -75,9 +79,11 @@ public class ChatActivity extends ListActivity {
 	// This function will create an intent. This intent must take as parameter the "unique_name" that you registered your activity with
 	public static void updateMyActivity(Context context) {
 
-	    Intent intent = new Intent("chat");
+		chatController.getAllMessages(activity, ChatActivity.user, chatAdapter);
+		//chatAdapter = new ChatAdapter(context);
+		//Intent intent = new Intent("chat");
 	    //send broadcast
-	    context.sendBroadcast(intent);
+	    //context.sendBroadcast(intent);
 	}
 	/*
 	
@@ -115,7 +121,7 @@ public class ChatActivity extends ListActivity {
 	private void startActivity(Context context){
 		chatController = user.getChatController();
 		chatAdapter = new ChatAdapter(context);
-		chatController.getAllMessages(user, chatAdapter);
+		chatController.getAllMessages(this, user, chatAdapter);
 		setListAdapter(chatAdapter);
 		this.setTitle(user.getFirstName());
 
@@ -124,10 +130,11 @@ public class ChatActivity extends ListActivity {
 		editText.setTextColor(getResources().getColor(android.R.color.black));
 		editText.setImeOptions(EditorInfo.IME_ACTION_SEND);
 		editText.setSingleLine();
-		//editText.setBackgroundDrawable(drawable);
+		editText.setBackgroundDrawable(drawable);
 		editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (editText.getText()!= null && editText.getText().toString().length() > 0)
 				sendMessage(null);
 				return true;
 			}

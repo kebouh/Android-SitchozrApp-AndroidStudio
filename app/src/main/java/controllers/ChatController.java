@@ -1,5 +1,7 @@
 package controllers;
 
+import android.app.Activity;
+
 import interfaces.OnTaskCompleteListener;
 
 import java.util.Collections;
@@ -23,24 +25,34 @@ public class ChatController {
 		listItem = new ArrayList<ChatItem>();
 	}
 	
-	public void getAllMessages(MatchProfile user, final ChatAdapter chatAdapter){
-		chatAdapter.clear();
-		listItem.clear();
+	public void getAllMessages(Activity activity, MatchProfile user, final ChatAdapter chatAdapter){
+
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				chatAdapter.clear();
+				listItem.clear();
+			}
+		});
+
 		OnTaskCompleteListener onPostGetMessages = new OnTaskCompleteListener() {
 			@Override
 			public void onCompleteListerner(Object[] result) {
 				@SuppressWarnings("unchecked")
 				List<SDKMessage> messages = (List<SDKMessage>) result[1];
 				for (SDKMessage message : messages){
-					System.out.println(message.getUserId());
+					System.out.println("message: " + message.getUserId() + ": " + message.getMessage());
 					if (message.getUserId() == Manager.getProfile().getSdkuser().getId())
 						createItem(message.getMessage(), message.getDate(), true);
 					else
 						createItem(message.getMessage(), message.getDate(), false);
 				}
+				//sortArrayList();
 				sortArrayList();
 				chatAdapter.addAll(getListItem());
-			}
+				chatAdapter.notifyDataSetChanged();
+
+					}
 		};
 		MessageManager.ApiReadByUser(onPostGetMessages, user.getId());
 	}

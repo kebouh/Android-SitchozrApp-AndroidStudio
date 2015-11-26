@@ -48,7 +48,7 @@ public class ChatAdapter extends ArrayAdapter<ChatItem> {
         }*/
 
         holder.message.setText(item.getMessage());
-        holder.time.setText(item.getTime().getHours() + ":" + item.getTime().getMinutes());
+        holder.time.setText(/*item.getTime().getHours() + ":" + item.getTime().getMinutes()*/item.getTime().toString());
         return convertView;
     }
 
