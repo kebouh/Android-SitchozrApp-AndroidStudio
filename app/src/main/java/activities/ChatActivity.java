@@ -41,7 +41,7 @@ public class ChatActivity extends ListActivity {
 	private EditText	editText = null;
 	public static boolean		isActive = false;
 	public static int			activeId = 0;
-	
+
 	@Override
 	public void onResume() {
 	    super.onResume();

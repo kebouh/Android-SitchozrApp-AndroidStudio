@@ -19,6 +19,8 @@
         android:layout_weight="1"
         android:divider="@null"
 		android:dividerHeight="0dp"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"
         android:scrollbarStyle="outsideInset" />
 
 
