@@ -37,6 +37,7 @@ public class MatchFragment extends Fragment {
 		rootView = inflater.inflate(R.layout.match_fragment, container, false);
 		gridView = (GridView) rootView.findViewById(R.id.gridviewmatch);
 		gridView.setAdapter(new MyAdapter(this.getActivity()));
+
 		return rootView;
 	}
 
@@ -56,8 +57,8 @@ public class MatchFragment extends Fragment {
 		public MyAdapter(Context context) {
 			inflater = LayoutInflater.from(context);
 			for (Entry<Integer, MatchProfile> entry : Manager.getMatchProfiles().entrySet()) {
-				items.add(new Item(entry.getValue().getFirstName(), entry.getValue().getId(), 
-						entry.getValue().getImgs().get(0).getUrl(), entry.getValue().getLocation().getDistance(), 
+				items.add(new Item(entry.getValue().getFirstName(), entry.getValue().getId(),
+						entry.getValue().getImgs().get(0).getUrl(), entry.getValue().getLocation().getDistance(),
 						entry.getValue().getAge()));
 			}
 		}

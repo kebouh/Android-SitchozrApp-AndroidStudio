@@ -3,9 +3,7 @@ package sources.sitchozt;
 import android.app.Activity;
 import android.os.Bundle;
 
-import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
-
 import com.voipsitchozr.main.VoipManager;
 import com.voipsitchozr.options.CameraOptions;
 import com.voipsitchozr.options.ConnexionOptions;
@@ -31,23 +29,19 @@ public class VideoActivity extends Activity {
             userId = extras.getInt("ID_USER");
         }
         else
-        System.out.println("EXTRAS == NULL");
-
-        System.out.println("contact: " + contactId);
-        System.out.println("contact user: " + userId);
-
+            this.finish();
         CameraOptions.currentCameraId = CameraOptions.FRONT_CAMERA;
-        CameraOptions.compressionQuality = 80;
-        CameraOptions.queueLimit = 10;
+        CameraOptions.compressionQuality = 30;
+        CameraOptions.queueLimit = 20;
         CameraOptions.recommendedPreviewSize = false;
-        CameraOptions.width = 640;
-        CameraOptions.height = 480;
+        CameraOptions.width = 320;
+        CameraOptions.height = 240;
         CameraOptions.fps = 10;
         ContactViewOptions.x = 0;
         ContactViewOptions.y = 0;
+
         SelfViewOptions.partOfParent = 4;
 
-        //ConnexionOptions.SERVER_IP = "192.168.1.37";
         ConnexionOptions.SERVER_IP = "87.98.209.15";
         ConnexionOptions.SERVER_PORT = 3031;
         ConnexionOptions.ID_SELF = String.valueOf(userId);
