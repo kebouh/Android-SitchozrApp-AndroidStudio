@@ -54,9 +54,13 @@ public class VideoSender /* extends AbstractSendPacketThread <byte[]>*/
 		yuvImage.compressToJpeg(rectangle, CameraOptions.compressionQuality, os);
 
 		Matrix matrix = new Matrix();
-		matrix.postRotate(orientation);
 		byte[] bytes = os.toByteArray();
 		Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+		if (bitmap.getHeight() > bitmap.getWidth())
+		matrix.postRotate(orientation);
+
+
 		Bitmap n = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		n.compress(Bitmap.CompressFormat.JPEG, CameraOptions.compressionQuality, stream);

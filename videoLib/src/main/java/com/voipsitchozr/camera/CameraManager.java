@@ -48,7 +48,7 @@ public class CameraManager implements Camera.PreviewCallback {
         this.setOptions();
 		this.mCamera.setPreviewDisplay(holder);
 		this.mCamera.setPreviewCallback(this);
-        mCamera.setDisplayOrientation(getCameraDisplayOrientation(CameraOptions.currentCameraId, null));
+       // mCamera.setDisplayOrientation(getCameraDisplayOrientation(CameraOptions.currentCameraId, null));
         //params.setRotation(90);
         //setCameraDisplayOrientation(CameraOptions.currentCameraId, mCamera);
 		this.mCamera.startPreview();
@@ -61,7 +61,10 @@ public class CameraManager implements Camera.PreviewCallback {
 		setPreviewSize();
 		setFpsRange();
 		setFrameRate();
-//		mCamera.setDisplayOrientation(90);
+		params.set("orientation", "portrait");
+		//params.set("rotation", 90);
+
+		mCamera.setDisplayOrientation(getCameraDisplayOrientation(CameraOptions.currentCameraId, null));
 		mCamera.setParameters(params);
 	}
 
@@ -71,13 +74,7 @@ public class CameraManager implements Camera.PreviewCallback {
 			CameraOptions.width = params.getPreferredPreviewSizeForVideo().width;
 			CameraOptions.height = params.getPreferredPreviewSizeForVideo().height;
 		}
-	/*	else
-		{
-			CameraOptions.width = tempWidth;
-			CameraOptions.height = tempHeight;
-		}*/
 		Size size = getOptimalPreviewSize(params.getSupportedPreviewSizes(), CameraOptions.width, CameraOptions.height);
-
 		CameraOptions.width = size.width;
 		CameraOptions.height = size.height;
 		params.setPreviewSize(size.width, size.height);

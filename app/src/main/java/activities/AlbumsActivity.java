@@ -12,7 +12,8 @@ public class AlbumsActivity extends FragmentActivity implements HeadlinesFragmen
 	
 	  public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
-	        setContentView(R.layout.activity_albums);
+	        this.setTitle("Facebook Pictures");
+		  	setContentView(R.layout.activity_albums);
 			Manager.setContext(this);
 	        if (findViewById(R.id.fragment_container) != null) {
 	            if (savedInstanceState != null) {

@@ -59,6 +59,7 @@ public class NavigationActivity extends Activity {
         setContentView(R.layout.activity_navigation);
 		Manager.setContext(this);
         initializeProfile();
+        this.setTitle("Navigation");
         mTitle = mDrawerTitle = getTitle();
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
         navMenuIcons = getResources()
@@ -211,8 +212,6 @@ public class NavigationActivity extends Activity {
             fragment = new SettingFragment();
             break;
         case 5:
-            DeviceManager.ApiDelete(null, new SDKDevice(MainActivity.gcm.getRegistrationId(getApplicationContext()), "en"));
-
             LoginManager.getInstance().logOut();
             Intent intent = new Intent(this, MainActivity.class);
     		startActivity(intent);

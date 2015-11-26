@@ -40,7 +40,6 @@ public abstract class ProfileActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Manager.setContext(this);
-
 		imageLoader = Manager.getImageLoader();
 		setContentView(getLayoutResourceId());
 		position = 1;
@@ -49,7 +48,8 @@ public abstract class ProfileActivity extends Activity {
 		if (extras != null) {
 			id = extras.getInt("ID");
 			match = getUser(id);
-			if (match != null) {		
+			if (match != null) {
+				this.setTitle(match.getFirstName());
 				for (int n = 0; n != match.getImgs().size(); n++)
 					imageLoader.prefloadImage(match.getImgs().get(n).getUrl(),
 							1, height, width);
