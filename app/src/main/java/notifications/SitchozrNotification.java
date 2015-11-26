@@ -12,7 +12,6 @@ public class SitchozrNotification {
 	
 	private NotificationType	type;
 	private	int					notificationId;
-	private SitchozrMessageNotification	message;
 	private	int					userId;
 	
 	/**
@@ -38,18 +37,6 @@ public class SitchozrNotification {
 	 */
 	public void setNotificationId(int notificationId) {
 		this.notificationId = notificationId;
-	}
-	/**
-	 * @return the message
-	 */
-	public SitchozrMessageNotification getMessage() {
-		return message;
-	}
-	/**
-	 * @param message the message to set
-	 */
-	public void setMessage(SitchozrMessageNotification message) {
-		this.message = message;
 	}
 	/**
 	 * @return the userId

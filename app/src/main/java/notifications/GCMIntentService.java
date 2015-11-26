@@ -4,6 +4,7 @@ import datas.Manager;
 import interfaces.OnTaskCompleteListener;
 import managers.ImageManager;
 import managers.MatchManager;
+import managers.MessageManager;
 import managers.UserManager;
 import sdk.SDKMatch;
 import sdk.SDKPicture;
@@ -81,34 +82,28 @@ public class GCMIntentService extends IntentService {
         SitchozrNotification notif = extractFromExtra(extras);
         mNotificationManager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = null;
-        PendingIntent contentIntent = null;
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class).putExtra("ID", notif.getUserId()), 0);
+        mBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.transparent_logo)
+                .setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setContentIntent(contentIntent);
+
         if (notif.getType() == SitchozrNotification.NotificationType.MESSAGE){
         	if (ChatActivity.isActive == true && ChatActivity.activeId == notif.getUserId()){
-        		ChatActivity.updateMyActivity(getApplicationContext());
+        	    ChatActivity.updateMyActivity(getApplicationContext());
         	}
         	else {
-        		contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class).putExtra("ID", notif.getUserId()), 0);
-        		mBuilder = new NotificationCompat.Builder(this)
-            		.setSmallIcon(R.drawable.transparent_logo)
-            		.setContentTitle("New Message - Sitchozr")
-            		.setStyle(new NotificationCompat.BigTextStyle().bigText(notif.getMessage().getMessage()))
-            		.setContentText(notif.getMessage().getMessage())
-            		.setAutoCancel(true)
-            		.setDefaults(Notification.DEFAULT_SOUND);
-        		mBuilder.setContentIntent(contentIntent);
+                mBuilder.setContentTitle("New Message - Sitchozr")
+            		.setStyle(new NotificationCompat.BigTextStyle().bigText("You have a new message !"))
+                    .setContentText("You have a new message !");
                 mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
         	}
         }
-        else if (notif.getType() == SitchozrNotification.NotificationType.MATCH){    
-        	contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class).putExtra("ID", notif.getUserId()), 0);
-        	mBuilder = new NotificationCompat.Builder(this)
-            	.setSmallIcon(R.drawable.transparent_logo)
-                .setContentTitle("New Match - Sitchozr")
+        else if (notif.getType() == SitchozrNotification.NotificationType.MATCH){
+        	mBuilder.setContentTitle("New Match - Sitchozr")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText("Congratulations, you have a new match"))
-                .setContentText("Congratulations, you have a new match")
-                .setAutoCancel(true)
-                .setDefaults(Notification.DEFAULT_SOUND);
-        	mBuilder.setContentIntent(contentIntent);
+                .setContentText("Congratulations, you have a new match");
             mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
         }
     }
@@ -125,14 +120,11 @@ public class GCMIntentService extends IntentService {
     	SitchozrNotification notif = new SitchozrNotification();
     	notif.setUserId(Integer.parseInt(extras.getString("userId").toString()));
     	notif.setNotificationId(Integer.parseInt(extras.getString("notificationId").toString()));
-    	SitchozrMessageNotification	message = null;
     	if (jsonType.equals("message")){
-    		String jsonData = extras.getString("message");
-    		message = gson.fromJson(jsonData, SitchozrMessageNotification.class);
     		notif.setType(SitchozrNotification.NotificationType.MESSAGE);
-    	}
+        }
     	if (jsonType.equals("match")){
-            // TODO récupérer les matchs
+            // TODO update la view
             OnTaskCompleteListener onPostGetMatches = new OnTaskCompleteListener() {
                 @SuppressWarnings("unchecked")
                 @Override
@@ -167,7 +159,6 @@ public class GCMIntentService extends IntentService {
             MatchManager.ApiReadAll(onPostGetMatches);
     		notif.setType(SitchozrNotification.NotificationType.MATCH);
     	}
-    	notif.setMessage(message);
     	return (notif);
     }
 }

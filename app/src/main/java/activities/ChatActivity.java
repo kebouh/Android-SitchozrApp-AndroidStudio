@@ -47,7 +47,7 @@ public class ChatActivity extends ListActivity {
 	    super.onResume();
 	    isActive = true;
 		activeId = getIntent().getExtras().getInt("ID");
-	    this.registerReceiver(mMessageReceiver, new IntentFilter("unique_name"));
+	    this.registerReceiver(mMessageReceiver, new IntentFilter("chat"));
 	}
 
 	//Must unregister onPause()
@@ -66,8 +66,7 @@ public class ChatActivity extends ListActivity {
 	    public void onReceive(Context context, Intent intent) {
 
 	        // Extract data included in the Intent
-	        
-	    	updateList();
+			updateList();
 	        //do other stuff here
 	    }
 	};
@@ -76,7 +75,7 @@ public class ChatActivity extends ListActivity {
 	// This function will create an intent. This intent must take as parameter the "unique_name" that you registered your activity with
 	public static void updateMyActivity(Context context) {
 
-	    Intent intent = new Intent("unique_name");
+	    Intent intent = new Intent("chat");
 	    //send broadcast
 	    context.sendBroadcast(intent);
 	}
@@ -121,11 +120,11 @@ public class ChatActivity extends ListActivity {
 		this.setTitle(user.getFirstName());
 
 		editText = new EditText(this);
-		Drawable drawable = getResources().getDrawable(com.example.voipsitchozr.R.drawable.edit_text_style);
+		//Drawable drawable = getResources().getDrawable(com.example.voipsitchozr.R.drawable.edit_text_style);
 		editText.setTextColor(getResources().getColor(android.R.color.black));
 		editText.setImeOptions(EditorInfo.IME_ACTION_SEND);
 		editText.setSingleLine();
-		editText.setBackgroundDrawable(drawable);
+		//editText.setBackgroundDrawable(drawable);
 		editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
