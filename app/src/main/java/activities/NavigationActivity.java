@@ -115,14 +115,14 @@ public class NavigationActivity extends Activity {
         if (Manager.getProfile().getListAlbums() != null)
             defined = Manager.getProfile().getListAlbums().getAlbumByName("Defined Pictures");
         else
-        System.out.println("list album null");
+            System.out.println("list album null");
         if (defined != null)
             Manager.getProfile().setImgs(defined.getList());
         else
-        System.out.println("defined list = NULL" );
+            System.out.println("defined list = NULL" );
         if (Manager.getProfile().getImgs() != null && Manager.getProfile().getImgs().size() > 0)
-        Manager.getProfile().setProfileImage(Manager.getProfile().getImgs().get(0));
-        Manager.getDatabase().getMatchsAndPictures();
+            Manager.getProfile().setProfileImage(Manager.getProfile().getImgs().get(0));
+        //Manager.getDatabase().getMatchsAndPictures();
     }
 
     /**

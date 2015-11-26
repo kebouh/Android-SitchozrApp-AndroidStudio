@@ -5,7 +5,7 @@ import java.util.List;
 
 public class SDKMessage {
 	private int 	id;
-	private String	message;
+	private String	message = null;
 	private Date	date;
 	private int		userId;
 	
@@ -26,7 +26,14 @@ public class SDKMessage {
 	
 	public SDKMessage		create(){
 		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.createMessage(this.userId, this));
+		SDKMessage message = null;
+		try {
+			if (this.message.length() > 0)
+				message = service.createMessage(this.userId, this);
+		} catch (Exception e) {
+
+		}
+		return (message);
 	}
 
 	/**

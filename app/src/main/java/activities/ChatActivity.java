@@ -124,7 +124,7 @@ public class ChatActivity extends ListActivity {
 		editText.setTextColor(getResources().getColor(android.R.color.black));
 		editText.setImeOptions(EditorInfo.IME_ACTION_SEND);
 		editText.setSingleLine();
-		//editText.setBackgroundDrawable(drawable);
+		editText.setBackgroundDrawable(drawable);
 		editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -178,6 +178,7 @@ public class ChatActivity extends ListActivity {
 	public static void updateList() {
 		chatAdapter.clear();
 		chatAdapter.addAll(chatController.getListItem());
+		System.out.println("NOTIFY DATA SET CHANGED");
 		chatAdapter.notifyDataSetChanged();
 	}
 }
