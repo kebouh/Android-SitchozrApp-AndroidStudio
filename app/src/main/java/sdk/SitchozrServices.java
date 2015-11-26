@@ -31,7 +31,7 @@ public interface SitchozrServices {
 	Object			deleteDevice(@Path("deviceId") int id);
 	
 	@GET("/device")
-	SDKDevice		readDevice();
+	List<SDKDevice>		readDevice();
 	
 	@PUT("/device")
 	SDKDevice		updateDevice(@Body SDKDevice device);

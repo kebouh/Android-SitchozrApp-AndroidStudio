@@ -115,6 +115,7 @@ public class MainActivity extends FragmentActivity {
 
 	public void authenticate() {
 		Log.e("MainActivity", "Authenticating...");
+		accessToken = AccessToken.getCurrentAccessToken();
 		user = new SDKUser(accessToken.getToken());
 		OnTaskCompleteListener onPostUserCreate = new OnTaskCompleteListener() {
 			@Override
@@ -124,27 +125,6 @@ public class MainActivity extends FragmentActivity {
 					@Override
 					public void onCompleteListerner(Object[] result) {
 						gcm = new GCMRegister(getApplicationContext());
-
-						OnTaskCompleteListener onPostDeviceRead = new OnTaskCompleteListener() {
-							@Override
-							public void onCompleteListerner(Object[] result) {
-								Log.e("MainActivity", "onPostDeviceRead...");
-								SDKDevice device = (SDKDevice)result[1];
-								if (device == null){
-									OnTaskCompleteListener onPostDeviceCreate = new OnTaskCompleteListener() {
-										@Override
-										public void onCompleteListerner(Object[] result) {
-											SDKDevice device = (SDKDevice)result[1];
-												// SAUVEGARDER LE DEVICE DANS LE PROFIL
-										}
-									};
-									DeviceManager.ApiCreate(onPostDeviceCreate, new SDKDevice(gcm.getRegistrationId(getApplicationContext()), "en"));
-								} else {
-									// SAUVEGARDER LE DEVICE DANS LE PROFIL
-								}
-							}
-						};
-						DeviceManager.ApiRead(onPostDeviceRead, new SDKDevice(gcm.getRegistrationId(getApplicationContext()), "en"));
 						Log.e("MainActivity", "onPOstAuthenticate...");
 						if (!isInit) {
 							Log.e("MainActivity", "initCOnf and discovery...");
@@ -171,7 +151,6 @@ public class MainActivity extends FragmentActivity {
 					new FacebookCallback<LoginResult>() {
 						@Override
 						public void onSuccess(LoginResult loginResult) {
-							accessToken = AccessToken.getCurrentAccessToken();
 							authenticate();
 						}
 
@@ -186,7 +165,6 @@ public class MainActivity extends FragmentActivity {
 						}
 					});
 		} else {
-			accessToken = AccessToken.getCurrentAccessToken();
 			authenticate();
 		}
 	}

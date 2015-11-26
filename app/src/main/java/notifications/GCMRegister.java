@@ -1,10 +1,15 @@
 package notifications;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import activities.MainActivity;
+import interfaces.OnTaskCompleteListener;
+import managers.DeviceManager;
+import sdk.SDKDevice;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -22,14 +27,26 @@ public class GCMRegister {
     private static final String APP_VERSION = "appVersion";
 
     public GCMRegister(Context context){
-    	this.context = context;
-        if (TextUtils.isEmpty(regId)) {
-            // Récupération du registerId du terminal ou enregistrement de ce dernier 
-        	regId = registerGCM();
-            Log.d("GCM RegId: " + regId, "ok");
-        } /*else {
-            Toast.makeText(context, "Déjà enregistré sur le GCM Server!", Toast.LENGTH_LONG).show();
-        }*/
+        this.context = context;
+        OnTaskCompleteListener onPostDeviceRead = new OnTaskCompleteListener() {
+            @Override
+            public void onCompleteListerner(Object[] result) {
+                Log.e("MainActivity", "onPostDeviceRead...");
+                List<SDKDevice> device = (List<SDKDevice>)result[1];
+                System.out.println("DEVICE : " + result[0]);
+                if (device.size() == 0){
+                    regId = registerGCM();
+                    System.out.println("CREATE DEVICE : " + regId);
+                    if (regId != null)
+                        DeviceManager.ApiCreate(null, new SDKDevice(regId));
+                } else {
+                    // SAUVEGARDER LE DEVICE DANS LE PROFIL
+                    System.out.println("DEVICE : " + device.get(0).getToken());
+                    regId = device.get(0).getToken();
+                }
+            }
+        };
+        DeviceManager.ApiRead(onPostDeviceRead, new SDKDevice(null));
     }
 
     /*
@@ -42,7 +59,7 @@ public class GCMRegister {
         regId = getRegistrationId(context);
         if (TextUtils.isEmpty(regId)) {
             registerInBackground();
-            Log.d("registerGCM - enregistrement auprès du GCM server OK - regId: " + regId, "ok");
+            //Log.d("registerGCM - enregistrement auprès du GCM server OK - regId: " + regId, "ok");
         }/* else {
             Toast.makeText(context, "RegId existe déjà. RegId: " + regId, Toast.LENGTH_LONG).show();
         }*/
@@ -74,6 +91,7 @@ public class GCMRegister {
                     if (gcm == null)
                         gcm = GoogleCloudMessaging.getInstance(context);
                     regId = gcm.register("69936171765");
+                    DeviceManager.ApiCreate(null, new SDKDevice(regId));
                     msg = "Terminal enregistré, register ID=" + regId;
                     // On enregistre le registerId dans les SharedPreferences
                     final SharedPreferences prefs = context.getSharedPreferences(MainActivity.class.getSimpleName(), Context.MODE_PRIVATE);
