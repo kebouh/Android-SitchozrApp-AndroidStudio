@@ -22,7 +22,7 @@ public class ChatAdapter extends ArrayAdapter<ChatItem> {
         ChatItem item = getItem(position);
         ViewHolder holder;
 
-        if (convertView == null) {
+       // if (convertView == null) {
             LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();
 
             convertView = inflater.inflate(R.layout.chat_items, parent, false);
@@ -43,12 +43,12 @@ public class ChatAdapter extends ArrayAdapter<ChatItem> {
                 holder.message.setBackgroundColor(0x952ecc71);
             }
             convertView.setTag(holder);
-        } else {
+      /*  } else {
             holder = (ViewHolder) convertView.getTag();
-        }
+        }*/
 
         holder.message.setText(item.getMessage());
-        holder.time.setText(item.getTime());
+        holder.time.setText(item.getTime().getHours() + ":" + item.getTime().getMinutes());
         return convertView;
     }
 

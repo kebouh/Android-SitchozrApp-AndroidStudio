@@ -31,7 +31,7 @@ public class VideoActivity extends Activity {
         else
             this.finish();
         CameraOptions.currentCameraId = CameraOptions.FRONT_CAMERA;
-        CameraOptions.compressionQuality = 30;
+        CameraOptions.compressionQuality = 50;
         CameraOptions.queueLimit = 20;
         CameraOptions.recommendedPreviewSize = false;
         CameraOptions.width = 320;

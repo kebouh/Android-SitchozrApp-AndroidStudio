@@ -2,6 +2,8 @@ package controllers;
 
 import interfaces.OnTaskCompleteListener;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,7 @@ public class ChatController {
 					else
 						createItem(message.getMessage(), message.getDate(), false);
 				}
+				sortArrayList();
 				chatAdapter.addAll(getListItem());
 			}
 		};
@@ -49,7 +52,18 @@ public class ChatController {
 	
 	public void	createItem(String text, Date date, boolean source)
 	{
-		listItem.add(new ChatItem(text, date.toString(), source));
+
+		listItem.add(new ChatItem(text, date, source));
+	}
+
+	public void sortArrayList() {
+		Collections.sort(listItem, new Comparator<ChatItem>() {
+			public int compare(ChatItem o1, ChatItem o2) {
+				if (o1.getTime() == null || o2.getTime() == null)
+					return 0;
+				return o1.getTime().compareTo(o2.getTime());
+			}
+		});
 	}
 	
 	/**

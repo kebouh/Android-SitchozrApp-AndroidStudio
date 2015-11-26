@@ -1,12 +1,16 @@
 package model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ChatItem {
 
 	private String message;
-	private String time;
+	private Date time;
 	private boolean source;
 	
-	public ChatItem(String message, String time, boolean source) {
+	public ChatItem(String message, Date time, boolean source) {
 		super();
 		this.message = message;
 		this.time = time;
@@ -28,13 +32,17 @@ public class ChatItem {
 	/**
 	 * @return the time
 	 */
-	public String getTime() {
+	public Date getTime() {
 		return time;
+	}
+
+	public String getStringDate() {
+		return null;
 	}
 	/**
 	 * @param time the time to set
 	 */
-	public void setTime(String time) {
+	public void setTime(Date time) {
 		this.time = time;
 	}
 	/**

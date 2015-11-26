@@ -211,8 +211,6 @@ public class NavigationActivity extends Activity {
             fragment = new SettingFragment();
             break;
         case 5:
-            DeviceManager.ApiDelete(null, new SDKDevice(MainActivity.gcm.getRegistrationId(getApplicationContext()), "en"));
-
             LoginManager.getInstance().logOut();
             Intent intent = new Intent(this, MainActivity.class);
     		startActivity(intent);
