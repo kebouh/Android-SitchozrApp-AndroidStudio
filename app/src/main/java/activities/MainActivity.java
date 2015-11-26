@@ -87,11 +87,11 @@ public class MainActivity extends FragmentActivity {
 							}
 						})
 				.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        dialog.cancel();
-                        finish();
-                    }
-                });
+					public void onClick(final DialogInterface dialog, final int id) {
+						dialog.cancel();
+						finish();
+					}
+				});
 		final AlertDialog alert = builder.create();
 		alert.show();
 	}
@@ -124,15 +124,33 @@ public class MainActivity extends FragmentActivity {
 					@Override
 					public void onCompleteListerner(Object[] result) {
 						gcm = new GCMRegister(getApplicationContext());
-						DeviceManager.ApiCreate(null, new SDKDevice(gcm.getRegistrationId(getApplicationContext()), "en"));
-						Log.e("MainActivity", "onPOstAuthenticate...");
 
+						OnTaskCompleteListener onPostDeviceRead = new OnTaskCompleteListener() {
+							@Override
+							public void onCompleteListerner(Object[] result) {
+								Log.e("MainActivity", "onPostDeviceRead...");
+								SDKDevice device = (SDKDevice)result[1];
+								if (device == null){
+									OnTaskCompleteListener onPostDeviceCreate = new OnTaskCompleteListener() {
+										@Override
+										public void onCompleteListerner(Object[] result) {
+											SDKDevice device = (SDKDevice)result[1];
+												// SAUVEGARDER LE DEVICE DANS LE PROFIL
+										}
+									};
+									DeviceManager.ApiCreate(onPostDeviceCreate, new SDKDevice(gcm.getRegistrationId(getApplicationContext()), "en"));
+								} else {
+									// SAUVEGARDER LE DEVICE DANS LE PROFIL
+								}
+							}
+						};
+						DeviceManager.ApiRead(onPostDeviceRead, new SDKDevice(gcm.getRegistrationId(getApplicationContext()), "en"));
+						Log.e("MainActivity", "onPOstAuthenticate...");
 						if (!isInit) {
 							Log.e("MainActivity", "initCOnf and discovery...");
 							isInit = true;
                             initConfiguration();
                             initDiscovery();
-                            //initProfile();
                         }
 					}
 				};

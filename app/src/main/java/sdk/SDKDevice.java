@@ -30,13 +30,19 @@ public class SDKDevice {
 	}
 	
 	public Object			delete(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.deleteDevice(this.id));
+		//SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
+		//return (service.deleteDevice(this.id));
+		return null;
 	}
 	
 	public SDKDevice	read(){
 		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.readDevice());
+		SDKDevice device = null;
+		try {
+			device = service.readDevice();
+		} catch (Exception e){
+		}
+		return (device);
 	}
 	
 	public SDKDevice	update(){
