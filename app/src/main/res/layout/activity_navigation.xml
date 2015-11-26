@@ -17,11 +17,11 @@
 
     <ListView
         android:id="@+id/list_slidermenu"
-        android:layout_width="180dp"
+        android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
-        android:divider="@color/blue_auth"
+        android:divider="#55000000"
         android:dividerHeight="2dp"
         android:background="@color/white_grey"
         android:listSelector="@drawable/list_selector" />

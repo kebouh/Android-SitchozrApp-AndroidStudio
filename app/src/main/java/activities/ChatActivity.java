@@ -24,9 +24,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class ChatActivity extends ListActivity {
 
@@ -114,7 +119,24 @@ public class ChatActivity extends ListActivity {
 		chatController.getAllMessages(user, chatAdapter);
 		setListAdapter(chatAdapter);
 		this.setTitle(user.getFirstName());
-		editText = (EditText)findViewById(R.id.textToSend);
+
+		editText = new EditText(this);
+		Drawable drawable = getResources().getDrawable(com.example.voipsitchozr.R.drawable.edit_text_style);
+		editText.setTextColor(getResources().getColor(android.R.color.black));
+		editText.setImeOptions(EditorInfo.IME_ACTION_SEND);
+		editText.setSingleLine();
+		editText.setBackgroundDrawable(drawable);
+		editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				sendMessage(null);
+				return true;
+			}
+		});
+
+		((LinearLayout)findViewById(R.id.rootChatActivity)).addView(editText);
+
+		//editText = (EditText)findViewById(R.id.textToSend);
 	}
 	
 	private void startFromNotif(final int targetId, final Context context){

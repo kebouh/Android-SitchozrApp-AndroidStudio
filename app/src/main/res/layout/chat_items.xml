@@ -7,14 +7,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textChat"
-        android:textSize="20sp" />
+        android:padding="10dp"
+        android:textSize="15sp"
+        />
     <TextView
         android:id="@+id/textChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:textAppearance="@android:style/TextAppearance"
-        android:textSize="30sp"
+        android:textSize="15sp"
         />
  <!-- android:textStyle="bold"-->
     
