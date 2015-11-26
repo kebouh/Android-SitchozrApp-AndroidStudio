@@ -41,7 +41,6 @@ public class ChatController {
 				@SuppressWarnings("unchecked")
 				List<SDKMessage> messages = (List<SDKMessage>) result[1];
 				for (SDKMessage message : messages){
-					System.out.println("message: " + message.getUserId() + ": " + message.getMessage());
 					if (message.getUserId() == Manager.getProfile().getSdkuser().getId())
 						createItem(message.getMessage(), message.getDate(), true);
 					else
@@ -64,7 +63,6 @@ public class ChatController {
 	
 	public void	createItem(String text, Date date, boolean source)
 	{
-
 		listItem.add(new ChatItem(text, date, source));
 	}
 

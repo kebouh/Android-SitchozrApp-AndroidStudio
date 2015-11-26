@@ -185,6 +185,7 @@ public static Activity activity;
 	public static void updateList() {
 		chatAdapter.clear();
 		chatAdapter.addAll(chatController.getListItem());
+		System.out.println("NOTIFY DATA SET CHANGED");
 		chatAdapter.notifyDataSetChanged();
 	}
 }

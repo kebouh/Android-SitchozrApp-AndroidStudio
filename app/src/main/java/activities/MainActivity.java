@@ -68,6 +68,7 @@ public class MainActivity extends FragmentActivity {
     private boolean launchOne = false;
     private boolean existOnApi = false;
     private boolean    isInit = false;
+
 	private void initFacebook() {
 		FacebookSdk.sdkInitialize(this.getApplicationContext());
 		setContentView(R.layout.activity_main);
@@ -216,7 +217,6 @@ public class MainActivity extends FragmentActivity {
         Profile profile = new Profile(user, accessToken, location);
 		Log.e("MainActivity", "end of setprofikle...");
         Manager.setProfile(profile);
-        //System.out.println("/!\\ IF STUCK HERE, ACTIVATE GPS IN EMULATEUR /!\\");
 		Log.e("MainActivity", "checklocation...");
         checkLocation(this);
 		Log.e("MainActivity", "addmatche...");
