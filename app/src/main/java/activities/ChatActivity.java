@@ -126,7 +126,7 @@ public static Activity activity;
 		this.setTitle(user.getFirstName());
 
 		editText = new EditText(this);
-		Drawable drawable = getResources().getDrawable(com.example.voipsitchozr.R.drawable.edit_text_style);
+		Drawable drawable = getResources().getDrawable(R.drawable.edit_text_style);
 		editText.setTextColor(getResources().getColor(android.R.color.black));
 		editText.setImeOptions(EditorInfo.IME_ACTION_SEND);
 		editText.setSingleLine();
