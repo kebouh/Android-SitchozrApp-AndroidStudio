@@ -6,6 +6,7 @@ import android.view.View;
 import animation.DropDownAnimation;
 import datas.Manager;
 import Abstract.AbstractUsersData;
+import service.WebSocketIntentService;
 import sources.sitchozt.R;
 import sources.sitchozt.VideoActivity;
 
@@ -39,9 +40,11 @@ public class MatchProfileActivity extends ProfileActivity {
 		
 		public void launchVideo(View v)
 		{
+			WebSocketIntentService.startAction(getApplicationContext(), "call", String.valueOf(id));
+
 			Intent video = new Intent(this, VideoActivity.class);
-			video.putExtra("ID_CONTACT", id);
-			video.putExtra("ID_USER", Manager.getProfile().getId());
+			video.putExtra("ID_CONTACT", String.valueOf(id));
+			video.putExtra("ID_USER", String.valueOf(Manager.getProfile().getId()));
 			startActivity(video);
 		}
 		

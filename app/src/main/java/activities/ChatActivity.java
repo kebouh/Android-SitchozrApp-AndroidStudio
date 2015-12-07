@@ -1,5 +1,6 @@
 package activities;
 
+import datas.Images;
 import interfaces.OnTaskCompleteListener;
 
 import java.util.Date;
@@ -34,6 +35,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.facebook.AccessToken;
 
 public class ChatActivity extends ListActivity {
 
@@ -152,15 +155,22 @@ public static Activity activity;
 				public void onCompleteListerner(Object[] result) {
 					final SDKUser matchUser = (SDKUser) result[1];
 					matchUser.setAge(Integer.toString(AgeCalculator.calculate(matchUser.getBirthday())));
-					Manager.getDatabase().createMatch(matchUser);
+					//Manager.getDatabase().createMatch(matchUser);
+					//todo replaced match
+					final MatchProfile matchProfile = new MatchProfile(matchUser, AccessToken.getCurrentAccessToken());
+
 					OnTaskCompleteListener onPostReadPictureByUserId = new OnTaskCompleteListener() {
 						@Override
 						public void onCompleteListerner(Object[] result) {
 							List<SDKPicture> pictures = (List<SDKPicture>) result[1];
 							for (SDKPicture sdkpicture : pictures) {
-								Manager.getDatabase().createPicture(sdkpicture, matchUser.getId());
+								Images image = new Images(sdkpicture.getUrl(), sdkpicture.getId());
+								if (sdkpicture.isProfilePicture())
+									matchProfile.setProfileImage(image);
+								matchProfile.addImagesToArray(image);								//Manager.getDatabase().createPicture(sdkpicture, matchUser.getId());
 							}
-							Manager.getDatabase().getMatchsAndPictures();
+							Manager.addMatchProfile(matchProfile);
+							//Manager.getDatabase().getMatchsAndPictures();
 							user = Manager.getMatchProfileById(targetId);
 							startActivity(context);
 						}

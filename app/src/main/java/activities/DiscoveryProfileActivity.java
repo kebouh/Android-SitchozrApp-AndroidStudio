@@ -40,15 +40,15 @@ public class DiscoveryProfileActivity extends ProfileActivity {
 			public void onCompleteListerner(Object[] result) {
 				MainActivity.addMatches();
 			}
-		};
+		};/*
 		MatchProfile match = new MatchProfile();
 		match.setId(this.id);
 		match.setFirstName(match.getFirstName());
 		match.setAge(match.getAge());
-		match.setLocation(match.getLocation());
+		match.setLocation(match.getLocation());*/
 		LikeManager.ApiCreate(callback, like);
 		Manager.giveLike(this.id);
-		Manager.getDatabase().createMatch(match);
+		//Manager.getDatabase().createMatch(match);
 		Manager.deleteDiscovery(this.id);
 		this.finish();
 	}

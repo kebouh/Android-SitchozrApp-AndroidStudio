@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.facebook.AccessToken;
 
+import datas.MatchProfile;
 import sdk.SDKUser;
 import datas.Images;
 import datas.LocationWraper;
@@ -44,6 +45,8 @@ public abstract class AbstractUsersData {
 		this.distanceRange[0] = 0;
 		this.distanceRange[1] = sdkuser.getDiscoveryDistance();
 		imgs = new ArrayList<Images>();
+		if (this instanceof MatchProfile)
+		System.out.println("User latitude: " + sdkuser.getLatitude() + " : " + sdkuser.getLongitude());
 		this.location = new LocationWraper(Manager.getContext(), sdkuser.getLatitude(), sdkuser.getLongitude());
 		if(sdkuser.isDiscoveryMen() && sdkuser.isDiscoveryWomen())
 			this.genderWanted = 3;

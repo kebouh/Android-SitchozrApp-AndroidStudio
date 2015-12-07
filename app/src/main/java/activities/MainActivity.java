@@ -49,6 +49,7 @@ import sdk.SDKDevice;
 import sdk.SDKMatch;
 import sdk.SDKPicture;
 import sdk.SDKUser;
+import service.WebSocketIntentService;
 import sources.sitchozt.R;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -221,11 +222,10 @@ public class MainActivity extends FragmentActivity {
         checkLocation(this);
 		Log.e("MainActivity", "addmatche...");
         Manager.setContext(null);
-        if (MemoryManager.isFirstTime()) {
+       /*if (MemoryManager.isFirstTime()) {
 			Log.e("MainActivity", "isfirsttime...");
 
-			addMatches();
-        }
+        }*/
 		Log.e("MainActivity", "end of initconfiguration...");
 
 	}
@@ -233,7 +233,7 @@ public class MainActivity extends FragmentActivity {
 	public void initProfile() {
 		Log.e("MainActivity", "Init profile...");
 
-
+		addMatches();
 		isFirstTime = true;
         if (MemoryManager.isFirstTime() == true)
             System.out.println("First time is true");
@@ -401,16 +401,22 @@ public class MainActivity extends FragmentActivity {
 					@Override
 					public void onCompleteListerner(Object[] result) {
 						final SDKUser matchUser = new SDKUser((SDKUser)result[1]);
-						Manager.getDatabase().createMatch(matchUser);
+						//Manager.getDatabase().createMatch(matchUser);
+						final MatchProfile matchProfile = new MatchProfile(matchUser, AccessToken.getCurrentAccessToken());
 						OnTaskCompleteListener onPostReadPictureByUserId = new OnTaskCompleteListener() {
 							@Override
 							public void onCompleteListerner(Object[] result) {
 								List<SDKPicture> pictures = (List<SDKPicture>) result[1];
 								for (SDKPicture sdkpicture : pictures) {
-									Manager.getDatabase().createPicture(sdkpicture, matchUser.getId());
+									Images image = new Images(sdkpicture.getUrl(), sdkpicture.getId());
+									if (sdkpicture.isProfilePicture())
+										matchProfile.setProfileImage(image);
+									matchProfile.addImagesToArray(image);
+									//Manager.getDatabase().createPicture(sdkpicture, matchUser.getId());
 								}
-								Manager.getDatabase().getMatchsAndPictures();
-								Manager.getDatabase().createMatch(matchUser);
+								Manager.addMatchProfile(matchProfile);
+								//Manager.getDatabase().getMatchsAndPictures();
+								//Manager.getDatabase().createMatch(matchUser);
 							}
 						};
 						ImageManager.ApiReadByUserId(onPostReadPictureByUserId, matchUser);
@@ -457,7 +463,13 @@ public class MainActivity extends FragmentActivity {
 		Log.e("MainActivity", "Launch Activity...");
         MemoryManager.setFirstTime(false);
 		Intent intent = new Intent(this, NavigationActivity.class);
+		WebSocketIntentService.startAction(getApplicationContext(), "online", String.valueOf(Manager.getProfile().getId()));
 		startActivity(intent);
 		finish();
+	}
+	@Override
+	public void onStop() {
+		super.onStop();
+		WebSocketIntentService.startAction(getApplicationContext(), "offline", null);
 	}
 }
