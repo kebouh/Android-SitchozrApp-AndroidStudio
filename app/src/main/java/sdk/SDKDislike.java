@@ -1,6 +1,8 @@
 package sdk;
 
 
+import android.util.Log;
+
 import java.util.Date;
 import java.util.List;
 
@@ -8,23 +10,31 @@ public class SDKDislike {
 	private int		id;
 	private Date	date;
 	private int		userId;
-	
-	public SDKDislike(int userId) {
-		this.userId = userId;
-	}
-	
-	public SDKDislike() {
-		// TODO Auto-generated constructor stub
-	}
+
+	public SDKDislike() {}
 
 	public SDKDislike	create(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.createDislike(this));
+		SDKDislike result = null;
+		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
+			result = service.createDislike(this);
+		}
+		catch (Exception e){
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while creating dislike");
+		}
+		return (result);
 	}
-	
+
 	public static List<SDKDislike>	getByToken(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.getDislikes());
+		List<SDKDislike>	result = null;
+		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
+			result = service.getDislikes();
+		}
+		catch (Exception e){
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while getting dislikes (using token)");
+		}
+		return (result);
 	}
 	
 	/**
