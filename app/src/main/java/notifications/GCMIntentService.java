@@ -1,6 +1,8 @@
 package notifications;
 
+import datas.Images;
 import datas.Manager;
+import datas.MatchProfile;
 import interfaces.OnTaskCompleteListener;
 import managers.ImageManager;
 import managers.MatchManager;
@@ -11,6 +13,7 @@ import sdk.SDKPicture;
 import sdk.SDKUser;
 import sources.sitchozt.R;
 
+import com.facebook.AccessToken;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
 
@@ -80,6 +83,7 @@ public class GCMIntentService extends IntentService {
      */
     private void sendMessageNotification(Bundle extras) {  
         SitchozrNotification notif = extractFromExtra(extras);
+
         mNotificationManager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = null;
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class).putExtra("ID", notif.getUserId()), 0);
@@ -117,6 +121,7 @@ public class GCMIntentService extends IntentService {
     private SitchozrNotification extractFromExtra(Bundle extras) {
     	Gson gson = new Gson();
     	String jsonType = extras.getString("type");
+        System.out.println("notif extras: " + extras.toString());
     	SitchozrNotification notif = new SitchozrNotification();
     	notif.setUserId(Integer.parseInt(extras.getString("userId").toString()));
     	notif.setNotificationId(Integer.parseInt(extras.getString("notificationId").toString()));
@@ -134,16 +139,23 @@ public class GCMIntentService extends IntentService {
                         @Override
                         public void onCompleteListerner(Object[] result) {
                             final SDKUser matchUser = new SDKUser((SDKUser)result[1]);
-                            Manager.getDatabase().createMatch(matchUser);
+                           // Manager.getDatabase().createMatch(matchUser);
+                            //todo replaced match
+                            final MatchProfile matchProfile = new MatchProfile(matchUser, AccessToken.getCurrentAccessToken());
+
                             OnTaskCompleteListener onPostReadPictureByUserId = new OnTaskCompleteListener() {
                                 @Override
                                 public void onCompleteListerner(Object[] result) {
                                     List<SDKPicture> pictures = (List<SDKPicture>) result[1];
                                     for (SDKPicture sdkpicture : pictures) {
-                                        Manager.getDatabase().createPicture(sdkpicture, matchUser.getId());
+                                        Images image = new Images(sdkpicture.getUrl(), sdkpicture.getId());
+                                        if (sdkpicture.isProfilePicture())
+                                            matchProfile.setProfileImage(image);
+                                        matchProfile.addImagesToArray(image);                                        //Manager.getDatabase().createPicture(sdkpicture, matchUser.getId());
                                     }
-                                    Manager.getDatabase().getMatchsAndPictures();
-                                    Manager.getDatabase().createMatch(matchUser);
+                                    Manager.addMatchProfile(matchProfile);
+                                    //Manager.getDatabase().getMatchsAndPictures();
+                                    //Manager.getDatabase().createMatch(matchUser);
                                 }
                             };
                             ImageManager.ApiReadByUserId(onPostReadPictureByUserId, matchUser);

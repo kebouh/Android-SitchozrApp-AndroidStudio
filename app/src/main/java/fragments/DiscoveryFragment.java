@@ -105,14 +105,14 @@ public class DiscoveryFragment extends Fragment {
 						}
 					};
 
-					MatchProfile match = new MatchProfile();
+					/*MatchProfile match = new MatchProfile();
 					match.setId(item.id);
 					match.setFirstName(item.name);
 					match.setAge(item.age);
-					match.setLocation(Manager.getDiscoveryProfileById(item.id).getLocation());
+					match.setLocation(Manager.getDiscoveryProfileById(item.id).getLocation());*/
 					LikeManager.ApiCreate(callback, like);
 					Manager.giveLike(item.id);
-					Manager.getDatabase().createMatch(match);
+					//Manager.getDatabase().createMatch(match);
 					Manager.deleteDiscovery(item.id);
 					items.remove(item);
 	                notifyDataSetChanged();
