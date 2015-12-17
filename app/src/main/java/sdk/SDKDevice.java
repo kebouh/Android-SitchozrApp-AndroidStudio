@@ -1,5 +1,7 @@
 package sdk;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,12 +14,6 @@ public class SDKDevice {
 	private	String	applicationARN;
 	private String	endPointArn;
 	private Date	date;
-	
-	public SDKDevice(String token, String language){
-		this.type = "android";
-		this.token = token;
-		this.language = language;
-	}
 
 	public SDKDevice(String token){
 		this.type = "android";
@@ -30,37 +26,50 @@ public class SDKDevice {
 		SDKDevice device = null;
 		try{
 			device = service.createDevice(this);
-		}catch(RuntimeException e){
-			
+		}
+		catch(Exception e){
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while creating device");
 		}
 		return (device);
 	}
 	
 	public Object			delete(){
-		//SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		//return (service.deleteDevice(this.id));
-		return null;
+		Object device = null;
+		try{
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
+			Log.i("SDK DISABLE OPTION", "Deleting SDKDevice is disable. This function won't do anything");
+			//device = service.updateDevice(this);
+		}
+		catch(Exception e){
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while deleting device");
+		}
+		return (device);
 	}
 	
 	public List<SDKDevice> read(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		List<SDKDevice> device = new ArrayList<>();
+		List<SDKDevice> device = null;
 		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 			device = service.readDevice();
-			System.out.println("SDK DEVICE : " + device.toString());
-		} catch (Exception e){
-			System.out.println("EXCEPTION : " + e.getMessage());
+		}
+		catch (Exception e){
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while reading device");
 		}
 		return (device);
 	}
 	
 	public SDKDevice	update(){
 		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.updateDevice(this));
+		SDKDevice device = null;
+		try{
+			device = service.updateDevice(this);
+		}
+		catch(Exception e){
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while updating device");
+		}
+		return (device);
 	}
-	
-	
-	
+
 	/**
 	 * @return the id
 	 */
