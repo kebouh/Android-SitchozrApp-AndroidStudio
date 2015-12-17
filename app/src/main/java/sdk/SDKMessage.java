@@ -17,9 +17,7 @@ public class SDKMessage {
 		this.userId = userId;
 	}
 	
-	public SDKMessage() {
-		// TODO Auto-generated constructor stub
-	}
+	public SDKMessage() {}
 
 	public List<SDKMessage>	get(int userId){
 		List<SDKMessage>	result = null;

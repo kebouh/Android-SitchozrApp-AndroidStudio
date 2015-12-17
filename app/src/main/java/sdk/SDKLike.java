@@ -1,6 +1,8 @@
 package sdk;
 
 
+import android.util.Log;
+
 import java.util.Date;
 import java.util.List;
 
@@ -10,22 +12,30 @@ public class SDKLike {
 	private Date	date;
 	private int		userId;
 	
-	public SDKLike(int userId) {
-		this.userId = userId;
-	}
-	
-	public SDKLike() {
-		// TODO Auto-generated constructor stub
-	}
+	public SDKLike() {}
 
 	public SDKLike	create(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.createLike(this));
+		SDKLike result = null;
+		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
+			result = service.createLike(this);
+		}
+		catch (Exception e){
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while creating like");
+		}
+		return (result);
 	}
 	
 	public static List<SDKLike>	getByToken(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.getLikes());
+		List<SDKLike>	result = null;
+		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
+			result = service.getLikes();
+		}
+		catch (Exception e){
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while getting likes (using token)");
+		}
+		return (result);
 	}
 	
 	/**
