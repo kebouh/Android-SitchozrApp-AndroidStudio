@@ -1,5 +1,7 @@
 package sdk;
 
+import android.util.Log;
+
 import java.util.Date;
 
 public class SDKNotification {
@@ -12,13 +14,27 @@ public class SDKNotification {
 	private	Date	date;
 	
 	public Object			delete(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.deleteNotification(this.id));
+		Object object = null;
+		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
+			object = service.deleteNotification(this.id);
+		}
+		catch (Exception e){
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while deleting notification");
+		}
+		return (object);
 	}
 	
 	public SDKNotification	read(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.readNotifications());
+		SDKNotification result = null;
+		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
+			result = service.readNotifications();
+		}
+		catch (Exception e){
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while reading notifications");
+		}
+		return (result);
 	}
 	
 	/**
