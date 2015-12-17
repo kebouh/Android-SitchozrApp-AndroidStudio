@@ -53,9 +53,9 @@ public class SDKPicture {
 	}
 
 	public SDKPicture create(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 		SDKPicture picture = null;
 		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 			picture = service.createPicture(this);
 		}
 		catch (Exception e){
@@ -65,9 +65,9 @@ public class SDKPicture {
 	}
 	
 	public Object delete(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 		Object object = null;
 		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 			object = service.deletePicture(this.id);
 		}
 		catch (Exception e) {
@@ -77,9 +77,9 @@ public class SDKPicture {
 	}
 	
 	public List<SDKPicture>	getAll(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 		List<SDKPicture> result = null;
 		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 			result = service.getPictures();
 		}
 		catch (Exception e) {
@@ -89,9 +89,9 @@ public class SDKPicture {
 	}
 	
 	public List<SDKPicture>	getByUserId(int userId){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 		List<SDKPicture>	result = null;
 		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 			result = service.getPicturesByUserId(userId);
 		}
 		catch (Exception e){
@@ -101,9 +101,9 @@ public class SDKPicture {
 	}
 	
 	public SDKPicture	getById(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 		SDKPicture result = null;
 		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 			result = service.getPictureById(this.id);
 		}
 		catch (Exception e){
@@ -113,9 +113,9 @@ public class SDKPicture {
 	}
 	
 	public SDKPicture	getProfilePicture(int userId){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 		SDKPicture result = null;
 		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 			result = service.getProfilePicture(userId);
 		}
 		catch (Exception e){
@@ -125,9 +125,9 @@ public class SDKPicture {
 	}
 
 	public SDKPicture	update(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 		SDKPicture result = null;
 		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 			result = service.updatePicture(this);
 		}
 		catch (Exception e){
