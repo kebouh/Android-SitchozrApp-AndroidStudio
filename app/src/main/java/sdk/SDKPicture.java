@@ -1,5 +1,6 @@
 package sdk;
 
+import android.util.Log;
 
 import java.util.Date;
 import java.util.List;
@@ -21,14 +22,10 @@ public class SDKPicture {
 	public SDKPicture(int id){
 		this.id = id;
 	}
-	
-	
+
 	public SDKPicture(int id, long facebookId, String url, int index, boolean isProfile){
+		this(facebookId, url, index, isProfile);
 		this.id = id;
-		this.facebookId = Long.toString(facebookId);
-		this.url = url;
-		this.index = index;
-		this.profilePicture = isProfile;
 	}
 	
 	public SDKPicture(long facebookId, String url, int index, boolean isProfile){
@@ -39,18 +36,12 @@ public class SDKPicture {
 	}
 	
 	public SDKPicture(FacebookPhoto photo, int index, boolean isProfile) {
-		this.facebookId = Long.toString(photo.getId());
+		this(photo, index);
 		this.profilePicture = isProfile;
-		if (photo.getImages() != null){
-			for (PlatformImageSource source : photo.getImages()){
-				if (source.getWidth() < 650)
-					this.url = photo.getImages().get(0).getSource();
-			}
-			this.index = index;
-		}
 	}
 	
 	public SDKPicture(FacebookPhoto photo, int index) {
+		// TODO VOIR COMMENT RECUPERER LA BONNE PHOTO
 		this.facebookId = Long.toString(photo.getId());
 		if (photo.getImages() != null){
 			for (PlatformImageSource source : photo.getImages()){
@@ -68,40 +59,81 @@ public class SDKPicture {
 			picture = service.createPicture(this);
 		}
 		catch (Exception e){
-
+			Log.w("SDKException", "An error occured while creating user picture");
 		}
 		return (picture);
 	}
 	
 	public Object delete(){
 		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.deletePicture(this.id));
+		Object object = null;
+		try {
+			object = service.deletePicture(this.id);
+		}
+		catch (Exception e) {
+			Log.w("SDKException", "An error occured while deleting user picture");
+		}
+		return (object);
 	}
 	
 	public List<SDKPicture>	getAll(){
 		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		List<SDKPicture> result = service.getPictures();
+		List<SDKPicture> result = null;
+		try {
+			result = service.getPictures();
+		}
+		catch (Exception e) {
+			Log.w("SDKException", "An error occured while getting all user pictures");
+		}
 		return (result);
 	}
 	
 	public List<SDKPicture>	getByUserId(int userId){
 		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.getPicturesByUserId(userId));
+		List<SDKPicture>	result = null;
+		try {
+			result = service.getPicturesByUserId(userId);
+		}
+		catch (Exception e){
+			Log.w("SDKException", "An error occured while getting pictures by user id");
+		}
+		return (result);
 	}
 	
 	public SDKPicture	getById(){
 		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.getPictureById(this.id));
+		SDKPicture result = null;
+		try {
+			result = service.getPictureById(this.id);
+		}
+		catch (Exception e){
+			Log.w("SDKException", "An error occured while getting picture by id");
+		}
+		return (result);
 	}
 	
 	public SDKPicture	getProfilePicture(int userId){
 		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.getProfilePicture(userId));
+		SDKPicture result = null;
+		try {
+			result = service.getProfilePicture(userId);
+		}
+		catch (Exception e){
+			Log.w("SDKException", "An error occured while getting profile picture by user id");
+		}
+		return (result);
 	}
 
 	public SDKPicture	update(){
 		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.updatePicture(this));
+		SDKPicture result = null;
+		try {
+			result = service.updatePicture(this);
+		}
+		catch (Exception e){
+			Log.w("SDKException", "An error occured while updating picture");
+		}
+		return (result);
 	}
 	
 	/**
@@ -110,42 +142,49 @@ public class SDKPicture {
 	public int getId() {
 		return id;
 	}
+
 	/**
 	 * @param id the id to set
 	 */
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	/**
 	 * @return the profilePicture
 	 */
 	public boolean isProfilePicture() {
 		return profilePicture;
 	}
+
 	/**
 	 * @param profilePicture the profilePicture to set
 	 */
 	public void setProfilePicture(boolean profilePicture) {
 		this.profilePicture = profilePicture;
 	}
+
 	/**
 	 * @return the date
 	 */
 	public Date getDate() {
 		return date;
 	}
+
 	/**
 	 * @param date the date to set
 	 */
 	public void setDate(Date date) {
 		this.date = date;
 	}
+
 	/**
 	 * @return the facebookId
 	 */
 	public String getFacebookId() {
 		return facebookId;
 	}
+
 	/**
 	 * @param facebookId the facebookId to set
 	 */
