@@ -1,5 +1,7 @@
 package sdk;
 
+import android.util.Log;
+
 import java.util.Date;
 import java.util.List;
 
@@ -20,18 +22,25 @@ public class SDKMessage {
 	}
 
 	public List<SDKMessage>	get(int userId){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.readMessages(userId));
+		List<SDKMessage>	result = null;
+		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
+			result = service.readMessages(this.userId);
+		}
+		catch (Exception e){
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while getting message");
+		}
+		return (result);
 	}
 	
 	public SDKMessage		create(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 		SDKMessage message = null;
+		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 		try {
 			if (this.message.length() > 0)
 				message = service.createMessage(this.userId, this);
 		} catch (Exception e) {
-
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while creating message");
 		}
 		return (message);
 	}
