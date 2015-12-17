@@ -1,6 +1,8 @@
 package sdk;
 
 
+import android.util.Log;
+
 import java.util.Date;
 import java.util.List;
 
@@ -10,18 +12,37 @@ public class SDKMatch {
 	private int		userId;
 	
 	public void	deleteById(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		service.deleteMatchById(this.id);
+		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
+			service.deleteMatchById(this.id);
+		}
+		catch (Exception e){
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while deleting match by id");
+		}
 	}
 	
 	public List<SDKMatch>	getByToken(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.getMatches());
+		List<SDKMatch>	result = null;
+		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
+			result = service.getMatches();
+		}
+		catch (Exception e){
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while getting match (using token)");
+		}
+		return (result);
 	}
 	
 	public List<SDKMatch>	get(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.getMatchesByUserId(this.id));
+		List<SDKMatch>	result = null;
+		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
+			result = service.getMatchesByUserId(this.id);
+		}
+		catch (Exception e){
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while getting match (using id)");
+		}
+		return (result);
 	}
 	
 	/**
