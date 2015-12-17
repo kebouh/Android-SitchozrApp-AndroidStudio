@@ -11,10 +11,13 @@ import com.google.gson.GsonBuilder;
 
 
 public class SitchozrSDK {
-	public final	String		API_URL 			= "https://api.sitchozr.com/";
+	private final	String		API_URL 			= "https://api.sitchozr.com/";
 	public final 	String		_app_key			= "YyuxK7QbTDstmTaX45A2rJjlABtqPT";
 	public final 	String		_app_secret			= "QEfoyllNekxFNDvnEh5OeINyOSWehB";
-	
+
+	public static final	String		ERROR_TAG			= "SDK_ERROR";
+	public static final	String		WARNING_TAG			= "SDK_WARNING";
+
 	private	SitchozrServices 	_sitchozr_services 	= null;
 	
 	public void initSitchozrAdapter() {

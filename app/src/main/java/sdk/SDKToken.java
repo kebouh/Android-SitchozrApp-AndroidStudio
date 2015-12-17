@@ -18,7 +18,7 @@ public class SDKToken {
 		try {
 			string = "Basic " + Base64.encodeToString(credentials.getBytes("UTF-8"), Base64.NO_WRAP);
 		} catch (UnsupportedEncodingException e) {
-			Log.e("SDKError", "An error occured while encoding user credentials");
+			Log.e(SitchozrSDK.ERROR_TAG, "An error occured while encoding user credentials");
 		}
         return (string);
 	}
@@ -34,7 +34,7 @@ public class SDKToken {
 			sdk.initWithHeader(token);
 		}
 		catch (Exception e){
-			Log.e("SDKError", "An error occured while authenticating the user");
+			Log.e(SitchozrSDK.ERROR_TAG, "An error occured while authenticating the user");
 		}
 		return (token);
 	}

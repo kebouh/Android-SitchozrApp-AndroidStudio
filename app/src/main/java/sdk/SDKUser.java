@@ -1,5 +1,7 @@
 package sdk;
 
+import android.util.Log;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -71,7 +73,6 @@ public class SDKUser {
 		this.facebookId = sdkUser.facebookId;
 		this.accessTokenFacebook = sdkUser.accessTokenFacebook;
 		this.pictures = sdkUser.pictures;
-		System.out.println("USER_BIRTHDAY : " +  Integer.toString(AgeCalculator.calculate(this.birthday)));
 		this.age = Integer.toString(AgeCalculator.calculate(this.birthday));
 	}
 
@@ -86,36 +87,55 @@ public class SDKUser {
 	}
 	
 	public SDKUser		create() {
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		Gson gson = new Gson();
-		JsonParser parser = new JsonParser();
-		Map<String, String>	map = new HashMap<String, String>();
-		map.put("accessTokenFacebook", this.getAccessTokenFacebook());
-		return (service.createUser((JsonObject)parser.parse(gson.toJson(map))));
+		SDKUser result = null;
+		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
+			Gson gson = new Gson();
+			JsonParser parser = new JsonParser();
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("accessTokenFacebook", this.getAccessTokenFacebook());
+			result = service.createUser((JsonObject) parser.parse(gson.toJson(map)));
+		}
+		catch (Exception e){
+			Log.e(SitchozrSDK.ERROR_TAG, "An error occured while creating the user");
+		}
+		return (result);
 	}
 	
 	public SDKUser		update() {
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.updateUser(this));
+		SDKUser result = null;
+		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
+			result = service.updateUser(this);
+		}
+		catch (Exception e) {
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while updating the user");
+		}
+		return (result);
 	}
 	
 	public SDKUser 		getById(){
-		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-		return (service.getUserById(this.getId()));
-	}
-	
-	public SDKUser getCurrentUser(String token) {
-		SitchozrSDK sdk = SitchozrSDK.getInstance();
-		SDKToken sdktoken = new SDKToken(token);
-		sdk.initWithHeader(sdktoken);
-		SitchozrServices service = sdk.getSitchozrServices();
-		return (service.getCurrentUser());
+		SDKUser result = null;
+		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
+			result = service.getUserById(this.getId());
+		}
+		catch (Exception e){
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while getting user by id");
+		}
+		return (result);
 	}
 
 	public List<SDKUser>	getAll(){
-		SitchozrSDK sdk = SitchozrSDK.getInstance();
-		SitchozrServices service = sdk.getSitchozrServices();
-		return (service.getAllUsers());
+		List<SDKUser> result = null;
+		try {
+			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
+			result = service.getAllUsers();
+		}
+		catch (Exception e){
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while getting all user");
+		}
+		return (result);
 	}
 	
 	/**

@@ -59,7 +59,7 @@ public class SDKPicture {
 			picture = service.createPicture(this);
 		}
 		catch (Exception e){
-			Log.w("SDKException", "An error occured while creating user picture");
+			Log.w(SitchozrSDK.WARNING_TAG , "An error occured while creating user picture");
 		}
 		return (picture);
 	}
@@ -71,7 +71,7 @@ public class SDKPicture {
 			object = service.deletePicture(this.id);
 		}
 		catch (Exception e) {
-			Log.w("SDKException", "An error occured while deleting user picture");
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while deleting user picture");
 		}
 		return (object);
 	}
@@ -83,7 +83,7 @@ public class SDKPicture {
 			result = service.getPictures();
 		}
 		catch (Exception e) {
-			Log.w("SDKException", "An error occured while getting all user pictures");
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while getting all user pictures");
 		}
 		return (result);
 	}
@@ -95,7 +95,7 @@ public class SDKPicture {
 			result = service.getPicturesByUserId(userId);
 		}
 		catch (Exception e){
-			Log.w("SDKException", "An error occured while getting pictures by user id");
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while getting pictures by user id");
 		}
 		return (result);
 	}
@@ -107,7 +107,7 @@ public class SDKPicture {
 			result = service.getPictureById(this.id);
 		}
 		catch (Exception e){
-			Log.w("SDKException", "An error occured while getting picture by id");
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while getting picture by id");
 		}
 		return (result);
 	}
@@ -119,7 +119,7 @@ public class SDKPicture {
 			result = service.getProfilePicture(userId);
 		}
 		catch (Exception e){
-			Log.w("SDKException", "An error occured while getting profile picture by user id");
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while getting profile picture by user id");
 		}
 		return (result);
 	}
@@ -131,7 +131,7 @@ public class SDKPicture {
 			result = service.updatePicture(this);
 		}
 		catch (Exception e){
-			Log.w("SDKException", "An error occured while updating picture");
+			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while updating picture");
 		}
 		return (result);
 	}
