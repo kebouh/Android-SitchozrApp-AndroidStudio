@@ -29,10 +29,18 @@ public class TcpCommand {
         String code;
         String[] dataArray;
 
-        if (datas != null && datas.startsWith("send ")) {
+        if (datas != null && datas.startsWith("send")) {
             datas = datas.replaceFirst("send ", "");
             System.out.println("tcp send: " + datas);
             TcpActionHandler action = actions.get("send");
+            if (action != null) {
+                action.onActionHandler(datas);
+            }
+        }
+        else if (datas != null && datas.startsWith("303")) {
+            datas = datas.replaceFirst("303", "");
+            System.out.println("tcp send: " + datas);
+            TcpActionHandler action = actions.get("303");
             if (action != null) {
                 action.onActionHandler(datas);
             }

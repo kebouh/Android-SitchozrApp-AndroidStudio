@@ -110,10 +110,11 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		Manager.context = this;
 		location = new LocationWraper(getApplicationContext());
 		if (!location.isGpsActivated())
 			buildAlertMessageNoGps();
-		else
+		else if (Tools.Tools.isNetworkAvailable())
 			connect();
 	}
 
@@ -176,8 +177,9 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Manager.setContext(null);
+		Manager.setContext(this);
 		Manager.setAppContext(getApplicationContext());
+		Tools.Tools.displayConnectionToast();
 	}
 
 	@Override

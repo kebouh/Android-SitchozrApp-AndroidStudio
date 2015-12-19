@@ -31,9 +31,9 @@ public class TcpActions {
                         System.err.println("tcpCommand: 303");
 
                         System.out.println("onActionHandler for code 303");
-                        String message = (String) ((ArrayList)datas).get(0);
-                        if (message != null && VoipManager.getInstance().chatView != null)
-                        VoipManager.getInstance().chatView.addItem(message);
+                        //String message = (String) ((ArrayList)datas).get(0);
+                        if (datas != null && VoipManager.getInstance().chatView != null)
+                        VoipManager.getInstance().chatView.addItem((String) datas);
                     }
                 });
             }
@@ -61,7 +61,7 @@ public class TcpActions {
                         System.err.println("tcpCommand: send");
                         // TODO Auto-generated method stub
                         System.out.println("onActionHandler for code send");
-                        tcpCommand.queueSend.add("303 " + (String) datas);
+                        tcpCommand.queueSend.add("303 " + datas);
                     }
         });
 
