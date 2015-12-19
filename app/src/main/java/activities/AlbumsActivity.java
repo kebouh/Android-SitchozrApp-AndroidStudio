@@ -12,7 +12,8 @@ public class AlbumsActivity extends FragmentActivity implements HeadlinesFragmen
 	
 	  public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
-	        this.setTitle("Facebook Pictures");
+			  Manager.context = this;
+		  	this.setTitle("Facebook Pictures");
 		  	setContentView(R.layout.activity_albums);
 			Manager.setContext(this);
 	        if (findViewById(R.id.fragment_container) != null) {
@@ -26,6 +27,12 @@ public class AlbumsActivity extends FragmentActivity implements HeadlinesFragmen
 	                    .add(R.id.fragment_container, firstFragment).commit();
 	        }
 	    }
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		Manager.context = this;
+	}
 
 	    public void onArticleSelected(int position) {
 	        AlbumFragment articleFrag = (AlbumFragment) getSupportFragmentManager().findFragmentById(R.id.article_fragment);

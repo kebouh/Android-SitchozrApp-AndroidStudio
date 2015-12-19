@@ -9,5 +9,7 @@ public class ConnexionOptions {
 	public	static	int SERVER_PORT = 56800;
 	public static String ID_CONTACT = "a";
 	public static String ID_SELF = "b";
-	
+
+	public static int VIDEO_PORT = 0;
+	public static int AUDIO_PORT = 0;
 }

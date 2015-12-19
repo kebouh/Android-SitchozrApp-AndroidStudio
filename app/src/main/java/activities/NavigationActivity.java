@@ -105,8 +105,14 @@ public class NavigationActivity extends Activity {
             // on first time display view for first nav item
             displayView(0);
         }
+
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Manager.context = this;
+    }
 
     public void     initializeProfile() {
         System.out.println("INITIALIZE PROFILE");

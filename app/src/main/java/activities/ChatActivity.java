@@ -50,6 +50,7 @@ public static Activity activity;
 	@Override
 	public void onResume() {
 	    super.onResume();
+		Manager.context = this;
 	    isActive = true;
 		activeId = getIntent().getExtras().getInt("ID");
 	    this.registerReceiver(mMessageReceiver, new IntentFilter("chat"));

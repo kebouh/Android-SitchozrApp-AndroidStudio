@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.example.voipsitchozr.R;
+import com.voipsitchozr.main.VoipManager;
 import com.voipsitchozr.utils.ConcurrentQueue;
 import com.voipsitchozr.views.ChatLayout;
 import android.widget.RelativeLayout.LayoutParams;
@@ -26,7 +27,6 @@ public class ChatView {
 	FrameLayout frameLayout;
 	ChatLayout	chatLayout;
 	EditText	edit;
-	ConcurrentQueue<String> queueMsg;
 	public ChatView(Context context, FrameLayout frameLayout)
 	{
 		this.context = context;
@@ -35,7 +35,6 @@ public class ChatView {
 		edit.setId(5364);
 		chatLayout = new ChatLayout(context, this);
 		chatLayout.setClickable(true);
-		queueMsg = new ConcurrentQueue<String>();
 
 	}
 	
@@ -88,19 +87,10 @@ public class ChatView {
 	{
 				String message = edit.getText().toString();
 				edit.setText("");
-				queueMsg.add(message);
+				VoipManager.getInstance().getTcpManager().getTcpCommand().getCodeAndPerformAction("send " + message);
 				chatLayout.addItem(new TextItem(message, true));
 	}
 
-	public 	String	getPendingMessage()
-	{
-		return queueMsg.poll();
-	}
-	
-	public 	boolean	isPendingQueueEmpty()
-	{
-		return queueMsg.isEmpty();
-	}
 	
 	public void		addItem(String mess)
 	{

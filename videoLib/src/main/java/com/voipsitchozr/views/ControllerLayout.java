@@ -176,7 +176,8 @@ public class ControllerLayout extends RelativeLayout {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				voipManager.disconnect();
+				voipManager.getTcpManager().getTcpCommand().getCodeAndPerformAction("stop");
+				voipManager.onStop();
 			}
 		});
 	}

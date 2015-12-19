@@ -3,6 +3,7 @@ package activities;
 import datas.MatchProfile;
 import interfaces.OnTaskCompleteListener;
 
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.voipsitchozr.options.ConnexionOptions;
 
 import managers.DeviceManager;
 import managers.FacebookManager;
@@ -409,7 +411,7 @@ public class MainActivity extends FragmentActivity {
 								List<SDKPicture> pictures = (List<SDKPicture>) result[1];
 								for (SDKPicture sdkpicture : pictures) {
 									Images image = new Images(sdkpicture.getUrl(), sdkpicture.getId());
-									if (sdkpicture.isProfilePicture())
+									if (sdkpicture.isProfilePicture() || pictures.size() == 1)
 										matchProfile.setProfileImage(image);
 									matchProfile.addImagesToArray(image);
 									//Manager.getDatabase().createPicture(sdkpicture, matchUser.getId());
@@ -463,13 +465,21 @@ public class MainActivity extends FragmentActivity {
 		Log.e("MainActivity", "Launch Activity...");
         MemoryManager.setFirstTime(false);
 		Intent intent = new Intent(this, NavigationActivity.class);
-		WebSocketIntentService.startAction(getApplicationContext(), "online", String.valueOf(Manager.getProfile().getId()));
+		try {
+			ConnexionOptions.SERVER_IP = "87.98.209.15";
+			//ConnexionOptions.SERVER_IP = "172.19.133.143";
+			ConnexionOptions.SERVER_PORT = 3031;
+			Manager.voipManager.initializeTcpConnexion();
+			Manager.serverActions.addActions();
+			Manager.voipManager.getTcpManager().getTcpCommand().getCodeAndPerformAction("connect " + Manager.getProfile().getId());
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
 		startActivity(intent);
 		finish();
 	}
 	@Override
 	public void onStop() {
 		super.onStop();
-		WebSocketIntentService.startAction(getApplicationContext(), "offline", null);
 	}
 }

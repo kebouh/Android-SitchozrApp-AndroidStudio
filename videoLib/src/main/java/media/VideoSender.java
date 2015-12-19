@@ -57,7 +57,7 @@ public class VideoSender /* extends AbstractSendPacketThread <byte[]>*/
 		byte[] bytes = os.toByteArray();
 		Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
-		if (bitmap.getHeight() > bitmap.getWidth())
+		//if (bitmap.getHeight() > bitmap.getWidth())
 		matrix.postRotate(orientation);
 
 

@@ -5,10 +5,14 @@ import interfaces.OnTaskCompleteListener;
 import java.util.HashMap;
 import java.util.Map;
 import database.DBDatas;
+import managers.StreamingServerActions;
 import sdk.SDKUser;
 import Abstract.AbstractUsersData;
 import android.annotation.SuppressLint;
 import android.content.Context;
+
+import com.voipsitchozr.main.VoipManager;
+
 import managers.UserManager;
 import memory.ImageLoader;
 import memory.MemoryManager;
@@ -21,12 +25,14 @@ import datas.MatchProfile;
  */
 public class Manager {
 
+	static public VoipManager 						voipManager;
+	static public StreamingServerActions 			serverActions;
 	static ImageLoader								imageLoader;
 	static Profile									profile;
 	static private Map<Integer, MatchProfile>		matchProfiles;
 	static private Map<Integer, AbstractUsersData>	discoveryProfiles;
 	static private DBDatas 							db;
-	static private Context 							context;
+	static public Context 							context;
 	static private Context 							appContext;
 	
 	@SuppressLint("UseSparseArrays")
@@ -36,6 +42,8 @@ public class Manager {
 		discoveryProfiles = new HashMap<Integer, AbstractUsersData>();
 		imageLoader = new ImageLoader(context);
 		db = new DBDatas(context);
+		voipManager = new VoipManager(context);
+		serverActions = new StreamingServerActions(context);
 	}
 	
 	

@@ -1,31 +1,22 @@
 package com.voipsitchozr.main;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.SocketException;
 
-import media.VideoReceiver;
-import media.VideoSender;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Camera;
-import android.graphics.Matrix;
 import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import com.voipsitchozr.options.CameraOptions;
-import com.voipsitchozr.options.ContactViewOptions;
-import com.voipsitchozr.socket.UdpSocket;
+import com.voipsitchozr.options.ConnexionOptions;
+import com.voipsitchozr.socket.UdpSocketAudio;
+import com.voipsitchozr.socket.UdpSocketVideo;
+import com.voipsitchozr.utils.AudioManagerState;
 import com.voipsitchozr.utils.ConcurrentQueue;
 import com.voipsitchozr.utils.SCallback;
 import com.voipsitchozr.views.ChatLayout;
@@ -34,80 +25,110 @@ import com.voipsitchozr.views.VideoSurfaceView;
 
 import com.voipsitchozr.camera.CameraManager;
 import com.voipsitchozr.chat.ChatView;
-import com.voipsitchozr.options.ConnexionOptions;
-import com.voipsitchozr.socket.DatagramSocketReceiver;
-import com.voipsitchozr.socket.DatagramSocketSender;
 import com.voipsitchozr.tcp.TcpManager;
 
 public class VoipManager {
 
 	public	static	int widthScreen = 0;
 	public	static	int	heightScreen = 0;
-	
-	private VideoSender	videoSender;
-	private VideoReceiver	videoReceiver;
 	public  CameraManager mCamera;
 	private VideoSurfaceView contactView;
 	private VideoSurfaceView selfView;
 	private SCallback callback = null;
-	public Context context = null;
+	public 	static Context context = null;
+	public Activity activity = null;
 	private FrameLayout frameLayout = null;
 	private ConcurrentQueue<byte[]> queue;
-	private ChatLayout chatLayout;
-	private ChatView chatView;
-	public static Activity	activity;
-	TcpManager tcpManager = null;
-	UdpSocket udpSocket;
+	public	ChatView chatView;
+	private TcpManager tcpManager = null;
+	private UdpSocketVideo udpSocket;
+	private UdpSocketAudio		socketAudio;
+	private boolean				videoMode = false;
+	private boolean				audioMode = false;
+	private boolean				controllerMode = false;
+	private boolean				chatMode = false;
+	private static VoipManager  voipManager = null;
+	public boolean				isInCall = false;
 
-	public VoipManager(Activity activity, FrameLayout frameLayout) {
-		this.activity = activity;
-		this.context = activity;
-		this.callback = new CallbackSelfSurface();
-		this.frameLayout = frameLayout;
-
+	public VoipManager(Context context) {
+		this.context = context;
+		AudioManagerState.initAndSaveState(context);
 		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 		this.widthScreen = metrics.widthPixels;
 		this.heightScreen = metrics.heightPixels;
-
+		voipManager = this;
 		this.queue = new ConcurrentQueue<byte[]>();
-		this.mCamera = new CameraManager();
-		//this.videoSender = new VideoSender(queue);
-		//this.videoReceiver = new VideoReceiver();
 	}
 
+	public void setVideoMode(boolean val) {videoMode = val;}
+	public void setAudioMode(boolean val) {audioMode = val;}
+	public void setControllerMode(boolean val) {controllerMode = val;}
+	public void setChatMode(boolean val) {chatMode = val;}
+
+	public static VoipManager getInstance() { return VoipManager.voipManager; }
+
 	@SuppressLint("NewApi")
-	public void initialiazeViews() throws IOException {
+	public void initialiaze(Activity activity, FrameLayout frameLayout) throws IOException {
 
-        mCamera.initCamera();
+		isInCall = true;
+		this.activity = activity;
+		this.frameLayout = frameLayout;
 
-        initContactView();
+		if (videoMode) {
+			this.mCamera = new CameraManager();
+			this.callback = new CallbackSelfSurface();
+			mCamera.initCamera();
+			initContactView();
+			initSelfView();
+			frameLayout.addView(contactView);
+		}
+
+		if (chatMode) {
+			chatView = new ChatView(context, frameLayout);
+			chatView.initChatManager();
+		}
+		ControllerLayout controller = null;
+		if (controllerMode) {
+			controller = new ControllerLayout(context, frameLayout, mCamera, selfView.getHolder());
+			controller.addWidgets(selfView, this);
+		}
+		if (videoMode)
+		frameLayout.addView(selfView);
+		if (controllerMode)
+		frameLayout.addView(controller);
+		startSendAudio();
+	}
+
+	public void initializeVideo() {
+		this.callback = new CallbackSelfSurface();
+		mCamera.initCamera();
+
+		initContactView();
 		initSelfView();
-
 		frameLayout.addView(contactView);
+		frameLayout.addView(selfView);
+	}
 
+	public void initializeChat() {
 		chatView = new ChatView(context, frameLayout);
 		chatView.initChatManager();
+	}
 
+	public void initializeController() {
 		ControllerLayout controller = new ControllerLayout(context, frameLayout, mCamera, selfView.getHolder());
 		controller.addWidgets(selfView, this);
-
-		frameLayout.addView(selfView);
 		frameLayout.addView(controller);
 	}
 
+		public void		initializeTcpConnexion ()throws SocketException {
 
-		public void		initializeConnexion ()throws SocketException {
-
-		tcpManager = new TcpManager(context, chatView, this);
-
+		tcpManager = new TcpManager(context);
 		try {
 			tcpManager.init();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-        //todo: uncomment tcp
 	}
 	
 	private	void	initSelfView()
@@ -127,9 +148,16 @@ public class VoipManager {
         //contactView.setZOrderMediaOverlay(true);
 	}
 
-	public	void startSendVideo(int port) throws SocketException {
-		udpSocket = new UdpSocket(queue, port);
+	public void startSendAudio() {
+		socketAudio = new UdpSocketAudio(null, ConnexionOptions.AUDIO_PORT);
+		socketAudio.start();
+	}
+
+	public	void startSendVideo() throws SocketException {
+		System.out.println("udp: start send viudeo");
+		udpSocket = new UdpSocketVideo(queue, ConnexionOptions.VIDEO_PORT);
 		udpSocket.start(contactView);
+
 		/*DatagramSocketSender sock = new DatagramSocketSender("127.0.0.1", port);
 		videoSender.setDatagramSocket(sock);
 		videoSender.start();
@@ -137,12 +165,6 @@ public class VoipManager {
 		videoReceiver.setDatagramSocket(new DatagramSocketReceiver(sock.getDatagram()));
 		videoReceiver.initAndStartVideoReceiver(contactView);*/
 		//videoReceiver.start();
-	}
-
-	public void disconnect() {
-		tcpManager.disconnect();
-		onStop();
-		activity.finish();
 	}
 
 	private class CallbackSelfSurface implements SCallback {
@@ -157,9 +179,7 @@ public class VoipManager {
 				e.printStackTrace();
 			}
 			mCamera.startPreviewStream(selfView.getHolder());
-            System.out.println("Camera height " + String.valueOf(mCamera.getPreviewSize().height));
-			System.out.println("Camera width " + String.valueOf(mCamera.getPreviewSize().width));
-            //videoSender.start(); //TODO: start from message code received
+          	startSendVideo();
         }
 
 		@Override
@@ -192,27 +212,36 @@ public class VoipManager {
 
 	
 	public	void	onResume()
-	{/*
+	{
+		isInCall = true;
 		try {
-			mCamera.startPreviewStream();
+			mCamera.startPreviewStream(selfView.getHolder());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}/*
 		videoSender.start();
 		videoReceiver.start();*/
 	}
 	
 	public	void	onStop()
 	{
+		isInCall = false;
+		AudioManagerState.restoreState();
 		mCamera.stopPreviewStream();/*
 	if (videoSender != null && videoSender.isAlive())
 		videoSender.interrupt();*/
 		if (udpSocket != null)
 			udpSocket.onStop();
-		tcpManager.interrupt();
-		if (videoReceiver != null && videoReceiver.isAlive())
+		//tcpManager.interrupt();
+		if (udpSocket != null)
+		udpSocket.onStop();
+		if (socketAudio != null)
+		socketAudio.onStop();
+		AudioManagerState.restoreState();
+		/*if (videoReceiver != null && videoReceiver.isAlive())
 		videoReceiver.interrupt();
+		videoReceiver.*/
 		activity.finish();
 	}
 	
@@ -220,24 +249,17 @@ public class VoipManager {
 	public void		onPause()
 	{
 		mCamera.stopPreviewStream();
+
+/*
 		if (udpSocket != null)
 		udpSocket.onStop();
-	/*if (videoSender != null && videoSender.isAlive())
-		videoSender.interrupt();*/
-		if (videoReceiver != null && videoReceiver.isAlive())
-		videoReceiver.interrupt();
-		activity.finish();
+		if (socketAudio != null)
+		socketAudio.onStop();
+		AudioManagerState.restoreState();
+		((Activity)context).finish();
+*/
 	}
 
-	public String		getLocalIp()
-	{
-		WifiManager wm = (WifiManager) context.getSystemService(context.WIFI_SERVICE);
-		String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
-		return ip;
-	}
 
-	public CameraManager getCamera()
-	{
-		return mCamera;
-	}
+	public TcpManager getTcpManager() {return tcpManager;}
 }

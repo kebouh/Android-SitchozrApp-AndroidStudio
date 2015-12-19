@@ -136,6 +136,7 @@ public abstract class ProfileActivity extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
+		Manager.context = this;
 		if (countDown != null)
 			countDown.start();
 	}

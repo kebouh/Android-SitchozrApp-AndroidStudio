@@ -46,10 +46,10 @@ public class VideoReceiver  extends Thread{
 	@Override
 	public void run() {
 		threadDraw();
+		//android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 		while (!Thread.currentThread().isInterrupted()) {
 			try {
-				System.out.println("TCP LOOP THREAD RECEIVER");
-				Log.d("UDP", "loop thread");
+				System.out.println("udp: receive packet");
 				if (queue.getSize() > CameraOptions.queueLimit)
 					queue.clear();
 				queue.add(socket.receivePacket());
@@ -63,7 +63,6 @@ public class VideoReceiver  extends Thread{
 	public void drawFrame(byte[] frame) {
 		if (frame == null)
 		{
-			System.out.println("TCP Frame is null in receiving");
 			return;
 		}
 		Log.d("FRAME", frame.toString());
@@ -117,9 +116,9 @@ public class VideoReceiver  extends Thread{
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
+				//android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 				while (!Thread.currentThread().isInterrupted()) {
 					if (!queue.isEmpty()) {
-						System.out.println("DRAWFRAME !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 						byte[] data = queue.poll();
 						if (data != null)
 						drawFrame(data);
@@ -127,6 +126,7 @@ public class VideoReceiver  extends Thread{
 							System.out.println("packet == NULLLLLLLLLL");
 					}
 				}
+
 			}
 		};
 		thread.start();

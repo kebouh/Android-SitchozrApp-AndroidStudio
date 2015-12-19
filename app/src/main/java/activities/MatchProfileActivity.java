@@ -14,6 +14,12 @@ import sources.sitchozt.VideoActivity;
 public class MatchProfileActivity extends ProfileActivity {
 
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		Manager.context = this;
+	}
+
 	    @Override
 	    protected int getLayoutResourceId() {
 	        return R.layout.activity_match_profile;
@@ -40,12 +46,9 @@ public class MatchProfileActivity extends ProfileActivity {
 		
 		public void launchVideo(View v)
 		{
-			WebSocketIntentService.startAction(getApplicationContext(), "call", String.valueOf(id));
-
+			Manager.voipManager.getTcpManager().getTcpCommand().getCodeAndPerformAction("call " + /*String.valueOf(Manager.getProfile().getId())*/ String.valueOf(id));
 			Intent video = new Intent(this, VideoActivity.class);
-			video.putExtra("ID_CONTACT", String.valueOf(id));
-			video.putExtra("ID_USER", String.valueOf(Manager.getProfile().getId()));
-			startActivity(video);
+			//this.startActivity(video);
 		}
 		
 		public void launchAudio(View v)

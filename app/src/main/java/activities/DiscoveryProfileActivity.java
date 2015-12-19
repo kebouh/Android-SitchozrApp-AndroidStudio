@@ -15,6 +15,11 @@ import Abstract.AbstractUsersData;
 
 public class DiscoveryProfileActivity extends ProfileActivity {
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		Manager.context = this;
+	}
 
 	@Override
 	protected int getLayoutResourceId() {

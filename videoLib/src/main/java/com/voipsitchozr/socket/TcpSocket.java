@@ -27,6 +27,7 @@ public class TcpSocket {
 
 	private void initTcpSocket() throws IOException {
 
+		System.out.println("tcp: connexion");
 		channel = SocketChannel.open();
 		channel.configureBlocking(false);
 		System.out.println("ip: " + ip);
@@ -34,6 +35,7 @@ public class TcpSocket {
 		while (!channel.finishConnect()) {
 			System.out.println("still connecting");
 		}
+		System.out.println("tcp: Connected");
 
 	}
 
@@ -74,6 +76,7 @@ public class TcpSocket {
 				// write some data into the channel
 				if (!queueSend.isEmpty()) {
 					CharBuffer buffer = CharBuffer.wrap(queueSend.poll());
+					System.out.println("tcp write:" + buffer);
 					while (buffer.hasRemaining()) {
 						try {
 							channel.write(Charset.defaultCharset().encode(buffer));

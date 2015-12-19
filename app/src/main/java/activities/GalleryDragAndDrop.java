@@ -114,6 +114,12 @@ public class GalleryDragAndDrop extends Activity {
 		}
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		Manager.context = this;
+	}
+
 	public void saveItemsPosition() {
 		imgs.clear();
 
