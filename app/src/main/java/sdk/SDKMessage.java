@@ -5,6 +5,8 @@ import android.util.Log;
 import java.util.Date;
 import java.util.List;
 
+import Tools.Tools;
+
 public class SDKMessage {
 	private int 	id;
 	private String	message = null;
@@ -20,6 +22,8 @@ public class SDKMessage {
 	public SDKMessage() {}
 
 	public List<SDKMessage>	get(int userId){
+		if (!Tools.isNetworkAvailable())
+			return null;
 		List<SDKMessage>	result = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
@@ -32,6 +36,8 @@ public class SDKMessage {
 	}
 	
 	public SDKMessage		create(){
+		if (!Tools.isNetworkAvailable())
+			return null;
 		SDKMessage message = null;
 		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 		try {

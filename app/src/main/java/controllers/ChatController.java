@@ -40,11 +40,13 @@ public class ChatController {
 			public void onCompleteListerner(Object[] result) {
 				@SuppressWarnings("unchecked")
 				List<SDKMessage> messages = (List<SDKMessage>) result[1];
-				for (SDKMessage message : messages){
-					if (message.getUserId() == Manager.getProfile().getSdkuser().getId())
-						createItem(message.getMessage(), message.getDate(), true);
-					else
-						createItem(message.getMessage(), message.getDate(), false);
+				if (messages != null) {
+					for (SDKMessage message : messages) {
+						if (message.getUserId() == Manager.getProfile().getSdkuser().getId())
+							createItem(message.getMessage(), message.getDate(), true);
+						else
+							createItem(message.getMessage(), message.getDate(), false);
+					}
 				}
 				//sortArrayList();
 				//sortArrayList();

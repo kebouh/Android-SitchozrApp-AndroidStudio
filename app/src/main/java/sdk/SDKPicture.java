@@ -5,6 +5,7 @@ import android.util.Log;
 import java.util.Date;
 import java.util.List;
 
+import Tools.Tools;
 import datas.FacebookPhoto;
 import datas.PlatformImageSource;
 
@@ -53,6 +54,8 @@ public class SDKPicture {
 	}
 
 	public SDKPicture create(){
+		if (!Tools.isNetworkAvailable())
+			return null;
 		SDKPicture picture = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
@@ -65,6 +68,8 @@ public class SDKPicture {
 	}
 	
 	public Object delete(){
+		if (!Tools.isNetworkAvailable())
+			return null;
 		Object object = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
@@ -77,6 +82,8 @@ public class SDKPicture {
 	}
 	
 	public List<SDKPicture>	getAll(){
+		if (!Tools.isNetworkAvailable())
+			return null;
 		List<SDKPicture> result = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
@@ -89,6 +96,8 @@ public class SDKPicture {
 	}
 	
 	public List<SDKPicture>	getByUserId(int userId){
+		if (!Tools.isNetworkAvailable())
+			return null;
 		List<SDKPicture>	result = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
@@ -101,6 +110,8 @@ public class SDKPicture {
 	}
 	
 	public SDKPicture	getById(){
+		if (!Tools.isNetworkAvailable())
+			return null;
 		SDKPicture result = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
@@ -113,6 +124,8 @@ public class SDKPicture {
 	}
 	
 	public SDKPicture	getProfilePicture(int userId){
+		if (!Tools.isNetworkAvailable())
+			return null;
 		SDKPicture result = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
@@ -125,6 +138,8 @@ public class SDKPicture {
 	}
 
 	public SDKPicture	update(){
+		if (!Tools.isNetworkAvailable())
+			return null;
 		SDKPicture result = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();

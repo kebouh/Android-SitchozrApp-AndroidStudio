@@ -1,6 +1,7 @@
 package datas;
 
 
+import Tools.Tools;
 import interfaces.OnTaskCompleteListener;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +60,8 @@ public class Manager {
             	//MemoryManager.saveProfile();
             }
         };
-		UserManager.ApiUpdate(onPostUpdate, profile.getSdkuser());
+		if (Tools.isNetworkAvailable())
+			UserManager.ApiUpdate(onPostUpdate, profile.getSdkuser());
 	}
 	
 	public static void		giveWink(int idDest)

@@ -4,6 +4,8 @@ import android.util.Log;
 
 import java.util.Date;
 
+import Tools.Tools;
+
 public class SDKNotification {
 	private int		id;
 	private String	type;
@@ -14,6 +16,8 @@ public class SDKNotification {
 	private	Date	date;
 	
 	public Object			delete(){
+		if (!Tools.isNetworkAvailable())
+			return null;
 		Object object = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
@@ -26,6 +30,8 @@ public class SDKNotification {
 	}
 	
 	public SDKNotification	read(){
+		if (!Tools.isNetworkAvailable())
+			return null;
 		SDKNotification result = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();

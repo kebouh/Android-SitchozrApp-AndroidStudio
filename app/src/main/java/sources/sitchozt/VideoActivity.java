@@ -13,6 +13,7 @@ import com.voipsitchozr.options.SelfViewOptions;
 import java.io.IOException;
 import java.net.SocketException;
 
+import Tools.Tools;
 import datas.Manager;
 
 public class VideoActivity extends Activity {
@@ -22,7 +23,8 @@ public class VideoActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
-
+        if (!Tools.isNetworkAvailable())
+            finish();
         CameraOptions.currentCameraId = CameraOptions.FRONT_CAMERA;
         CameraOptions.compressionQuality = 20;
         CameraOptions.queueLimit = 10;

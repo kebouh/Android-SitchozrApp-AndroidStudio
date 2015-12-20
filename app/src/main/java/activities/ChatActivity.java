@@ -1,5 +1,6 @@
 package activities;
 
+import Tools.Tools;
 import datas.Images;
 import interfaces.OnTaskCompleteListener;
 
@@ -185,12 +186,14 @@ public static Activity activity;
 	}
 	
 	public void sendMessage(View v) {
-		String message = editText.getText().toString();
-		SDKMessage sdkmessage = new SDKMessage(message, new Date(), user.getId());
-		MessageManager.ApiCreate(null, sdkmessage);
-		chatController.createItem(message, new Date(), true);
-		editText.setText("");
-		updateList();
+		if (Tools.isNetworkAvailable()) {
+			String message = editText.getText().toString();
+			SDKMessage sdkmessage = new SDKMessage(message, new Date(), user.getId());
+			MessageManager.ApiCreate(null, sdkmessage);
+			chatController.createItem(message, new Date(), true);
+			editText.setText("");
+			updateList();
+		}
 	}
 	
 	public static void updateList() {

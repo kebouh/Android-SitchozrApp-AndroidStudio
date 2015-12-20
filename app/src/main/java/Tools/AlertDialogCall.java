@@ -61,11 +61,12 @@ public class AlertDialogCall {
                         yes.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Manager.voipManager.getTcpManager().queueSend.add("302 " + id + " " + "yes");
+                                if (Tools.isNetworkAvailable())
+                                    Manager.voipManager.getTcpManager().queueSend.add("302 " + id + " " + "yes");
                                 //Manager.voipManager.getTcpManager().getTcpCommand().getCodeAndPerformAction("302 " + id + " " + "yes");
                                 dialog.cancel();
                                 Intent video = new Intent(activity, VideoActivity.class);
-                                activity.startActivity(video);
+                                    activity.startActivity(video);
                             }
                         });
 

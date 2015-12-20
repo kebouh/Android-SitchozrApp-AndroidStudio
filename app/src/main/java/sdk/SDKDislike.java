@@ -6,6 +6,8 @@ import android.util.Log;
 import java.util.Date;
 import java.util.List;
 
+import Tools.Tools;
+
 public class SDKDislike {
 	private int		id;
 	private Date	date;
@@ -14,7 +16,9 @@ public class SDKDislike {
 	public SDKDislike() {}
 
 	public SDKDislike	create(){
-		SDKDislike result = null;
+		if (!Tools.isNetworkAvailable())
+			return null;
+			SDKDislike result = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 			result = service.createDislike(this);
