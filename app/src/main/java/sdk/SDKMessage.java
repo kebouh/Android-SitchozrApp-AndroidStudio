@@ -23,7 +23,7 @@ public class SDKMessage {
 		List<SDKMessage>	result = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
-			result = service.readMessages(this.userId);
+			result = service.readMessages(userId);
 		}
 		catch (Exception e){
 			Log.w(SitchozrSDK.WARNING_TAG, "An error occured while getting message");
