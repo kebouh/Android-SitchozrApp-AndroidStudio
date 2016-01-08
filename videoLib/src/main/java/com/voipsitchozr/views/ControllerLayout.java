@@ -94,7 +94,7 @@ public class ControllerLayout extends RelativeLayout {
 
 	public	void	addListeners(VideoSurfaceView chatLayout, final VoipManager voipManager)
 	{
-		chatLayout.setOnClickListener(new OnClickListener(){
+		/*chatLayout.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
@@ -117,7 +117,7 @@ public class ControllerLayout extends RelativeLayout {
 						controller.setVisibility(View.INVISIBLE);
 				}
 			}
-		});
+		});*/
 		
 		mute.setOnClickListener(new OnClickListener(){
 			@Override
@@ -135,7 +135,8 @@ public class ControllerLayout extends RelativeLayout {
 				}
 			}
 		});
-		
+
+		if (VoipManager.getInstance().videoMode)
 		cam.setOnClickListener(new OnClickListener(){
 
 			@Override

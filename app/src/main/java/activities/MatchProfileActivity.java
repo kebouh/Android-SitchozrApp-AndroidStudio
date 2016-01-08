@@ -46,7 +46,7 @@ public class MatchProfileActivity extends ProfileActivity {
 		
 		public void launchVideo(View v)
 		{
-			Manager.voipManager.getTcpManager().getTcpCommand().getCodeAndPerformAction("call " + /*String.valueOf(Manager.getProfile().getId())*/ String.valueOf(id));
+			Manager.voipManager.getTcpManager().getTcpCommand().getCodeAndPerformAction("call " + /*String.valueOf(Manager.getProfile().getId()) +*/ String.valueOf(id) +  " " + match.getFirstName());
 			Intent video = new Intent(this, VideoActivity.class);
 			//this.startActivity(video);
 		}

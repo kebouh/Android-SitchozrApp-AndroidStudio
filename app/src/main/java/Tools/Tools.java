@@ -2,10 +2,12 @@ package Tools;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.StringRes;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,6 +24,11 @@ import sources.sitchozt.VideoActivity;
 public class Tools {
 
     static Thread      connectivityThread = null;
+
+
+    public static ProgressDialog showProgressDialog(Context c, String title, String text) {
+        return ProgressDialog.show(c, title, text, true, false);
+    }
 
     public static boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager

@@ -121,8 +121,10 @@ public class UdpSocketVideo {
 
     public void onStop()
     {
-        if (sendThread != null && sendThread.isAlive())
+        if (sendThread != null && sendThread.isAlive()) {
+            System.out.println("stop: sendthread stop");
             sendThread.interrupt();
+        }
         videoReceiver.interrupt();
         socket.close();
     }

@@ -23,7 +23,7 @@ import android.widget.ViewSwitcher.ViewFactory;
 public abstract class ProfileActivity extends Activity {
 
 	private ImageSwitcher imageSwitcher = null;
-	private AbstractUsersData match = null;
+	protected AbstractUsersData match = null;
 	private int position;
 	CountDownTimer countDown = null;
 	protected int id;

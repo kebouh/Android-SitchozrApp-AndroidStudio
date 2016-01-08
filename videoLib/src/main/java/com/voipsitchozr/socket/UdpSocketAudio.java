@@ -53,7 +53,7 @@ public class UdpSocketAudio {
     public  void    start() {
         audioReceiver.initAndStartAudioReceiver();
         try {
-            audioReceiver.setDatagramSocket(new DatagramSocketReceiver(socket, AudioManagerState.actualBufferSize));
+            audioReceiver.setDatagramSocket(new DatagramSocketReceiver(socket, /*AudioManagerState.actualBufferSize*/4096));
         } catch (SocketException e) {
             e.printStackTrace();
         }
@@ -98,7 +98,7 @@ public class UdpSocketAudio {
                     e.printStackTrace();
                 }
             }
-            AudioRecord arec = new AudioRecord(MediaRecorder.AudioSource.MIC, 11025, AudioFormat.CHANNEL_CONFIGURATION_MONO, AudioFormat.ENCODING_PCM_16BIT, AudioManagerState.actualBufferSize);
+            AudioRecord arec = new AudioRecord(MediaRecorder.AudioSource.MIC, 44100, AudioFormat.CHANNEL_CONFIGURATION_MONO, AudioFormat.ENCODING_PCM_16BIT, AudioManagerState.actualBufferSize);
 
             AcousticEchoCanceler.create(arec.getAudioSessionId());
             arec.startRecording();

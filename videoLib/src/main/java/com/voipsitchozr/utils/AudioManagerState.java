@@ -25,13 +25,13 @@ public class AudioManagerState {
         //bufferSize = AudioRecord.getMinBufferSize(11025, AudioFormat.CHANNEL_CONFIGURATION_MONO, AudioFormat.ENCODING_PCM_16BIT);
 
         int maxBufferSize = 4096; // my value. see what's working best for you.
-        int minBufferSize = AudioRecord.getMinBufferSize(11025,
+        int minBufferSize = AudioRecord.getMinBufferSize(44100,
                 AudioFormat.CHANNEL_CONFIGURATION_MONO,
                 AudioFormat.ENCODING_PCM_16BIT);
         actualBufferSize = Math.max(minBufferSize, maxBufferSize);
         //audioManager.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL);
         //audioManager.setMode(AudioManager.STREAM_MUSIC);
-        audioManager.setMode(AudioManager.STREAM_VOICE_CALL);
+        audioManager.setMode(AudioManager.STREAM_MUSIC);
         audioManager.setSpeakerphoneOn(true);
     }
 

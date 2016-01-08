@@ -31,7 +31,7 @@ public class VideoActivity extends Activity {
         CameraOptions.recommendedPreviewSize = false;
         CameraOptions.width = 320;
         CameraOptions.height = 240;
-        CameraOptions.fps = 10;
+        //CameraOptions.fps = 10;
         ContactViewOptions.x = 0;
         ContactViewOptions.y = 0;
 
@@ -44,9 +44,9 @@ public class VideoActivity extends Activity {
 
 
         ContactViewOptions.width = VoipManager.widthScreen;
-        ContactViewOptions.height = VoipManager.heightScreen;
+        //ContactViewOptions.height = VoipManager.heightScreen;
 
-        Manager.voipManager.setAudioMode(true);
+        Manager.voipManager.setAudioMode(false);
         Manager.voipManager.setVideoMode(true);
         Manager.voipManager.setChatMode(true);
         Manager.voipManager.setControllerMode(true);

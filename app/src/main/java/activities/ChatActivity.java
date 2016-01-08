@@ -129,6 +129,7 @@ public static Activity activity;
 		chatController.getAllMessages(this, user, chatAdapter);
 		setListAdapter(chatAdapter);
 		this.setTitle(user.getFirstName());
+		System.out.println("chat: startactivity");
 
 		editText = new EditText(this);
 		Drawable drawable = getResources().getDrawable(R.drawable.edit_text_style);

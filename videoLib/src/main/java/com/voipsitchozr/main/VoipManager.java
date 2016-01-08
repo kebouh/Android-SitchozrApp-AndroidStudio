@@ -43,7 +43,7 @@ public class VoipManager {
 	private TcpManager tcpManager = null;
 	private UdpSocketVideo udpSocket;
 	private UdpSocketAudio		socketAudio;
-	private boolean				videoMode = false;
+	public boolean				videoMode = false;
 	private boolean				audioMode = false;
 	private boolean				controllerMode = false;
 	private boolean				chatMode = false;
@@ -89,7 +89,10 @@ public class VoipManager {
 		}
 		ControllerLayout controller = null;
 		if (controllerMode) {
-			controller = new ControllerLayout(context, frameLayout, mCamera, selfView.getHolder());
+			if (selfView != null)
+				controller = new ControllerLayout(context, frameLayout, mCamera, selfView.getHolder());
+			else
+				controller = new ControllerLayout(context, frameLayout, mCamera, null);
 			controller.addWidgets(selfView, this);
 		}
 		if (videoMode)
@@ -215,6 +218,7 @@ public class VoipManager {
 	{
 		isInCall = true;
 		try {
+			if (videoMode && mCamera != null && selfView != null)
 			mCamera.startPreviewStream(selfView.getHolder());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -226,9 +230,11 @@ public class VoipManager {
 	
 	public	void	onStop()
 	{
+		System.out.println("stop: onStop voipManager");
 		isInCall = false;
-		AudioManagerState.restoreState();
-		mCamera.stopPreviewStream();/*
+		//AudioManagerState.restoreState();
+		if (videoMode && mCamera != null)
+			mCamera.stopPreviewStream();/*
 	if (videoSender != null && videoSender.isAlive())
 		videoSender.interrupt();*/
 		if (udpSocket != null)
@@ -242,12 +248,14 @@ public class VoipManager {
 		/*if (videoReceiver != null && videoReceiver.isAlive())
 		videoReceiver.interrupt();
 		videoReceiver.*/
-		activity.finish();
+		if (activity != null)
+			activity.finish();
 	}
 	
 	
 	public void		onPause()
 	{
+		if (mCamera != null && videoMode)
 		mCamera.stopPreviewStream();
 
 /*

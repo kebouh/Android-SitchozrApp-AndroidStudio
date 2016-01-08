@@ -42,6 +42,7 @@ public class DatagramSocketReceiver {
 			System.out.println("packet is null");
 		datagram.receive(packet);
 
+
 		/*
 		while (queue.getSize() > 10)
 			queue.poll();*/
