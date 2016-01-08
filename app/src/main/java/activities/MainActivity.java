@@ -1,8 +1,10 @@
 package activities;
 
+import Tools.Tools;
 import datas.MatchProfile;
 import interfaces.OnTaskCompleteListener;
 
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +24,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.voipsitchozr.options.ConnexionOptions;
 
 import managers.DeviceManager;
 import managers.FacebookManager;
@@ -108,10 +111,12 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		Manager.context = this;
+		Tools.connectivityThreadLoop();
 		location = new LocationWraper(getApplicationContext());
 		if (!location.isGpsActivated())
 			buildAlertMessageNoGps();
-		else
+		else if (Tools.isNetworkAvailable())
 			connect();
 	}
 
@@ -174,8 +179,9 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Manager.setContext(null);
+		Manager.setContext(this);
 		Manager.setAppContext(getApplicationContext());
+		//Tools.Tools.displayConnectionToast();
 	}
 
 	@Override
@@ -276,7 +282,8 @@ public class MainActivity extends FragmentActivity {
                 }
 			}
 		};
-		ImageManager.ApiReadByUserId(onPostReadPicture, user);
+		if (Tools.isNetworkAvailable())
+			ImageManager.ApiReadByUserId(onPostReadPicture, user);
 	}
 
 	public void getProfilePictures(final FacebookAlbum album, final Album profileAlbum) {
@@ -310,7 +317,8 @@ public class MainActivity extends FragmentActivity {
 									}
 								}
 							};
-							ImageManager.ApiCreate(listener, photo, i[0], i[0] == 0 ? true : false);
+							if (Tools.isNetworkAvailable())
+								ImageManager.ApiCreate(listener, photo, i[0], i[0] == 0 ? true : false);
 						}
 						i[0]++;
 					}
@@ -320,7 +328,8 @@ public class MainActivity extends FragmentActivity {
 				}
 			}
 		};
-		FacebookManager.getPhotosByAlbum(callback, Manager.getProfile().getAccessToken(), album.getId());
+		if (Tools.isNetworkAvailable())
+			FacebookManager.getPhotosByAlbum(callback, Manager.getProfile().getAccessToken(), album.getId());
 	}
 
 	public void getPictures(final FacebookAlbum album, final Album profileAlbum) {
@@ -348,7 +357,8 @@ public class MainActivity extends FragmentActivity {
 				}
 			}
 		};
-		FacebookManager.getPhotosByAlbum(callback, Manager.getProfile().getAccessToken(), album.getId());
+		if (Tools.isNetworkAvailable())
+			FacebookManager.getPhotosByAlbum(callback, Manager.getProfile().getAccessToken(), album.getId());
 	}
 
 	public void getAlbumsFromFacebook() {
@@ -385,7 +395,8 @@ public class MainActivity extends FragmentActivity {
 
 			}
 		};
-		FacebookManager.getAlbums(callback, Manager.getProfile()
+		if (Tools.isNetworkAvailable())
+			FacebookManager.getAlbums(callback, Manager.getProfile()
 				.getAccessToken(), Manager.getProfile().getSdkuser()
 				.getFacebookId());
 	}
@@ -409,7 +420,7 @@ public class MainActivity extends FragmentActivity {
 								List<SDKPicture> pictures = (List<SDKPicture>) result[1];
 								for (SDKPicture sdkpicture : pictures) {
 									Images image = new Images(sdkpicture.getUrl(), sdkpicture.getId());
-									if (sdkpicture.isProfilePicture())
+									if (sdkpicture.isProfilePicture() || pictures.size() == 1)
 										matchProfile.setProfileImage(image);
 									matchProfile.addImagesToArray(image);
 									//Manager.getDatabase().createPicture(sdkpicture, matchUser.getId());
@@ -419,16 +430,19 @@ public class MainActivity extends FragmentActivity {
 								//Manager.getDatabase().createMatch(matchUser);
 							}
 						};
-						ImageManager.ApiReadByUserId(onPostReadPictureByUserId, matchUser);
+						if (Tools.isNetworkAvailable())
+							ImageManager.ApiReadByUserId(onPostReadPictureByUserId, matchUser);
 					}
 				};
 				for (SDKMatch match : matches) {
 					SDKUser user = new SDKUser();
 					user.setId(match.getUserId());
-					UserManager.ApiReadById(onPostReadById, user);
+					if (Tools.isNetworkAvailable())
+						UserManager.ApiReadById(onPostReadById, user);
 				}
 			}
 		};
+		if (Tools.isNetworkAvailable())
 		MatchManager.ApiReadAll(onPostGetMatches);
 	}
 
@@ -456,20 +470,29 @@ public class MainActivity extends FragmentActivity {
 				Manager.setContext(null);
 			}
 		};
-		PerformUserLaunchAsync.ReadAll(onPostReadAll, new SDKUser());
+		if (Tools.isNetworkAvailable())
+			PerformUserLaunchAsync.ReadAll(onPostReadAll, new SDKUser());
 	}
 
 	public void launchActivity() {
 		Log.e("MainActivity", "Launch Activity...");
         MemoryManager.setFirstTime(false);
 		Intent intent = new Intent(this, NavigationActivity.class);
-		WebSocketIntentService.startAction(getApplicationContext(), "online", String.valueOf(Manager.getProfile().getId()));
+		try {
+			ConnexionOptions.SERVER_IP = "87.98.209.15";
+			//ConnexionOptions.SERVER_IP = "172.19.133.143";
+			ConnexionOptions.SERVER_PORT = 3031;
+			Manager.voipManager.initializeTcpConnexion();
+			Manager.serverActions.addActions();
+			Manager.voipManager.getTcpManager().getTcpCommand().getCodeAndPerformAction("connect " + Manager.getProfile().getId());
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
 		startActivity(intent);
 		finish();
 	}
 	@Override
 	public void onStop() {
 		super.onStop();
-		WebSocketIntentService.startAction(getApplicationContext(), "offline", null);
 	}
 }

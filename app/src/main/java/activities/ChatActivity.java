@@ -1,5 +1,6 @@
 package activities;
 
+import Tools.Tools;
 import datas.Images;
 import interfaces.OnTaskCompleteListener;
 
@@ -50,6 +51,7 @@ public static Activity activity;
 	@Override
 	public void onResume() {
 	    super.onResume();
+		Manager.context = this;
 	    isActive = true;
 		activeId = getIntent().getExtras().getInt("ID");
 	    this.registerReceiver(mMessageReceiver, new IntentFilter("chat"));
@@ -127,6 +129,7 @@ public static Activity activity;
 		chatController.getAllMessages(this, user, chatAdapter);
 		setListAdapter(chatAdapter);
 		this.setTitle(user.getFirstName());
+		System.out.println("chat: startactivity");
 
 		editText = new EditText(this);
 		Drawable drawable = getResources().getDrawable(R.drawable.edit_text_style);
@@ -184,12 +187,14 @@ public static Activity activity;
 	}
 	
 	public void sendMessage(View v) {
-		String message = editText.getText().toString();
-		SDKMessage sdkmessage = new SDKMessage(message, new Date(), user.getId());
-		MessageManager.ApiCreate(null, sdkmessage);
-		chatController.createItem(message, new Date(), true);
-		editText.setText("");
-		updateList();
+		if (Tools.isNetworkAvailable()) {
+			String message = editText.getText().toString();
+			SDKMessage sdkmessage = new SDKMessage(message, new Date(), user.getId());
+			MessageManager.ApiCreate(null, sdkmessage);
+			chatController.createItem(message, new Date(), true);
+			editText.setText("");
+			updateList();
+		}
 	}
 	
 	public static void updateList() {

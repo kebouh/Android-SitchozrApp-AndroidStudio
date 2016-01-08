@@ -6,6 +6,9 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 import android.util.Log;
+
+import com.voipsitchozr.utils.AudioManagerState;
+
 public class DatagramSocketReceiver {
 
 	DatagramSocket datagram;
@@ -21,9 +24,9 @@ public class DatagramSocketReceiver {
 		System.out.println("availablePort: " + datagram.getPort());
 	}
 
-	public	DatagramSocketReceiver(DatagramSocket socket) throws SocketException
+	public	DatagramSocketReceiver(DatagramSocket socket, int bufferSize) throws SocketException
 	{
-		this.buffer = new byte[65508];
+		this.buffer = new byte[bufferSize];
 		datagram = socket;
 
 		packet = new DatagramPacket(buffer, buffer.length);
@@ -33,8 +36,12 @@ public class DatagramSocketReceiver {
 	
 	public	byte[]	receivePacket() throws IOException
 	{
-		System.out.println("UDPRECEIVE");
+		if (datagram == null)
+			System.out.println("Datagram is null");
+		if (packet == null)
+			System.out.println("packet is null");
 		datagram.receive(packet);
+
 
 		/*
 		while (queue.getSize() > 10)
@@ -53,10 +60,11 @@ public class DatagramSocketReceiver {
 		//Log.d("UDP", "size int" + String.valueOf(num));
 		//if (num <= 0)
 		//	return null;
-		Log.d("UDP", "size int" + String.valueOf(packet.getLength()));
-		byte[]	frame = new byte[packet.getLength()];
-		System.arraycopy(buffer, 0, frame, 0, packet.getLength());
-		return frame;
+		//Log.d("UDP", "size int" + String.valueOf(packet.getLength()));
+		//byte[]	frame = new byte[packet.getLength()];
+		//System.arraycopy(buffer, 0, frame, 0, packet.getLength());
+		//System.out.println("PacketBuff: " + packet.getData());
+		return 		packet.getData();
 	}
 	public void	close()
 	{

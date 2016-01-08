@@ -6,6 +6,7 @@ import java.util.List;
 import org.askerov.dynamicgrid.BaseDynamicGridAdapter;
 import org.askerov.dynamicgrid.DynamicGridView;
 
+import Tools.Tools;
 import managers.ImageManager;
 import memory.ImageLoader;
 import sdk.SDKPicture;
@@ -114,6 +115,12 @@ public class GalleryDragAndDrop extends Activity {
 		}
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		Manager.context = this;
+	}
+
 	public void saveItemsPosition() {
 		imgs.clear();
 
@@ -134,29 +141,34 @@ public class GalleryDragAndDrop extends Activity {
 
 	@Override
 	public void onBackPressed() {
-		if (imgs != null)
-			imgs.clear();
-		for (int i = 0; i < gridView.getAdapter().getCount(); i++) {
-			imgs.add((Images) gridView.getAdapter().getItem(i));
-			Images img = imgs.get(i);
-			SDKPicture picture;
-			if (i == 0)
-				picture = new SDKPicture(img.getId(), img.getFacebookId(), img.getUrl(), 0, true);
-			else
-				picture = new SDKPicture(img.getId(), img.getFacebookId(), img.getUrl(), i, false);
-			System.out.println("PICTURE INDEX : " + i);
-			ImageManager.ApiUpdate(null, picture);
-		}
-		if (imgs.size() != 0) {
-			Manager.getProfile().setProfileImage(imgs.get(0));
-			db.changeIndexPictures(imgs);
-		} else
-			Manager.getProfile().setProfileImage(null);
-
-		if (gridView.isEditMode()) {
-			gridView.stopEditMode();
-		} else {
+		if (!Tools.isNetworkAvailable()) {
 			super.onBackPressed();
+		}
+		else {
+			if (imgs != null)
+				imgs.clear();
+			for (int i = 0; i < gridView.getAdapter().getCount(); i++) {
+				imgs.add((Images) gridView.getAdapter().getItem(i));
+				Images img = imgs.get(i);
+				SDKPicture picture;
+				if (i == 0)
+					picture = new SDKPicture(img.getId(), img.getFacebookId(), img.getUrl(), 0, true);
+				else
+					picture = new SDKPicture(img.getId(), img.getFacebookId(), img.getUrl(), i, false);
+				System.out.println("PICTURE INDEX : " + i);
+				ImageManager.ApiUpdate(null, picture);
+			}
+			if (imgs.size() != 0) {
+				Manager.getProfile().setProfileImage(imgs.get(0));
+				db.changeIndexPictures(imgs);
+			} else
+				Manager.getProfile().setProfileImage(null);
+
+			if (gridView.isEditMode()) {
+				gridView.stopEditMode();
+			} else {
+				super.onBackPressed();
+			}
 		}
 	}
 
@@ -182,7 +194,7 @@ public class GalleryDragAndDrop extends Activity {
 			holder.position = position;
 			convertView.setLayoutParams(new DynamicGridView.LayoutParams(
 					android.view.ViewGroup.LayoutParams.MATCH_PARENT, gridView
-							.getWidth() / 2));
+					.getWidth() / 2));
 			holder.build(getItem(position));
 			holder.position = position;
 			return convertView;
@@ -214,12 +226,14 @@ public class GalleryDragAndDrop extends Activity {
 			}
 
 			public void deletePicture(View v) {
-				getItems().remove(position);
-				db.deletePicture(imgs.get(position).getId());
-				SDKPicture picture = new SDKPicture(imgs.get(position).getId());
-				ImageManager.ApiDelete(null, picture);
-				saveItemsPosition();
-				notifyDataSetChanged();
+				if (!Tools.isNetworkAvailable()) {
+					getItems().remove(position);
+					db.deletePicture(imgs.get(position).getId());
+					SDKPicture picture = new SDKPicture(imgs.get(position).getId());
+					ImageManager.ApiDelete(null, picture);
+					saveItemsPosition();
+					notifyDataSetChanged();
+				}
 				/*} else
 					Toast.makeText(getApplicationContext(),"You can not delete this picture, you must at least have one picture",Toast.LENGTH_SHORT).show();*/
 			}

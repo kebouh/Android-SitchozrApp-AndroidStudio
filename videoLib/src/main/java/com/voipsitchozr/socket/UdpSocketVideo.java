@@ -21,7 +21,7 @@ import media.VideoSender;
 /**
  * Created by kebouh on 18/11/15.
  */
-public class UdpSocket  {
+public class UdpSocketVideo {
 
     ConcurrentQueue<byte[]>  sendQueue;
     DatagramSocket      socket;
@@ -30,7 +30,7 @@ public class UdpSocket  {
     VideoReceiver       videoReceiver;
     SendThread          sendThread;
 
-    public UdpSocket(ConcurrentQueue<byte[]> sendQueue, int port) {
+    public UdpSocketVideo(ConcurrentQueue<byte[]> sendQueue, int port) {
         this.sendQueue = sendQueue;
         try {
             this.socket = new DatagramSocket(port);
@@ -44,7 +44,7 @@ public class UdpSocket  {
     public  void    start(SurfaceView contact) {
 
         try {
-            videoReceiver.setDatagramSocket(new DatagramSocketReceiver(socket));
+            videoReceiver.setDatagramSocket(new DatagramSocketReceiver(socket, 65508));
         } catch (SocketException e) {
             e.printStackTrace();
         }
@@ -57,7 +57,7 @@ public class UdpSocket  {
     {
         try {
             inetAddr = InetAddress.getByName(ConnexionOptions.SERVER_IP);
-            socket = new DatagramSocket(port);
+            //socket = new DatagramSocket(port);
         } catch (UnknownHostException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -68,11 +68,29 @@ public class UdpSocket  {
 
         @Override
         public void run() {
+           //s android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
             VideoSender videoSender = VideoSender.getInstance();
             try {
                 initInetAddrAndSocket();
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+
+            //todo replace by real packet
+            boolean first = true;
+            if (first) {
+                first = false;
+                DatagramPacket packet = new DatagramPacket(ConnexionOptions.ID_SELF.getBytes(), ConnexionOptions.ID_SELF.getBytes().length, inetAddr, port);
+                try {
+                    System.out.println("udpsendId" + ConnexionOptions.ID_SELF);
+                    if (socket != null && packet != null) {
+                        System.out.println("udpsendId not null");
+                        socket.send(packet);
+                    }
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
             while (!Thread.currentThread().isInterrupted())
             {
@@ -88,8 +106,9 @@ public class UdpSocket  {
                         byte[] dataPacket = (byte[]) packetWraper.getPacket();
                         DatagramPacket packet = new DatagramPacket(dataPacket, dataPacket.length, inetAddr, port);
                         try {
-                            if (socket != null)
+                            if (socket != null && packet != null) {
                                 socket.send(packet);
+                            }
                         } catch (IOException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -102,7 +121,11 @@ public class UdpSocket  {
 
     public void onStop()
     {
-        if (sendThread != null && sendThread.isAlive())
+        if (sendThread != null && sendThread.isAlive()) {
+            System.out.println("stop: sendthread stop");
             sendThread.interrupt();
+        }
+        videoReceiver.interrupt();
+        socket.close();
     }
 }

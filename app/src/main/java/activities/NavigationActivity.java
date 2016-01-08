@@ -70,7 +70,7 @@ public class NavigationActivity extends Activity {
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, /*String.valueOf(Manager.getMatchProfiles().size())*/"1"));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
         navMenuIcons.recycle();
@@ -105,8 +105,14 @@ public class NavigationActivity extends Activity {
             // on first time display view for first nav item
             displayView(0);
         }
+
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Manager.context = this;
+    }
 
     public void     initializeProfile() {
         System.out.println("INITIALIZE PROFILE");

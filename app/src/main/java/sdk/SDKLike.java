@@ -6,6 +6,8 @@ import android.util.Log;
 import java.util.Date;
 import java.util.List;
 
+import Tools.Tools;
+
 public class SDKLike {
 	private int		id;
 	private boolean	match;
@@ -15,6 +17,8 @@ public class SDKLike {
 	public SDKLike() {}
 
 	public SDKLike	create(){
+		if (!Tools.isNetworkAvailable())
+			return null;
 		SDKLike result = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();

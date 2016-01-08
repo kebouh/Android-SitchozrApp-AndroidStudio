@@ -7,6 +7,8 @@ import com.voipsitchozr.main.VoipManager;
 import com.voipsitchozr.options.CameraOptions;
 
 import com.voipsitchozr.utils.SCallback;
+
+import android.app.Activity;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.Size;
@@ -195,7 +197,7 @@ public class CameraManager implements Camera.PreviewCallback {
 	     Camera.CameraInfo info =
 	             new Camera.CameraInfo();
 	     Camera.getCameraInfo(cameraId, info);
-	     int rotation = VoipManager.activity.getWindowManager().getDefaultDisplay()
+	     int rotation = ((Activity)VoipManager.context).getWindowManager().getDefaultDisplay()
 	             .getRotation();
 	     int degrees = 0;
 	     switch (rotation) {

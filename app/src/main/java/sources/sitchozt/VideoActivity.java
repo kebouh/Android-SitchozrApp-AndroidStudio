@@ -11,72 +11,72 @@ import com.voipsitchozr.options.ContactViewOptions;
 import com.voipsitchozr.options.SelfViewOptions;
 
 import java.io.IOException;
+import java.net.SocketException;
 
+import Tools.Tools;
 import datas.Manager;
 
 public class VideoActivity extends Activity {
 
-    VoipManager     manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
-
-        Bundle extras = getIntent().getExtras();
-        int contactId = 0;
-        int userId = 0;
-        if (extras != null) {
-            contactId = extras.getInt("ID_CONTACT");
-            userId = extras.getInt("ID_USER");
-            this.setTitle("Calling " + Manager.getMatchProfileById(contactId).getFirstName());
-        }
-        else
-            this.finish();
+        if (!Tools.isNetworkAvailable())
+            finish();
         CameraOptions.currentCameraId = CameraOptions.FRONT_CAMERA;
-        CameraOptions.compressionQuality = 50;
-        CameraOptions.queueLimit = 20;
+        CameraOptions.compressionQuality = 20;
+        CameraOptions.queueLimit = 10;
         CameraOptions.recommendedPreviewSize = false;
         CameraOptions.width = 320;
         CameraOptions.height = 240;
-        CameraOptions.fps = 10;
+        //CameraOptions.fps = 10;
         ContactViewOptions.x = 0;
         ContactViewOptions.y = 0;
 
         SelfViewOptions.partOfParent = 4;
 
-        ConnexionOptions.SERVER_IP = "87.98.209.15";
-        ConnexionOptions.SERVER_PORT = 3031;
-        ConnexionOptions.ID_SELF = String.valueOf(userId);
-        ConnexionOptions.ID_CONTACT = String.valueOf(contactId);
 
-        manager = new VoipManager(this, (FrameLayout) findViewById(R.id.SurfacesLayout));
+        ConnexionOptions.AUDIO_PORT = 3033;
+        ConnexionOptions.VIDEO_PORT = 3035;
+
+
 
         ContactViewOptions.width = VoipManager.widthScreen;
-        ContactViewOptions.height = VoipManager.heightScreen;
+        //ContactViewOptions.height = VoipManager.heightScreen;
 
-        //System.out.println(manager.getCamera().getListPreviewSizes().toString());
+        Manager.voipManager.setAudioMode(false);
+        Manager.voipManager.setVideoMode(true);
+        Manager.voipManager.setChatMode(true);
+        Manager.voipManager.setControllerMode(true);
 
         try {
-            manager.initialiazeViews();
-            manager.initializeConnexion();
+            Manager.voipManager.initialiaze(this, (FrameLayout) findViewById(R.id.SurfacesLayout));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        ConnexionOptions.ID_SELF = String.valueOf(Manager.getProfile().getId());
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Manager.voipManager.getTcpManager().getTcpCommand().getCodeAndPerformAction("stop");
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
-        manager.onPause();
+        Manager.voipManager.onPause();
     }
 
     @Override
     public void onStop()
     {
         super.onStop();
-        manager.onStop();
+        Manager.voipManager.onStop();
     }
 
     @Override

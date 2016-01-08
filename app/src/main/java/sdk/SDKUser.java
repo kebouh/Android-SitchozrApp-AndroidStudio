@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import Tools.Tools;
 import datas.AgeCalculator;
 
 public class SDKUser {
@@ -77,16 +78,22 @@ public class SDKUser {
 	}
 
 	public SDKToken	authenticate(){
+		if (!Tools.isNetworkAvailable())
+			return null;
 		SDKToken token = new SDKToken(this);
 		return (token.authenticate());
 	}
 	
 	public void 	delete() {
+		if (!Tools.isNetworkAvailable())
+			return;
 		SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 		service.deleteUser(this);
 	}
 	
 	public SDKUser		create() {
+		if (!Tools.isNetworkAvailable())
+			return null;
 		SDKUser result = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
@@ -103,6 +110,8 @@ public class SDKUser {
 	}
 	
 	public SDKUser		update() {
+		if (!Tools.isNetworkAvailable())
+			return null;
 		SDKUser result = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
@@ -115,6 +124,8 @@ public class SDKUser {
 	}
 	
 	public SDKUser 		getById(){
+		if (!Tools.isNetworkAvailable())
+			return null;
 		SDKUser result = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
@@ -127,6 +138,8 @@ public class SDKUser {
 	}
 
 	public List<SDKUser>	getAll(){
+		if (!Tools.isNetworkAvailable())
+			return null;
 		List<SDKUser> result = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();

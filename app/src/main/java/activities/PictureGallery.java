@@ -46,7 +46,14 @@ public class PictureGallery extends Activity {
 			//pa.setWidth(gridView.getWidth());
 		}
 	}
-	
+
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		Manager.context = this;
+	}
+
 	@Override
 	protected void onStop()
 	{

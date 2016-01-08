@@ -1,5 +1,6 @@
 package fragments;
 
+import Tools.Tools;
 import datas.MatchProfile;
 import interfaces.OnTaskCompleteListener;
 
@@ -110,12 +111,14 @@ public class DiscoveryFragment extends Fragment {
 					match.setFirstName(item.name);
 					match.setAge(item.age);
 					match.setLocation(Manager.getDiscoveryProfileById(item.id).getLocation());*/
-					LikeManager.ApiCreate(callback, like);
-					Manager.giveLike(item.id);
-					//Manager.getDatabase().createMatch(match);
-					Manager.deleteDiscovery(item.id);
-					items.remove(item);
-	                notifyDataSetChanged();
+					if (Tools.isNetworkAvailable()) {
+						LikeManager.ApiCreate(callback, like);
+						Manager.giveLike(item.id);
+						//Manager.getDatabase().createMatch(match);
+						Manager.deleteDiscovery(item.id);
+						items.remove(item);
+						notifyDataSetChanged();
+					}
 				}
 			});
 			
@@ -133,11 +136,13 @@ public class DiscoveryFragment extends Fragment {
 				public void onClick(View v) {
 					SDKDislike dislike = new SDKDislike();
 					dislike.setUserId(item.id);
-					DislikeManager.ApiCreate(null, dislike);
-					System.out.println("Remove item !");
-					Manager.deleteDiscovery(item.id);
-					items.remove(item);
-	                notifyDataSetChanged();
+					if (Tools.isNetworkAvailable()) {
+						DislikeManager.ApiCreate(null, dislike);
+						System.out.println("Remove item !");
+						Manager.deleteDiscovery(item.id);
+						items.remove(item);
+						notifyDataSetChanged();
+					}
 				}
 			});
 		
@@ -156,7 +161,7 @@ public class DiscoveryFragment extends Fragment {
 			item.distanceView = (TextView)v.findViewById(R.id.distanceDiscovery);
 			item.ageView = (TextView)v.findViewById(R.id.ageDiscovery);
 
-			addListeners(v, item.picture, (ImageView)v.findViewById(R.id.discoveryDelete), (ImageView)v.findViewById(R.id.discoveryLike), item);
+			addListeners(v, item.picture, (ImageView) v.findViewById(R.id.discoveryDelete), (ImageView) v.findViewById(R.id.discoveryLike), item);
 
 			item.nameView.setText(item.name);
 			item.ageView.setText(item.age);

@@ -22,11 +22,12 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/icon"
         android:gravity="center_vertical"
-        android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:paddingRight="40dp"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
         style="AppBaseTheme"
-        android:textColor="?android:textColorPrimaryInverse" />
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:fontFamily="Roboto Medium"
+        />
 
     <TextView
         android:id="@+id/counter"

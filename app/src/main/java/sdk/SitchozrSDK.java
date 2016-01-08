@@ -1,5 +1,6 @@
 package sdk;
 
+import Tools.Tools;
 import retrofit.ErrorHandler;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -21,6 +22,8 @@ public class SitchozrSDK {
 	private	SitchozrServices 	_sitchozr_services 	= null;
 	
 	public void initSitchozrAdapter() {
+		if (!Tools.isNetworkAvailable())
+			return;
 		Gson gson = new GsonBuilder()
 		.setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
 		.create();
@@ -38,6 +41,8 @@ public class SitchozrSDK {
 	}
 	
 	public void initWithHeader(final SDKToken token) {
+		if (!Tools.isNetworkAvailable())
+			return;
 		Gson gson = new GsonBuilder()
 		.setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
 		.create();

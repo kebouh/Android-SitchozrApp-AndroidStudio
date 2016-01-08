@@ -38,14 +38,23 @@ public class ChatController {
 		OnTaskCompleteListener onPostGetMessages = new OnTaskCompleteListener() {
 			@Override
 			public void onCompleteListerner(Object[] result) {
+				System.out.println("chat: oncomplete listener");
 				@SuppressWarnings("unchecked")
 				List<SDKMessage> messages = (List<SDKMessage>) result[1];
-				for (SDKMessage message : messages){
-					if (message.getUserId() == Manager.getProfile().getSdkuser().getId())
-						createItem(message.getMessage(), message.getDate(), true);
-					else
-						createItem(message.getMessage(), message.getDate(), false);
+				if (messages != null) {
+					System.out.println("chat: message != null: " + messages.size());
+
+					for (SDKMessage message : messages) {
+						System.out.println("chat: loop sdk message");
+						if (message.getUserId() == Manager.getProfile().getSdkuser().getId())
+							createItem(message.getMessage(), message.getDate(), true);
+						else
+							createItem(message.getMessage(), message.getDate(), false);
+					}
 				}
+				else
+					System.out.println("chat: message is null");
+
 				//sortArrayList();
 				//sortArrayList();
 				chatAdapter.addAll(getListItem());
@@ -53,6 +62,7 @@ public class ChatController {
 
 					}
 		};
+		System.out.println("chat: apireadbyuser call");
 		MessageManager.ApiReadByUser(onPostGetMessages, user.getId());
 	}
 	

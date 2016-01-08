@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import android.util.Base64;
 import android.util.Log;
 
+import Tools.Tools;
+
 public class SDKToken {
 	private String	grant_type = "password";
 	private String	username;
@@ -24,6 +26,8 @@ public class SDKToken {
 	}
 	
 	public SDKToken	authenticate() {
+		if (!Tools.isNetworkAvailable())
+			return null;
 		SDKToken token = null;
 		try {
 			SitchozrSDK sdk = SitchozrSDK.getInstance();

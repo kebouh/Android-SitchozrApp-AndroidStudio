@@ -6,12 +6,16 @@ import android.util.Log;
 import java.util.Date;
 import java.util.List;
 
+import Tools.Tools;
+
 public class SDKMatch {
 	private int		id;
 	private Date	date;
 	private int		userId;
 	
 	public void	deleteById(){
+		if (!Tools.isNetworkAvailable())
+			return;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
 			service.deleteMatchById(this.id);
@@ -22,6 +26,8 @@ public class SDKMatch {
 	}
 	
 	public List<SDKMatch>	getByToken(){
+		if (!Tools.isNetworkAvailable())
+			return null;
 		List<SDKMatch>	result = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();
@@ -34,6 +40,8 @@ public class SDKMatch {
 	}
 	
 	public List<SDKMatch>	get(){
+		if (!Tools.isNetworkAvailable())
+			return null;
 		List<SDKMatch>	result = null;
 		try {
 			SitchozrServices service = SitchozrSDK.getInstance().getSitchozrServices();

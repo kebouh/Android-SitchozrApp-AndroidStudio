@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class ImageLoader {
 
@@ -68,7 +69,11 @@ public class ImageLoader {
 			bitmap = memoryCache.get(url);
 
 		if (bitmap != null) {
-			if (type == 0)
+			if (type == 2) {
+				BitmapDrawable ob = new BitmapDrawable(context.getResources(), bitmap);
+				((LinearLayout) imageView).setBackground(ob);
+			}
+			else if (type == 0)
 				((ImageView) imageView).setImageBitmap(bitmap);
 			else
 				((ImageSwitcher) imageView)
@@ -78,6 +83,10 @@ public class ImageLoader {
 			queuePhoto(url, imageView, type, h, w);
 			if (type == 0)
 				((ImageView) imageView).setImageResource(stub_int);
+			else if (type == 2) {
+				BitmapDrawable ob = new BitmapDrawable(context.getResources(), bitmap);
+				((LinearLayout) imageView).setBackground(ob);
+			}
 		}
 	}
 
@@ -298,15 +307,23 @@ public class ImageLoader {
 				return;
 
 			if (bitmap != null) {
-				if (photoToLoad.type == 0)
-					((ImageView) photoToLoad.imageView).setImageBitmap(bitmap);
+				if (photoToLoad.type == 2) {
+					BitmapDrawable ob = new BitmapDrawable(context.getResources(), bitmap);
+					((LinearLayout) photoToLoad.imageView).setBackgroundDrawable(ob);
+				}
+				else if (photoToLoad.type == 0)
+						((ImageView) photoToLoad.imageView).setImageBitmap(bitmap);
 				else
 					((ImageSwitcher) photoToLoad.imageView)
 							.setImageDrawable(new BitmapDrawable(bitmap));
 
 			} else {
 				// photoToLoad.imageView.setImageResource(stub_int);
-				if (photoToLoad.type == 0)
+				if (photoToLoad.type == 2) {
+					BitmapDrawable ob = new BitmapDrawable(context.getResources(), bitmap);
+					((LinearLayout) photoToLoad.imageView).setBackgroundDrawable(ob);
+				}
+				else if (photoToLoad.type == 0)
 					((ImageView) photoToLoad.imageView)
 							.setImageResource(stub_int);
 				else

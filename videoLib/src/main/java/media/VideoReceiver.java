@@ -1,18 +1,25 @@
 package media;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+import com.example.voipsitchozr.R;
+import com.voipsitchozr.main.VoipManager;
 import com.voipsitchozr.options.CameraOptions;
 import com.voipsitchozr.options.ContactViewOptions;
 import com.voipsitchozr.socket.DatagramSocketReceiver;
 
 import com.voipsitchozr.utils.ConcurrentQueue;
+
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.util.Log;
@@ -46,10 +53,10 @@ public class VideoReceiver  extends Thread{
 	@Override
 	public void run() {
 		threadDraw();
+		//android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 		while (!Thread.currentThread().isInterrupted()) {
 			try {
-				System.out.println("TCP LOOP THREAD RECEIVER");
-				Log.d("UDP", "loop thread");
+				System.out.println("udp: receive packet");
 				if (queue.getSize() > CameraOptions.queueLimit)
 					queue.clear();
 				queue.add(socket.receivePacket());
@@ -63,7 +70,6 @@ public class VideoReceiver  extends Thread{
 	public void drawFrame(byte[] frame) {
 		if (frame == null)
 		{
-			System.out.println("TCP Frame is null in receiving");
 			return;
 		}
 		Log.d("FRAME", frame.toString());
@@ -80,8 +86,13 @@ public class VideoReceiver  extends Thread{
 				c = holder.lockCanvas();
 				synchronized (holder) {
 					if (c != null) {
-							//c.setMatrix(matrix);
-							c.drawBitmap(/*getResizedBitmap(*/bmp/*, ContactViewOptions.width, ContactViewOptions.height)*/, null, new RectF(0, 0, ContactViewOptions.width, ContactViewOptions.height), null);
+
+						Bitmap resc = rescaleBitmap(bmp);
+						Paint paint = new Paint();
+						paint.setFilterBitmap(true);
+						System.out.println("size: screen " + VoipManager.widthScreen + " " + resc.getHeight() + " " + resc.getWidth());
+						c.drawBitmap(resc, 0, 0, paint);
+						//}
 					}
 				}
 			} finally {
@@ -91,6 +102,19 @@ public class VideoReceiver  extends Thread{
 				}
 			}
 		}
+	}
+
+
+
+	public Bitmap rescaleBitmap(Bitmap bmp) {
+		DisplayMetrics displaymetrics = new DisplayMetrics();
+		((Activity)VoipManager.context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+		int height = displaymetrics.heightPixels;
+		int width = displaymetrics.widthPixels;
+
+		Bitmap resizedbitmap = Bitmap.createScaledBitmap(bmp, width, (width - bmp.getWidth()) + bmp.getHeight(), true);
+
+		return resizedbitmap;
 	}
 
 	public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth)
@@ -117,9 +141,9 @@ public class VideoReceiver  extends Thread{
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
+				//android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 				while (!Thread.currentThread().isInterrupted()) {
 					if (!queue.isEmpty()) {
-						System.out.println("DRAWFRAME !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 						byte[] data = queue.poll();
 						if (data != null)
 						drawFrame(data);
@@ -127,6 +151,7 @@ public class VideoReceiver  extends Thread{
 							System.out.println("packet == NULLLLLLLLLL");
 					}
 				}
+
 			}
 		};
 		thread.start();
