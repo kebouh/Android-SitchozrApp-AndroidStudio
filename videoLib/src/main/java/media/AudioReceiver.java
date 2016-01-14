@@ -41,15 +41,16 @@ public class AudioReceiver extends Thread {
     public void run() {
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
         AudioTrack atrack = new AudioTrack(AudioManager.STREAM_MUSIC, 44100, AudioFormat.CHANNEL_CONFIGURATION_MONO,
-                AudioFormat.ENCODING_PCM_16BIT, 4096/*AudioManagerState.actualBufferSize*/, AudioTrack.MODE_STREAM);
-        atrack.setPlaybackRate(44100);
+                AudioFormat.ENCODING_PCM_16BIT, AudioManagerState.actualBufferSize, AudioTrack.MODE_STREAM);
+        //atrack.setPlaybackRate(44100);
         atrack.play();
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 byte[] buffer = socket.receivePacket();
                 System.out.println("buffer: " + buffer.length);
                 if (buffer != null) {
-                    int[] b = byteToInt(buffer);
+                    //short[] b = byteToInt(buffer);
+
                     atrack.write(buffer, 0, buffer.length);
                 }
             } catch (IOException e) {
@@ -65,23 +66,36 @@ public class AudioReceiver extends Thread {
         return (short)((highByte & 0xFF) | lowByte<<8);
     }
 
-    public int[] byteToInt(byte[] array) {
+    public short[] byteToInt(byte[] array) {
 
-        int[] shorts = new int[((array.length) /2)];
+        Integer[] ints = new Integer[array.length/2];
+        int[] intn = new int[array.length];
+        short[] shorts = new short[array.length/2];
+        // to turn bytes to shorts as either big endian or little endian.
+        ByteBuffer.wrap(array).order(ByteOrder.LITTLE_ENDIAN).asIntBuffer().get(intn);
+
+        for (int i = 0; i != intn.length; i++) {
+            ints[i] = intn[i];
+            shorts[i] = ints[i].shortValue();
+        }
+        return shorts;
+        /*
+        short[] shorts = new short[((array.length) /2)];
         int i = 0;
         System.err.println("size array: " + array.length);
         int n = 0;
         while (i+1 < array.length) {
             int val = ((array[i] & 0xff) << 8) | (array[i+1] & 0xff);
-            shorts[n] = val;
-            //shorts[n] = bytesToShort(array[i], array[i+1]);
+            //shorts[n] = (short)val;
+            //shorts[n] = (short)((array[i] & 0xFF) | array[i+1]<<8);
+            shorts[n] = bytesToShort(array[i], array[i+1]);
             i += 2;
             n++;
-        }
+        }*/
         // to turn bytes to shorts as either big endian or little endian.
         //ByteBuffer.wrap(array).order(ByteOrder.BIG_ENDIAN).asShortBuffer().get(shorts);
 
-        return shorts;
+      //  return shorts;
     }
 
     public void onStop() {

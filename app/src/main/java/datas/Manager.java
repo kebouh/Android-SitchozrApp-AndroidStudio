@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import database.DBDatas;
 import managers.StreamingServerActions;
+import managers.TcpManagerSitchozr;
 import sdk.SDKUser;
 import Abstract.AbstractUsersData;
 import android.annotation.SuppressLint;
@@ -26,6 +27,7 @@ import datas.MatchProfile;
  */
 public class Manager {
 
+	static public TcpManagerSitchozr				tcpManagerSitchozr;
 	static public VoipManager 						voipManager;
 	static public StreamingServerActions 			serverActions;
 	static ImageLoader								imageLoader;
@@ -35,7 +37,7 @@ public class Manager {
 	static private DBDatas 							db;
 	static public Context 							context;
 	static private Context 							appContext;
-	
+
 	@SuppressLint("UseSparseArrays")
 	public static void init(Context context)
 	{
@@ -45,6 +47,7 @@ public class Manager {
 		db = new DBDatas(context);
 		voipManager = new VoipManager(context);
 		serverActions = new StreamingServerActions(context);
+		tcpManagerSitchozr = new TcpManagerSitchozr(context);
 	}
 	
 	
@@ -145,16 +148,13 @@ public class Manager {
 		profile = p;
 	}
 
-
 	public static Map<Integer, AbstractUsersData> getDiscoveryProfiles() {
 		return discoveryProfiles;
 	}
 
-
 	public static void setDiscoveryProfiles(Map<Integer, AbstractUsersData> discoveryProfiles) {
 		Manager.discoveryProfiles = discoveryProfiles;
 	}
-
 
 	public static AbstractUsersData getUserById(Integer id) {
 		if (profile.getId() == id) {

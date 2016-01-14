@@ -53,28 +53,30 @@ public class SDKUser {
 	}
 	
 	public SDKUser(SDKUser sdkUser) {
-		this.id = sdkUser.id;
-		this.key = sdkUser.key;
-		this.secret = sdkUser.secret;
-		this.username = sdkUser.username;
-		this.gender = sdkUser.gender;
-		this.birthday = sdkUser.birthday;
-		this.description = sdkUser.description;
-		this.lastActivity = sdkUser.lastActivity;
-		this.discoveryEnable = sdkUser.discoveryEnable;
-		this.discoveryDistance = sdkUser.discoveryDistance;
-		this.discoveryMinAge = sdkUser.discoveryMinAge;
-		this.discoveryMaxAge = sdkUser.discoveryMaxAge;
-		this.discoveryMen = sdkUser.discoveryMen;
-		this.discoveryWomen = sdkUser.discoveryWomen;
-		this.latitude = sdkUser.latitude;
-		this.longitude = sdkUser.longitude;
-		this.age = sdkUser.age;
-		this.accuracy = sdkUser.accuracy;
-		this.facebookId = sdkUser.facebookId;
-		this.accessTokenFacebook = sdkUser.accessTokenFacebook;
-		this.pictures = sdkUser.pictures;
-		this.age = Integer.toString(AgeCalculator.calculate(this.birthday));
+		if (sdkUser != null) {
+			this.id = sdkUser.id;
+			this.key = sdkUser.key;
+			this.secret = sdkUser.secret;
+			this.username = sdkUser.username;
+			this.gender = sdkUser.gender;
+			this.birthday = sdkUser.birthday;
+			this.description = sdkUser.description;
+			this.lastActivity = sdkUser.lastActivity;
+			this.discoveryEnable = sdkUser.discoveryEnable;
+			this.discoveryDistance = sdkUser.discoveryDistance;
+			this.discoveryMinAge = sdkUser.discoveryMinAge;
+			this.discoveryMaxAge = sdkUser.discoveryMaxAge;
+			this.discoveryMen = sdkUser.discoveryMen;
+			this.discoveryWomen = sdkUser.discoveryWomen;
+			this.latitude = sdkUser.latitude;
+			this.longitude = sdkUser.longitude;
+			this.age = sdkUser.age;
+			this.accuracy = sdkUser.accuracy;
+			this.facebookId = sdkUser.facebookId;
+			this.accessTokenFacebook = sdkUser.accessTokenFacebook;
+			this.pictures = sdkUser.pictures;
+			this.age = Integer.toString(AgeCalculator.calculate(this.birthday));
+		}
 	}
 
 	public SDKToken	authenticate(){

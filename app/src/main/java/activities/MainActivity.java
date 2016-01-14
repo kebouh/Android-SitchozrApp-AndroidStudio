@@ -112,7 +112,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onResume() {
 		super.onResume();
 		Manager.context = this;
-		Tools.connectivityThreadLoop();
+		//Tools.connectivityThreadLoop();
 		location = new LocationWraper(getApplicationContext());
 		if (!location.isGpsActivated())
 			buildAlertMessageNoGps();
@@ -397,8 +397,8 @@ public class MainActivity extends FragmentActivity {
 		};
 		if (Tools.isNetworkAvailable())
 			FacebookManager.getAlbums(callback, Manager.getProfile()
-				.getAccessToken(), Manager.getProfile().getSdkuser()
-				.getFacebookId());
+					.getAccessToken(), Manager.getProfile().getSdkuser()
+					.getFacebookId());
 	}
 
 	public static void addMatches() {
@@ -411,29 +411,32 @@ public class MainActivity extends FragmentActivity {
 				OnTaskCompleteListener onPostReadById = new OnTaskCompleteListener() {
 					@Override
 					public void onCompleteListerner(Object[] result) {
-						final SDKUser matchUser = new SDKUser((SDKUser)result[1]);
+						final SDKUser matchUser = new SDKUser((SDKUser) result[1]);
 						//Manager.getDatabase().createMatch(matchUser);
-						final MatchProfile matchProfile = new MatchProfile(matchUser, AccessToken.getCurrentAccessToken());
-						OnTaskCompleteListener onPostReadPictureByUserId = new OnTaskCompleteListener() {
-							@Override
-							public void onCompleteListerner(Object[] result) {
-								List<SDKPicture> pictures = (List<SDKPicture>) result[1];
-								for (SDKPicture sdkpicture : pictures) {
-									Images image = new Images(sdkpicture.getUrl(), sdkpicture.getId());
-									if (sdkpicture.isProfilePicture() || pictures.size() == 1)
-										matchProfile.setProfileImage(image);
-									matchProfile.addImagesToArray(image);
-									//Manager.getDatabase().createPicture(sdkpicture, matchUser.getId());
+						if (matchUser != null) {
+							final MatchProfile matchProfile = new MatchProfile(matchUser, AccessToken.getCurrentAccessToken());
+							OnTaskCompleteListener onPostReadPictureByUserId = new OnTaskCompleteListener() {
+								@Override
+								public void onCompleteListerner(Object[] result) {
+									List<SDKPicture> pictures = (List<SDKPicture>) result[1];
+									for (SDKPicture sdkpicture : pictures) {
+										Images image = new Images(sdkpicture.getUrl(), sdkpicture.getId());
+										if (sdkpicture.isProfilePicture() || pictures.size() == 1)
+											matchProfile.setProfileImage(image);
+										matchProfile.addImagesToArray(image);
+										//Manager.getDatabase().createPicture(sdkpicture, matchUser.getId());
+									}
+									Manager.addMatchProfile(matchProfile);
+									//Manager.getDatabase().getMatchsAndPictures();
+									//Manager.getDatabase().createMatch(matchUser);
 								}
-								Manager.addMatchProfile(matchProfile);
-								//Manager.getDatabase().getMatchsAndPictures();
-								//Manager.getDatabase().createMatch(matchUser);
-							}
-						};
-						if (Tools.isNetworkAvailable())
-							ImageManager.ApiReadByUserId(onPostReadPictureByUserId, matchUser);
+							};
+							if (Tools.isNetworkAvailable())
+								ImageManager.ApiReadByUserId(onPostReadPictureByUserId, matchUser);
+						}
 					}
 				};
+
 				for (SDKMatch match : matches) {
 					SDKUser user = new SDKUser();
 					user.setId(match.getUserId());
@@ -482,8 +485,11 @@ public class MainActivity extends FragmentActivity {
 			ConnexionOptions.SERVER_IP = "87.98.209.15";
 			//ConnexionOptions.SERVER_IP = "172.19.133.143";
 			ConnexionOptions.SERVER_PORT = 3031;
+			Manager.tcpManagerSitchozr.initializeTcpConnection();
 			Manager.voipManager.initializeTcpConnexion();
+			Manager.tcpManagerSitchozr.addUsersActions();
 			Manager.serverActions.addActions();
+			Manager.tcpManagerSitchozr.connect();
 			Manager.voipManager.getTcpManager().getTcpCommand().getCodeAndPerformAction("connect " + Manager.getProfile().getId());
 		} catch (SocketException e) {
 			e.printStackTrace();
@@ -494,5 +500,12 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public void onStop() {
 		super.onStop();
+	}
+
+	@Override
+	public void onDestroy() {
+		//if (Manager.tcpManagerSitchozr != null) ;
+		//	Manager.tcpManagerSitchozr.disconnect();
+		super.onDestroy();
 	}
 }

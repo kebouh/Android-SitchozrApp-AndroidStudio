@@ -13,7 +13,7 @@ public class TcpSocket {
 
 	String ip;
 	int port;
-	SocketChannel channel;
+	public SocketChannel channel;
 	ConcurrentQueue<String> queueSend; 
 	ConcurrentQueue<String> queueReceive;
 	ThreadTcp tt = null;
@@ -32,6 +32,7 @@ public class TcpSocket {
 		channel.configureBlocking(false);
 		System.out.println("ip: " + ip);
 		channel.connect(new InetSocketAddress(ip, port));
+
 		while (!channel.finishConnect()) {
 			System.out.println("still connecting");
 		}
@@ -41,6 +42,7 @@ public class TcpSocket {
 
 	public void	interrupt()
 	{
+		disconnect();
 		if (tt.isAlive())
 			tt.interrupt();
 	}
@@ -75,14 +77,18 @@ public class TcpSocket {
 //				System.out.println(message);
 				// write some data into the channel
 				if (!queueSend.isEmpty()) {
-					CharBuffer buffer = CharBuffer.wrap(queueSend.poll());
-					System.out.println("tcp write:" + buffer);
-					while (buffer.hasRemaining()) {
-						try {
-							channel.write(Charset.defaultCharset().encode(buffer));
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+					String txt = queueSend.poll();
+					if (txt != null) {
+						CharBuffer buffer = CharBuffer.wrap(txt);
+						System.out.println("tcp write:" + buffer);
+
+						while (buffer.hasRemaining()) {
+							try {
+								channel.write(Charset.defaultCharset().encode(buffer));
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
 					}
 				}
@@ -95,5 +101,14 @@ public class TcpSocket {
 	public void start() throws IOException, Exception {
 		tt = new ThreadTcp();
 		tt.start();
+	}
+
+	public void disconnect() {
+		try {
+			if (channel != null && channel.isConnected())
+			channel.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -226,7 +226,7 @@ public class GalleryDragAndDrop extends Activity {
 			}
 
 			public void deletePicture(View v) {
-				if (!Tools.isNetworkAvailable()) {
+				if (Tools.isNetworkAvailable()) {
 					getItems().remove(position);
 					db.deletePicture(imgs.get(position).getId());
 					SDKPicture picture = new SDKPicture(imgs.get(position).getId());

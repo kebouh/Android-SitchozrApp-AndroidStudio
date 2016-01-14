@@ -61,8 +61,8 @@ public class CameraManager implements Camera.PreviewCallback {
 	/*	tempHeight = CameraOptions.height;
 		tempWidth = CameraOptions.width;*/
 		setPreviewSize();
-		setFpsRange();
-		setFrameRate();
+		//setFpsRange();
+		//setFrameRate();
 		params.set("orientation", "portrait");
 		//params.set("rotation", 90);
 
@@ -114,6 +114,7 @@ public class CameraManager implements Camera.PreviewCallback {
 	}
 
 	public void setPreviewDisplay(SurfaceHolder holder) throws IOException {
+		if (mCamera != null)
 		mCamera.setPreviewDisplay(holder);
 	}
 

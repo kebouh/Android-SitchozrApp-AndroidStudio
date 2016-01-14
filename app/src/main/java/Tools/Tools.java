@@ -27,12 +27,14 @@ public class Tools {
 
 
     public static ProgressDialog showProgressDialog(Context c, String title, String text) {
-        return ProgressDialog.show(c, title, text, true, false);
+        return ProgressDialog.show(c, title, text, true, true);
     }
 
     public static boolean isNetworkAvailable() {
+        if (Manager.context == null)
+            return true;
         ConnectivityManager connectivityManager
-                = (ConnectivityManager) Manager.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                = (ConnectivityManager) Manager.context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
@@ -47,22 +49,16 @@ public class Tools {
 
 
     public static void         connectivityThreadLoop() {
-        //connectivityThread = new Thread(new Runnable() {
-            //@Override
-
-
-
                 new CountDownTimer(5000, 1000) {
                     //public void run() {
                     AlertDialog.Builder alert;
                     AlertDialog dialog;
                     public void onTick(long millisUntilFinished) {
                     }
-
                     public void onFinish() {
                         if (!isNetworkAvailable())
                         {
-                            if (dialog == null || !dialog.isShowing()){
+                            if (dialog == null || !dialog.isShowing() && Manager.context != null){
                             ((Activity) Manager.context).runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -97,7 +93,4 @@ public class Tools {
                     }
                 }.start();
             }
-       // });
-        //connectivityThread.start();
-    //}
 }

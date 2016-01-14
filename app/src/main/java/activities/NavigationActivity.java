@@ -11,6 +11,7 @@ import fragments.MatchFragment;
 import fragments.ProfileFragment;
 import fragments.SettingFragment;
 import managers.DeviceManager;
+import managers.TcpManagerSitchozr;
 import sdk.SDKDevice;
 import slidermenu.model.NavDrawerItem;
 import slidingmenu.adapter.NavDrawerListAdapter;
@@ -18,6 +19,7 @@ import sources.sitchozt.R;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -38,7 +40,8 @@ public class NavigationActivity extends Activity {
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private Menu menu;
- 
+
+    private HomeFragment homeFragment = null;
     // nav drawer title
     private CharSequence mDrawerTitle;
  
@@ -51,13 +54,17 @@ public class NavigationActivity extends Activity {
  
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
-    
+
+    private boolean isFocus = false;
+    public static Context contextNav;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("NAVIGATION ACTIVITY");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
 		Manager.setContext(this);
+        contextNav = this;
         initializeProfile();
         this.setTitle("Navigation");
         mTitle = mDrawerTitle = getTitle();
@@ -78,7 +85,9 @@ public class NavigationActivity extends Activity {
         // setting the nav drawer list adapter
         adapter = new NavDrawerListAdapter(getApplicationContext(),
                 navDrawerItems);
+
         mDrawerList.setAdapter(adapter);
+
         // enabling action bar app icon and behaving it as toggle button
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
@@ -112,6 +121,7 @@ public class NavigationActivity extends Activity {
     public void onResume() {
         super.onResume();
         Manager.context = this;
+        contextNav = this;
     }
 
     public void     initializeProfile() {
@@ -228,6 +238,18 @@ public class NavigationActivity extends Activity {
         }
  
         if (fragment != null) {
+            System.out.println("roulette Fragment not null");
+            if (position == 1) {
+                isFocus = true;
+                System.out.println("roulette is focus");
+                Manager.tcpManagerSitchozr.focusOnFragment();
+            }
+            else {
+                if (isFocus) {
+                        Manager.tcpManagerSitchozr.unFocusFragment();
+                }
+                isFocus = false;
+            }
             Log.e("NAVIGATION", "JE PASSE");
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
@@ -236,6 +258,7 @@ public class NavigationActivity extends Activity {
             mDrawerList.setSelection(position);
             setTitle(navMenuTitles[position]);
             //mDrawerLayout.closeDrawer(mRelativeLayout);
+
             mDrawerLayout.closeDrawer(mDrawerList);
             Log.e("NAVIGATION", "JE PASSE2") ;
         } else {

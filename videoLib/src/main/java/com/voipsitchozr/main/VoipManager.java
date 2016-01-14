@@ -2,6 +2,7 @@ package com.voipsitchozr.main;
 
 import java.io.IOException;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -10,6 +11,7 @@ import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.voipsitchozr.options.CameraOptions;
@@ -19,6 +21,7 @@ import com.voipsitchozr.socket.UdpSocketVideo;
 import com.voipsitchozr.utils.AudioManagerState;
 import com.voipsitchozr.utils.ConcurrentQueue;
 import com.voipsitchozr.utils.SCallback;
+import com.voipsitchozr.utils.TaskCompleteListener;
 import com.voipsitchozr.views.ChatLayout;
 import com.voipsitchozr.views.ControllerLayout;
 import com.voipsitchozr.views.VideoSurfaceView;
@@ -49,6 +52,7 @@ public class VoipManager {
 	private boolean				chatMode = false;
 	private static VoipManager  voipManager = null;
 	public boolean				isInCall = false;
+	//public TaskCompleteListener	taskCompleteListener = null;
 
 	public VoipManager(Context context) {
 		this.context = context;
@@ -68,12 +72,12 @@ public class VoipManager {
 	public static VoipManager getInstance() { return VoipManager.voipManager; }
 
 	@SuppressLint("NewApi")
-	public void initialiaze(Activity activity, FrameLayout frameLayout) throws IOException {
+	public void initialiaze(Activity activity, FrameLayout frameLayout/*, TaskCompleteListener complete*/, ArrayList<View> customs) throws IOException {
 
 		isInCall = true;
 		this.activity = activity;
 		this.frameLayout = frameLayout;
-
+	//	this.taskCompleteListener = complete;
 		if (videoMode) {
 			this.mCamera = new CameraManager();
 			this.callback = new CallbackSelfSurface();
@@ -90,15 +94,16 @@ public class VoipManager {
 		ControllerLayout controller = null;
 		if (controllerMode) {
 			if (selfView != null)
-				controller = new ControllerLayout(context, frameLayout, mCamera, selfView.getHolder());
+				controller = new ControllerLayout(context, frameLayout, mCamera, selfView.getHolder(), customs);
 			else
-				controller = new ControllerLayout(context, frameLayout, mCamera, null);
+				controller = new ControllerLayout(context, frameLayout, mCamera, null, customs);
 			controller.addWidgets(selfView, this);
 		}
 		if (videoMode)
 		frameLayout.addView(selfView);
 		if (controllerMode)
 		frameLayout.addView(controller);
+		if (audioMode)
 		startSendAudio();
 	}
 
@@ -116,12 +121,12 @@ public class VoipManager {
 		chatView = new ChatView(context, frameLayout);
 		chatView.initChatManager();
 	}
-
+/*
 	public void initializeController() {
 		ControllerLayout controller = new ControllerLayout(context, frameLayout, mCamera, selfView.getHolder());
 		controller.addWidgets(selfView, this);
 		frameLayout.addView(controller);
-	}
+	}*/
 
 		public void		initializeTcpConnexion ()throws SocketException {
 
@@ -248,6 +253,12 @@ public class VoipManager {
 		/*if (videoReceiver != null && videoReceiver.isAlive())
 		videoReceiver.interrupt();
 		videoReceiver.*/
+			//Manager.tcpManagerSitchozr.recoRoulette();
+/*
+		if (taskCompleteListener != null) {
+			taskCompleteListener.onCompleteListerner(null);
+		}
+		else*/
 		if (activity != null)
 			activity.finish();
 	}
